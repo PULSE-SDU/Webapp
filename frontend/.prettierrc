@@ -1,0 +1,27 @@
+{
+  "printWidth": 120,
+  "tabWidth": 4,
+  "useTabs": false,
+  "singleQuote": true,
+  "semi": true,
+  "proseWrap": "always",
+  "trailingComma": "none",
+  "htmlWhitespaceSensitivity": "strict",
+  "endOfLine": "lf",
+  "eslintIntegration": true,
+  "overrides": [
+    {
+      "files": "*.component.html",
+      "options": {
+        "parser": "angular",
+        "htmlWhitespaceSensitivity": "strict"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}

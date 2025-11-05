@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+django-cors-headers = "*"
+
+[dev-packages]
+pylint = "*"
+
+[scripts]
+lint = "pylint ."
+test = "python manage.py test"
+
+[tool]
+black = {line-length = 79}
+
+[requires]
+python_version = "3.14"
+python_full_version = "3.14.0"
