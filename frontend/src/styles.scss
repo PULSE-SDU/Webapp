@@ -6,17 +6,23 @@
 @use '@angular/material' as mat;
 @use 'tailwindcss';
 
+$my-theme: mat.define-theme(
+  (
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$cyan-palette,
+    ),
+    typography: (
+      brand-family: 'Roboto',
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
 html {
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$cyan-palette,
-        tertiary: mat.$orange-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
+  @include mat.all-component-themes($my-theme);
 }
 
 :root {
