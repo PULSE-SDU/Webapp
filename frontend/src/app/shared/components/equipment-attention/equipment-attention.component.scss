@@ -1,0 +1,119 @@
+.equipment-attention-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  padding: 24px 24px 16px 24px;
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #374151;
+  margin: 0;
+}
+
+.card-subtitle {
+  font-size: 14px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
+
+.card-content {
+  padding: 0 24px 24px 24px;
+}
+
+.equipment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.equipment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
+
+.equipment-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.equipment-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipment-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+
+  &.status-critical {
+    background-color: #ef4444;
+    color: white;
+  }
+
+  &.status-warning {
+    background-color: #f59e0b;
+    color: #000000;
+  }
+}
+
+.equipment-location {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.equipment-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.battery-percentage {
+  font-size: 24px;
+  font-weight: 700;
+  color: #374151;
+}
+
+.days-left {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .equipment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .equipment-right {
+    align-items: flex-start;
+  }
+}

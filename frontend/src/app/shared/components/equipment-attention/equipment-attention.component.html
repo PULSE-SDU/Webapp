@@ -1,0 +1,27 @@
+<mat-card class="equipment-attention-card">
+  <mat-card-header class="card-header">
+    <mat-card-title class="card-title">Equipment Needing Attention</mat-card-title>
+    <mat-card-subtitle class="card-subtitle">Sorted by predicted battery life</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <div class="equipment-list">
+      @for (item of equipment; track item.id) {
+        <div class="equipment-item">
+          <div class="equipment-left">
+            <div class="equipment-name-row">
+              <span class="equipment-name">{{ item.name }}</span>
+              <span class="status-badge" [class.status-critical]="item.status === 'critical'" [class.status-warning]="item.status === 'warning'">
+                {{ item.status }}
+              </span>
+            </div>
+            <div class="equipment-location">{{ item.location }}</div>
+          </div>
+          <div class="equipment-right">
+            <div class="battery-percentage">{{ item.batteryPercentage }}%</div>
+            <div class="days-left">{{ item.daysLeft }}d left</div>
+          </div>
+        </div>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>
