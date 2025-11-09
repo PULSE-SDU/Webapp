@@ -10,7 +10,11 @@
           <div class="equipment-left">
             <div class="equipment-name-row">
               <span class="equipment-name">{{ item.name }}</span>
-              <span class="status-badge" [class.status-critical]="item.status === 'critical'" [class.status-warning]="item.status === 'warning'">
+              <span
+                class="status-badge"
+                [class.status-critical]="item.status === 'critical'"
+                [class.status-warning]="item.status === 'warning'"
+              >
                 {{ item.status }}
               </span>
             </div>

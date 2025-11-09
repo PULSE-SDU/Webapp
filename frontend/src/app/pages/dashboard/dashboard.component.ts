@@ -18,7 +18,7 @@ export class DashboardComponent {
       status: 'critical',
       location: 'Emergency - Bay 1',
       batteryPercentage: 15,
-      daysLeft: 1
+      daysLeft: 1,
     },
     {
       id: 'pulse-oximeter-h1',
@@ -26,7 +26,7 @@ export class DashboardComponent {
       status: 'critical',
       location: 'Emergency - Bay 3',
       batteryPercentage: 18,
-      daysLeft: 1
+      daysLeft: 1,
     },
     {
       id: 'ventilator-b3',
@@ -34,7 +34,7 @@ export class DashboardComponent {
       status: 'critical',
       location: 'ICU - Room 304',
       batteryPercentage: 22,
-      daysLeft: 2
+      daysLeft: 2,
     },
     {
       id: 'ecg-machine-g1',
@@ -42,7 +42,7 @@ export class DashboardComponent {
       status: 'warning',
       location: 'Cardiology - Room 201',
       batteryPercentage: 38,
-      daysLeft: 4
+      daysLeft: 4,
     },
     {
       id: 'ventilator-b2',
@@ -50,7 +50,7 @@ export class DashboardComponent {
       status: 'warning',
       location: 'ICU - Room 302',
       batteryPercentage: 45,
-      daysLeft: 5
-    }
+      daysLeft: 5,
+    },
   ];
 }
