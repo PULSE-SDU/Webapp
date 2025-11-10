@@ -2,27 +2,30 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0; // Remove default margin, control via parent
 }
 
 .card-header {
-  padding: 24px 24px 16px 24px;
+  padding: 24px 24px 12px 24px; // Reduced bottom padding
 }
 
 .card-title {
-  font-size: 20px;
+  font-size: 24px; // Increase from 20px
   font-weight: 700;
-  color: #374151;
-  margin: 0;
+  color: #1f2937; // Darker grey
+  margin: 0 0 4px 0; // Add bottom margin
+  letter-spacing: -0.02em; // Tighter letter spacing for large text
 }
 
 .card-subtitle {
   font-size: 14px;
-  color: #9ca3af;
-  margin-top: 4px;
+  color: #6b7280; // Slightly darker than #9ca3af
+  margin: 0;
+  font-weight: 400;
 }
 
 .card-content {
-  padding: 0 24px 24px 24px;
+  padding: 0 24px 24px 24px; // Keep consistent
 }
 
 .equipment-list {
@@ -35,13 +38,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background: #f9fafb;
+  padding: 16px 20px; // Increased horizontal padding
+  background: white; // Changed from #f9fafb to white for better contrast
+  border: 1px solid #e5e7eb; // Add border as shown in image
   border-radius: 8px;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease; // Smooth transitions
 
   &:hover {
-    background: #f3f4f6;
+    background: #f9fafb; // Subtle hover effect
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); // Add shadow on hover
   }
 }
 
@@ -61,15 +66,17 @@
 .equipment-name {
   font-size: 16px;
   font-weight: 600;
-  color: #374151;
+  color: #1f2937; // Darker for better readability
+  line-height: 1.5;
 }
 
 .status-badge {
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 500;
+  padding: 4px 10px; // Slightly less horizontal padding
+  border-radius: 12px; // Slightly less rounded
+  font-size: 11px; // Slightly smaller
+  font-weight: 600; // Bolder
   text-transform: uppercase;
+  letter-spacing: 0.5px; // Add letter spacing for uppercase text
 
   &.status-critical {
     background-color: #ef4444;
@@ -78,13 +85,14 @@
 
   &.status-warning {
     background-color: #f59e0b;
-    color: #000000;
+    color: white; // Change to white for better contrast (as shown in image)
   }
 }
 
 .equipment-location {
   font-size: 14px;
-  color: #9ca3af;
+  color: #6b7280; // Consistent with subtitle
+  line-height: 1.4;
 }
 
 .equipment-right {
@@ -92,17 +100,21 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 4px;
+  min-width: 90px; // Ensure consistent width
+  text-align: right;
 }
 
 .battery-percentage {
   font-size: 24px;
   font-weight: 700;
-  color: #374151;
+  color: #1f2937; // Darker
+  line-height: 1.2;
 }
 
 .days-left {
-  font-size: 14px;
-  color: #9ca3af;
+  font-size: 13px; // Slightly smaller
+  color: #6b7280; // Consistent grey
+  line-height: 1.4;
 }
 
 // Responsive design

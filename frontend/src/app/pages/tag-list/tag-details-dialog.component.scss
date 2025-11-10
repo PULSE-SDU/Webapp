@@ -1,0 +1,284 @@
+.dialog-container {
+  padding: 0;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px 24px 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.dialog-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.dialog-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+.close-button {
+  color: #6b7280;
+  margin: -8px -8px 0 0;
+
+  &:hover {
+    color: #374151;
+    background: #f3f4f6;
+  }
+}
+
+.dialog-section {
+  padding: 24px;
+  border-bottom: 1px solid #f3f4f6;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.section-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.battery-status-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.battery-icon-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.battery-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.battery-percentage-large {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.battery-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.battery-bar-wrapper {
+  flex: 1;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.battery-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+
+  &.status-critical {
+    background-color: #ef4444;
+    color: white;
+  }
+
+  &.status-warning {
+    background-color: #f59e0b;
+    color: white;
+  }
+
+  &.status-normal {
+    background-color: #6b7280;
+    color: white;
+  }
+
+  &.status-charging {
+    background-color: #000000;
+    color: white;
+  }
+}
+
+.prediction-container {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.prediction-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.prediction-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  color: #6b7280;
+}
+
+.prediction-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.prediction-text {
+  font-size: 16px;
+  font-weight: 600;
+
+  &.prediction-critical {
+    color: #ef4444;
+  }
+
+  &.prediction-warning {
+    color: #f59e0b;
+  }
+
+  &.prediction-normal {
+    color: #6b7280;
+  }
+
+  &.prediction-charging {
+    color: #000000;
+  }
+}
+
+.prediction-context {
+  font-size: 13px;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.technical-properties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.property-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+}
+
+.property-icon {
+  font-size: 28px;
+  width: 28px;
+  height: 28px;
+  color: #6b7280;
+}
+
+.property-label {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .dialog-header {
+    padding: 20px 20px 16px 20px;
+  }
+
+  .dialog-section {
+    padding: 20px;
+  }
+
+  .dialog-title {
+    font-size: 20px;
+  }
+
+  .technical-properties {
+    grid-template-columns: 1fr;
+  }
+}

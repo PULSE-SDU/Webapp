@@ -1,0 +1,173 @@
+.tag-list-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.tag-list-header {
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+  font-weight: 400;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.tag-table {
+  width: 100%;
+  background: white;
+
+  th {
+    background: #f9fafb;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  td {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #1f2937;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  tr:hover {
+    background: #fafafa;
+  }
+}
+
+.battery-cell {
+  min-width: 200px;
+}
+
+.battery-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.battery-bar-wrapper {
+  flex: 1;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.battery-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.battery-percentage {
+  font-size: 14px;
+  font-weight: 600;
+  min-width: 45px;
+  text-align: right;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+
+  &.status-critical {
+    background-color: #ef4444;
+    color: white;
+  }
+
+  &.status-warning {
+    background-color: #f59e0b;
+    color: white;
+  }
+
+  &.status-normal {
+    background-color: #6b7280;
+    color: white;
+  }
+
+  &.status-charging {
+    background-color: #000000;
+    color: white;
+  }
+}
+
+.prediction-text {
+  font-size: 14px;
+  font-weight: 500;
+
+  &.prediction-critical {
+    color: #ef4444;
+  }
+
+  &.prediction-warning {
+    color: #f59e0b;
+  }
+
+  &.prediction-normal {
+    color: #6b7280;
+  }
+
+  &.prediction-charging {
+    color: #000000;
+  }
+}
+
+.details-button {
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+  min-width: unset;
+
+  &:hover {
+    background: #e5e7eb;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .tag-list-container {
+    padding: 16px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .tag-table {
+    min-width: 1000px;
+  }
+}
