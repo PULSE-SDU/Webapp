@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -108,7 +108,7 @@ export class TagListComponent {
     },
   ];
 
-  constructor(private dialog: MatDialog) {}
+  private dialog = inject(MatDialog);
 
   openDetailsDialog(tag: EquipmentTag): void {
     this.dialog.open(TagDetailsDialogComponent, {

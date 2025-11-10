@@ -14,19 +14,19 @@
   <div class="dialog-section">
     <div class="info-grid">
       <div class="info-item">
-        <label class="info-label">Tag ID</label>
+        <div class="info-label">Tag ID</div>
         <div class="info-value">{{ tag.tagId }}</div>
       </div>
       <div class="info-item">
-        <label class="info-label">Equipment Name</label>
+        <div class="info-label">Equipment Name</div>
         <div class="info-value">{{ tag.equipmentName }}</div>
       </div>
       <div class="info-item">
-        <label class="info-label">Type</label>
+        <div class="info-label">Type</div>
         <div class="info-value">{{ tag.type }}</div>
       </div>
       <div class="info-item">
-        <label class="info-label">Location</label>
+        <div class="info-label">Location</div>
         <div class="info-value">{{ tag.location }}</div>
       </div>
     </div>
@@ -34,7 +34,7 @@
 
   <!-- Battery Status Section -->
   <div class="dialog-section">
-    <label class="section-label">Battery Status</label>
+    <div class="section-label">Battery Status</div>
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
         <mat-icon
@@ -67,7 +67,7 @@
 
   <!-- Battery Life Prediction Section -->
   <div class="dialog-section">
-    <label class="section-label">Battery Life Prediction</label>
+    <div class="section-label">Battery Life Prediction</div>
     <div class="prediction-container">
       <div class="prediction-icon-wrapper">
         <mat-icon class="prediction-icon">event</mat-icon>
@@ -84,11 +84,11 @@
   <!-- Technical Properties Section -->
   @if (tag.voltage) {
     <div class="dialog-section">
-      <label class="section-label">Technical Properties</label>
+      <div class="section-label">Technical Properties</div>
       <div class="technical-properties">
         <div class="property-card">
           <mat-icon class="property-icon">bolt</mat-icon>
-          <label class="property-label">Voltage</label>
+          <div class="property-label">Voltage</div>
           <div class="property-value">{{ tag.voltage }}</div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,10 +13,8 @@ import { EquipmentTag } from '../../shared/models/equipment-tag.model';
   styleUrl: './tag-details-dialog.component.scss',
 })
 export class TagDetailsDialogComponent {
-  constructor(
-    public dialogRef: MatDialogRef<TagDetailsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public tag: EquipmentTag,
-  ) {}
+  dialogRef = inject(MatDialogRef<TagDetailsDialogComponent>);
+  tag = inject<EquipmentTag>(MAT_DIALOG_DATA);
 
   close(): void {
     this.dialogRef.close();
