@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { EquipmentTag } from '../../shared/models/equipment-tag.model';
+import { EquipmentTag } from '../../models/equipment-tag.model';
 
 @Component({
   standalone: true,
@@ -38,3 +38,4 @@ export class TagDetailsDialogComponent {
     return 'prediction-normal';
   }
 }
+

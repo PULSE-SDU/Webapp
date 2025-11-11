@@ -1,7 +1,31 @@
 <div class="min-h-screen flex flex-col">
   <div class="flex-1">
-    <app-header></app-header>
-    <router-outlet></router-outlet>
+    <div class="home-container">
+      <h1 class="page-title">Equipment Monitoring</h1>
+
+      <div class="components-section">
+        <section class="component-section">
+          <h2 class="section-title">Equipment Attention Component</h2>
+          <app-equipment-attention [equipment]="equipmentData"></app-equipment-attention>
+        </section>
+
+        <section class="component-section">
+          <h2 class="section-title">Tag Details Dialog Component</h2>
+          <div class="dialog-demo">
+            <p class="demo-description">
+              Click the button below to open the Tag Details Dialog component:
+            </p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openTagDetailsDialog()"
+            >
+              Open Tag Details Dialog
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
   </div>
 
   <footer class="w-full text-center py-4 border-t border-gray-300">
