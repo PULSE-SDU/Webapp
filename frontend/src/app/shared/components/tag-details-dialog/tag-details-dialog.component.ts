@@ -38,4 +38,3 @@ export class TagDetailsDialogComponent {
     return 'prediction-normal';
   }
 }
-

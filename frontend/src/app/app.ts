@@ -10,12 +10,7 @@ import { EquipmentTag } from './shared/models/equipment-tag.model';
 @Component({
   standalone: true,
   selector: 'app-root',
-  imports: [
-    CommonModule,
-    EquipmentAttentionComponent,
-    MatDialogModule,
-    MatButtonModule,
-  ],
+  imports: [CommonModule, EquipmentAttentionComponent, MatDialogModule, MatButtonModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

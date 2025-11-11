@@ -35,4 +35,3 @@ describe('TagDetailsDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 });
-
