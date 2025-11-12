@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import { RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TabModel } from './models/link.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -13,12 +14,32 @@ import { TabModel } from './models/link.model';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
+  private router = inject(Router);
   tabs: TabModel[] = [
     { label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
     { label: 'Tag List', path: '/tag-list', icon: 'list' },
     { label: 'Analytics', path: '/analytics', icon: 'show_chart' },
   ];
 
-  activeLink: string = this.tabs[0].path;
+  public activeLink = '';
+  private sub?: Subscription;
+
+  ngOnInit(): void {
+    this.setActiveFromUrl(this.router.url);
+    this.sub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.setActiveFromUrl(event.urlAfterRedirects);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
+  private setActiveFromUrl(url: string): void {
+    const matched = this.tabs.find((t) => url.startsWith(t.path));
+    this.activeLink = matched ? matched.path : this.tabs[0].path;
+  }
 }
