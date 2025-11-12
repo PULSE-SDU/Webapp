@@ -1,0 +1,97 @@
+<div class="dialog-container">
+  <!-- Header Section -->
+  <div class="dialog-header">
+    <div class="header-content">
+      <h2 class="dialog-title">Equipment Details</h2>
+      <p class="dialog-subtitle">Detailed information and properties</p>
+    </div>
+    <button mat-icon-button class="close-button" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- General Information Section -->
+  <div class="dialog-section">
+    <div class="info-grid">
+      <div class="info-item">
+        <div class="info-label">Tag ID</div>
+        <div class="info-value">{{ tag.tagId }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Equipment Name</div>
+        <div class="info-value">{{ tag.equipmentName }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Type</div>
+        <div class="info-value">{{ tag.type }}</div>
+      </div>
+      <div class="info-item">
+        <div class="info-label">Location</div>
+        <div class="info-value">{{ tag.location }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Battery Status Section -->
+  <div class="dialog-section">
+    <div class="section-label">Battery Status</div>
+    <div class="battery-status-container">
+      <div class="battery-icon-wrapper">
+        <mat-icon
+          class="battery-icon"
+          [style.color]="getBatteryColor(tag.batteryLevel, tag.status)"
+        >
+          battery_{{ tag.status === 'charging' ? 'charging_full' : 'std' }}
+        </mat-icon>
+        <span
+          class="battery-percentage-large"
+          [style.color]="getBatteryColor(tag.batteryLevel, tag.status)"
+        >
+          {{ tag.batteryLevel }}%
+        </span>
+      </div>
+      <div class="battery-bar-container">
+        <div class="battery-bar-wrapper">
+          <div
+            class="battery-bar-fill"
+            [style.width.%]="tag.batteryLevel"
+            [style.background-color]="getBatteryColor(tag.batteryLevel, tag.status)"
+          ></div>
+        </div>
+        <span class="status-badge" [ngClass]="getStatusClass(tag.status)">
+          {{ tag.status }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Battery Life Prediction Section -->
+  <div class="dialog-section">
+    <div class="section-label">Battery Life Prediction</div>
+    <div class="prediction-container">
+      <div class="prediction-icon-wrapper">
+        <mat-icon class="prediction-icon">event</mat-icon>
+      </div>
+      <div class="prediction-content">
+        <div class="prediction-text" [ngClass]="getPredictionClass(tag.prediction, tag.status)">
+          {{ tag.prediction }}
+        </div>
+        <div class="prediction-context">Based on current usage patterns and battery health</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Technical Properties Section -->
+  @if (tag.voltage) {
+    <div class="dialog-section">
+      <div class="section-label">Technical Properties</div>
+      <div class="technical-properties">
+        <div class="property-card">
+          <mat-icon class="property-icon">bolt</mat-icon>
+          <div class="property-label">Voltage</div>
+          <div class="property-value">{{ tag.voltage }}</div>
+        </div>
+      </div>
+    </div>
+  }
+</div>
