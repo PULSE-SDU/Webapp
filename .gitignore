@@ -37,6 +37,7 @@
 # Test / coverage / typecheck caches
 **/.pytest_cache/
 **/.mypy_cache/
+*.py[cod]
 
 # Angular local cache
 .angular
