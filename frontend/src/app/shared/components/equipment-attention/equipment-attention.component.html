@@ -5,15 +5,15 @@
   </mat-card-header>
   <mat-card-content class="card-content">
     <div class="equipment-list">
-      @for (item of equipment; track item.tagId) {
+      @for (item of equipment(); track item.tagId) {
         <div class="equipment-item">
           <div class="equipment-left">
             <div class="equipment-name-row">
               <span class="equipment-name">{{ item.equipmentName }}</span>
               <span
                 class="status-badge"
-                [class.status-critical]="item.status === 'critical'"
-                [class.status-warning]="item.status === 'warning'"
+                [class.status-critical]="item.status === TagStatus.CRITICAL"
+                [class.status-warning]="item.status === TagStatus.WARNING"
               >
                 {{ item.status }}
               </span>
@@ -22,8 +22,8 @@
           </div>
           <div class="equipment-right">
             <div class="battery-percentage">{{ item.batteryLevel }}%</div>
-            @if (item.daysLeft !== undefined) {
-              <div class="days-left">{{ item.daysLeft }}d left</div>
+            @if (item.prediction) {
+              <div class="days-left">{{ item.prediction }}</div>
             }
           </div>
         </div>

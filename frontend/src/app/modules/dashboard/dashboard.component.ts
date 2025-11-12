@@ -4,7 +4,7 @@ import { EquipmentAttentionComponent } from '../../shared/components/equipment-a
 import { Tag } from '../../shared/models/tag.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { TagDetailsDialogComponent } from '../../shared/components/tag-details-dialog/tag-details-dialog.component';
+import { TagStatus } from '../../enums';
 
 @Component({
   standalone: true,
@@ -20,61 +20,42 @@ export class DashboardComponent {
     {
       tagId: 'patient-monitor-c3',
       equipmentName: 'Patient Monitor C3',
-      status: 'critical',
+      status: TagStatus.CRITICAL,
       location: 'Emergency - Bay 1',
       batteryLevel: 15,
-      daysLeft: 1,
+      prediction: '1 days left',
     },
     {
       tagId: 'pulse-oximeter-h1',
       equipmentName: 'Pulse Oximeter H1',
-      status: 'critical',
+      status: TagStatus.CRITICAL,
       location: 'Emergency - Bay 3',
       batteryLevel: 18,
-      daysLeft: 1,
+      prediction: '1 days left',
     },
     {
       tagId: 'ventilator-b3',
       equipmentName: 'Ventilator B3',
-      status: 'critical',
+      status: TagStatus.CRITICAL,
       location: 'ICU - Room 304',
       batteryLevel: 22,
-      daysLeft: 2,
+      prediction: '2 days left',
     },
     {
       tagId: 'ecg-machine-g1',
       equipmentName: 'ECG Machine G1',
-      status: 'warning',
+      status: TagStatus.CRITICAL,
       location: 'Cardiology - Room 201',
       batteryLevel: 38,
-      daysLeft: 4,
+      prediction: '4 days left',
     },
     {
       tagId: 'ventilator-b2',
       equipmentName: 'Ventilator B2',
-      status: 'warning',
+      status: TagStatus.WARNING,
       location: 'ICU - Room 302',
       batteryLevel: 45,
-      daysLeft: 5,
+      prediction: '5 days left',
     },
   ];
-
-  sampleTag: Tag = {
-    tagId: 'TAG-003',
-    equipmentName: 'Patient Monitor C3',
-    type: 'Patient Monitor',
-    location: 'Emergency - Bay 1',
-    batteryLevel: 15,
-    status: 'critical',
-    prediction: '1 day remaining',
-    voltage: '10.5V',
-  };
-
-  openTagDetailsDialog(): void {
-    this.dialog.open(TagDetailsDialogComponent, {
-      width: '600px',
-      maxWidth: '90vw',
-      data: this.sampleTag,
-    });
-  }
 }

@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Tag } from '../../models/tag.model';
+import { TagStatus } from '../../../enums';
 
 @Component({
   standalone: true,
@@ -11,5 +12,6 @@ import { Tag } from '../../models/tag.model';
   styleUrl: './equipment-attention.component.scss',
 })
 export class EquipmentAttentionComponent {
-  @Input() equipment: Tag[] = [];
+  public equipment = input<Tag[]>([]);
+  protected readonly TagStatus = TagStatus;
 }
