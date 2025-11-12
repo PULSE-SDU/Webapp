@@ -14,6 +14,9 @@ interface StatusIten {
   styleUrl: './status-distribution.scss',
 })
 export class StatusDistribution implements OnInit {
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
   statusData = input<StatusIten[]>([
     { label: 'Normal', color: 'green', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
@@ -21,9 +24,7 @@ export class StatusDistribution implements OnInit {
     { label: 'Charging', color: 'blue', percent: 8, count: 1 },
   ]);
 
-  ngOnInit(): void {
-    //if the parent provides data, this will override the default
-  }
+
 
   getColorValue(color: string): string {
     const colors: Record<string, string> = {
