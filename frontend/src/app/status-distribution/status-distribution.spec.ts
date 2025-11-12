@@ -8,9 +8,8 @@ describe('StatusDistribution', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StatusDistribution]
-    })
-    .compileComponents();
+      imports: [StatusDistribution],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(StatusDistribution);
     component = fixture.componentInstance;
