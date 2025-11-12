@@ -16,7 +16,7 @@
         ></path>
       </svg>
     </div>
-    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ totalEquipment }}</p>
+    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ totalEquipment() }}</p>
     <p class="info-subtext text-xs text-gray-400 mt-2">Active monitoring tags</p>
   </div>
 
@@ -40,7 +40,7 @@
         ></path>
       </svg>
     </div>
-    <p class="info-value text-3xl font-bold text-custom-critical mt-6">{{ criticalStatus }}</p>
+    <p class="info-value text-3xl font-bold text-custom-critical mt-6">{{ criticalStatus() }}</p>
     <p class="info-subtext text-xs text-gray-400 mt-2">Requires immediate attention</p>
   </div>
 
@@ -64,7 +64,7 @@
         ></path>
       </svg>
     </div>
-    <p class="info-value text-3xl font-bold text-custom-warning mt-6">{{ warningStatus }}</p>
+    <p class="info-value text-3xl font-bold text-custom-warning mt-6">{{ warningStatus() }}</p>
     <p class="info-subtext text-xs text-gray-400 mt-2">Monitor closely</p>
   </div>
 
@@ -88,11 +88,11 @@
         ></path>
       </svg>
     </div>
-    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ averageBattery }}%</p>
+    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ averageBattery() }}%</p>
     <div class="battery-bar w-full h-2.5 bg-gray-200 rounded-full mt-4 overflow-hidden">
       <div
         class="battery-level h-full bg-gray-900 rounded-full"
-        [style.width.%]="averageBattery"
+        [style.width.%]="averageBattery()"
       ></div>
     </div>
     <p class="info-subtext text-xs text-gray-400 mt-2">&nbsp;</p>

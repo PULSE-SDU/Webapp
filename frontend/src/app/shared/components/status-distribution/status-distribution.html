@@ -6,7 +6,7 @@
 
     <!-- Status Rows -->
     <div class="space-y-4">
-      @for (item of statusData; track item.label) {
+      @for (item of statusData(); track item.label) {
         <div class="status-row">
           <div class="flex items-center justify-between">
             <!-- Status Label -->

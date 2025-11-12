@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 
 interface StatusIten {
   label: string;
@@ -14,15 +14,15 @@ interface StatusIten {
   styleUrl: './status-distribution.scss',
 })
 export class StatusDistribution implements OnInit {
-  statusData: StatusIten[] = [];
+  statusData = input<StatusIten[]>([
+    { label: 'Normal', color: 'green', percent: 50, count: 6 },
+    { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
+    { label: 'Critical', color: 'red', percent: 25, count: 3 },
+    { label: 'Charging', color: 'blue', percent: 8, count: 1 },
+  ]);
 
   ngOnInit(): void {
-    this.statusData = [
-      { label: 'Normal', color: 'green', percent: 50, count: 6 },
-      { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
-      { label: 'Critical', color: 'red', percent: 25, count: 3 },
-      { label: 'Charging', color: 'blue', percent: 8, count: 1 },
-    ];
+    //if the parent provides data, this will override the default
   }
 
   getColorValue(color: string): string {
@@ -34,11 +34,11 @@ export class StatusDistribution implements OnInit {
     };
     return colors[color] || '#9CA3AF';
   }
-
-  // for future
-  // fetchDataFromAPI() {
-  //   this.http.get<StatusItem[]>('/api/status-data').subscribe(data => {
-  //     this.statusData = data;
-  //   });
-  // }
 }
+
+// for future
+// fetchDataFromAPI() {
+//   this.http.get<StatusItem[]>('/api/status-data').subscribe(data => {
+//     this.statusData = data;
+//   });
+// }
