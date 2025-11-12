@@ -24,8 +24,6 @@ export class StatusDistribution implements OnInit {
     { label: 'Charging', color: 'blue', percent: 8, count: 1 },
   ]);
 
-
-
   getColorValue(color: string): string {
     const colors: Record<string, string> = {
       green: '#10B981',
