@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FilterDescriptor, FilterValue } from './models/filter-descriptor';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FilterType } from '../../enums';
+import { FilterType } from '../../../enums';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,19 +28,15 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./filters.scss'],
 })
 export class Filters implements OnInit {
-  @Input()
-  public filters: FilterDescriptor[] = [];
-
   protected readonly FilterType = FilterType;
-
   public filtersFormGroup: FormGroup = new FormGroup({});
 
-  @Output()
-  public updateFilter = new EventEmitter<FilterValue>();
+  public filters = input<FilterDescriptor[]>([]);
+  public updateFilter = output<FilterValue>();
 
   ngOnInit() {
     const formControls: Record<string, FormControl> = {};
-    for (const filter of this.filters || []) {
+    for (const filter of this.filters() || []) {
       formControls[filter.key] = new FormControl(
         filter.type === FilterType.SELECT && filter.multiple ? [] : '',
       );

@@ -1,4 +1,4 @@
-import { FilterType } from '../../../enums';
+import { FilterType } from '../../../../enums';
 
 export type FilterValue = string | string[];
 

@@ -1,7 +1,7 @@
 <div class="flex-row border border-gray-300 rounded-xl p-[20px] items-center justify-center h-full">
   <h1 class="text-xl font-medium ml-[10px]">Filters</h1>
   <form [formGroup]="filtersFormGroup">
-    @for (filter of filters; track filter) {
+    @for (filter of filters(); track filter) {
       @switch (filter.type) {
         @case (FilterType.SELECT) {
           <mat-form-field>
