@@ -1,0 +1,30 @@
+<div class="flex-row border border-gray-300 rounded-xl p-[20px] items-center justify-center h-full">
+  <h1 class="text-xl font-medium ml-[10px]">Filters</h1>
+  <form [formGroup]="filtersFormGroup">
+    @for (filter of filters(); track filter) {
+      @switch (filter.type) {
+        @case (FilterType.SELECT) {
+          <mat-form-field>
+            <mat-label>{{ filter.placeholder }}</mat-label>
+            <mat-select [multiple]="filter.multiple" [formControlName]="filter.key">
+              @for (option of filter.options; track option) {
+                <mat-option [value]="option">{{ option }} </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+
+        @case (FilterType.SEARCH) {
+          <mat-form-field appearance="fill">
+            <mat-label>{{ filter.placeholder }}</mat-label>
+            <div class="flex-row">
+              <input type="text" matInput [formControlName]="filter.key" />
+            </div>
+            <mat-icon matPrefix>search</mat-icon>
+          </mat-form-field>
+        }
+      }
+    }
+    <button matButton="outlined" class="w-[150px]" (click)="clearFilters()">Clear Filters</button>
+  </form>
+</div>

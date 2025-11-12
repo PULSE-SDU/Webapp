@@ -1,0 +1,26 @@
+<mat-toolbar class="border-b border-gray-300">
+  <div class="py-2 px-3 bg-blue-500 rounded-xl">
+    <mat-icon class="header-icon">battery_alert</mat-icon>
+  </div>
+  <div class="flex-col ml-4">
+    <span>PULSE</span>
+  </div>
+  <nav class="ml-5" mat-tab-nav-bar [tabPanel]="tabPanel">
+    @for (tab of tabs; track tab) {
+      <a
+        mat-tab-link
+        [routerLink]="tab.path"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [active]="rla.isActive || activeLink === tab.path"
+        (click)="activeLink = tab.path"
+      >
+        @if (tab.icon) {
+          <mat-icon class="mr-2">{{ tab.icon }}</mat-icon>
+        }
+        {{ tab.label }}
+      </a>
+    }
+  </nav>
+  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+</mat-toolbar>
