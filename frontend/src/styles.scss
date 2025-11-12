@@ -36,6 +36,37 @@ html {
       container-height: 70px,
     )
   );
+
+  @include mat.snack-bar-overrides(
+    (
+      button-color: white,
+    )
+  );
+}
+
+.error-snackbar {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: red,
+      button-color: white,
+    )
+  );
+}
+
+.success-snackbar {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: #42ac46,
+    )
+  );
+}
+
+.warning-snackbar {
+  @include mat.snack-bar-overrides(
+    (
+      container-color: #d5b900,
+    )
+  );
 }
 
 body {
