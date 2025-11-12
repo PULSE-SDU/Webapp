@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, inject } from '@angular/core';
 import ApexCharts from 'apexcharts';
 
 @Component({
@@ -15,7 +15,7 @@ export class StackedAreaChart implements OnInit, OnDestroy {
     normal: '#4ADE80',
   };
 
-  constructor(private el: ElementRef) {}
+  el = inject(ElementRef);
 
   ngOnInit(): void {
     this.initializeChart();
@@ -121,10 +121,8 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         labels: { colors: ['#4B5563'] },
         itemMargin: { horizontal: 15, vertical: 5 },
         markers: {
-          width: 12,
-          height: 12,
-          radius: 12,
-        } as any,
+          size: 12,
+        },
       },
       xaxis: {
         type: 'datetime',

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NgApexchartsModule } from 'ng-apexcharts';
 import { StackedAreaChart } from './stacked-area-chart';
 
 describe('StackedAreaChart', () => {
