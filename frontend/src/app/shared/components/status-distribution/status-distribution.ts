@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 interface StatusIten {
   label: string;
@@ -13,10 +13,7 @@ interface StatusIten {
   templateUrl: './status-distribution.html',
   styleUrl: './status-distribution.scss',
 })
-export class StatusDistribution implements OnInit {
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+export class StatusDistribution {
   statusData = input<StatusIten[]>([
     { label: 'Normal', color: 'green', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
