@@ -14,7 +14,7 @@ import {
   ApexTooltip,
 } from 'ng-apexcharts';
 
-export type ChartOptions = {
+export interface ChartOptions {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
@@ -25,7 +25,7 @@ export type ChartOptions = {
   grid: ApexGrid;
   tooltip: ApexTooltip;
   colors: string[];
-};
+}
 
 @Component({
   standalone: true,
@@ -35,10 +35,10 @@ export type ChartOptions = {
   styleUrl: './battery-history-graph.component.scss',
 })
 export class BatteryHistoryGraphComponent {
-  @Input() equipmentName: string = 'Equipment Name';
-  @Input() equipmentType: string = 'Equipment Type';
-  @Input() location: string = 'Location';
-  @Input() currentBatteryPercentage: number = 98;
+  @Input() equipmentName = 'Equipment Name';
+  @Input() equipmentType = 'Equipment Type';
+  @Input() location = 'Location';
+  @Input() currentBatteryPercentage = 98;
   @Input() historicalData?: { date: string; batteryLevel: number }[];
 
   public chartOptions: ChartOptions;
