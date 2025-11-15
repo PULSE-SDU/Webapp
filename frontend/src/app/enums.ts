@@ -7,5 +7,5 @@ export enum BatteryStatus {
   CHARGING = 'Charging',
   CRITICAL = 'Critical',
   WARNING = 'Warning',
-  FULL = 'Full'
+  FULL = 'Full',
 }

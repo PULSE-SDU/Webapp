@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Tag } from '../../models/tag.model';
-import {BatteryStatusColor} from '../../models/battery-status-color';
+import { BatteryStatusColor } from '../../models/battery-status-color';
 
 @Component({
   selector: 'app-battery-bar',

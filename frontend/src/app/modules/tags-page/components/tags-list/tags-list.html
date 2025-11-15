@@ -9,10 +9,8 @@
   <ng-container matColumnDef="batteryLevel">
     <th mat-header-cell *matHeaderCellDef>Battery Level</th>
     <td mat-cell *matCellDef="let element">
-      <app-battery-bar [tag]="element" [barWidthPercentage]="30"></app-battery-bar>
-    </td
+      <app-battery-bar [tag]="element" [barWidthPercentage]="30"></app-battery-bar></td
   ></ng-container>
-
 
   <!-- Status Column -->
   <ng-container matColumnDef="status">
@@ -27,11 +25,12 @@
     <th mat-header-cell *matHeaderCellDef>Prediction</th>
     <td mat-cell *matCellDef="let element">
       @if (element.status === BatteryStatus.CRITICAL) {
-        <span class="font-semibold" [style.color]="getStatusColor(element.status)">{{ element.prediction }}</span>
+        <span class="font-semibold" [style.color]="getStatusColor(element.status)">{{
+          element.prediction
+        }}</span>
       } @else if (element.status === BatteryStatus.WARNING) {
         <span [style.color]="getStatusColor(element.status)">{{ element.prediction }}</span>
-      }
-      @else {
+      } @else {
         {{ element.prediction }}
       }
     </td>
