@@ -1,8 +1,8 @@
 import { BatteryStatus } from '../../enums';
 
 export const BatteryStatusColor: Record<BatteryStatus, string> = {
-  [BatteryStatus.CHARGING]: '#0D47A1',
-  [BatteryStatus.CRITICAL]: '#B71C1C',
-  [BatteryStatus.WARNING]: '#fd8e10',
-  [BatteryStatus.FULL]: '#2E7D32',
+  [BatteryStatus.CHARGING]: '#46a2ec',
+  [BatteryStatus.CRITICAL]: '#ef4444',
+  [BatteryStatus.WARNING]: '#f59e0b',
+  [BatteryStatus.FULL]: '#4eaa52'
 };
