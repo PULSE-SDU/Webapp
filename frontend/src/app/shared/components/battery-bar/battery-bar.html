@@ -1,0 +1,10 @@
+<div class="flex items-center gap-3">
+  <div class="relative h-3 bg-gray-200 rounded-full overflow-hidden" [style.width.%]="getBarWidth()">
+    <div
+      class="absolute left-0 top-0 h-full transition-all duration-300"
+      [style.width.%]="getBatteryLevel()"
+      [style.background-color]="getStatusColor()"
+    ></div>
+  </div>
+  <div class="text-sm text-gray-700">{{ getBatteryLevel() }}%</div>
+</div>

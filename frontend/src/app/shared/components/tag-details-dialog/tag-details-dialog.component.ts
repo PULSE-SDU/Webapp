@@ -5,12 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Tag } from '../../models/tag.model';
 import { BatteryStatus } from '../../../enums';
-import { BatteryBar } from '../battery-bar/battery-bar';
 
 @Component({
   standalone: true,
   selector: 'app-tag-details-dialog',
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, BatteryBar],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
   templateUrl: './tag-details-dialog.component.html',
   styleUrl: './tag-details-dialog.component.scss',
 })

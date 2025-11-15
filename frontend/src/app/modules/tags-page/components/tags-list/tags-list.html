@@ -8,7 +8,9 @@
   <!-- Battery Level Column -->
   <ng-container matColumnDef="batteryLevel">
     <th mat-header-cell *matHeaderCellDef>Battery Level</th>
-    <td mat-cell *matCellDef="let element">{{ element.batteryLevel }}%</td
+    <td mat-cell *matCellDef="let element">
+      <app-battery-bar [tag]="element" [barWidthPercentage]="30"></app-battery-bar>
+    </td
   ></ng-container>
 
   <!-- Voltage Column -->

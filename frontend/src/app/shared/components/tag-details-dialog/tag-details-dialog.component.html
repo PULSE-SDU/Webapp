@@ -38,7 +38,7 @@
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
         <mat-icon class="battery-icon" [style.color]="getBatteryColor(tag.status)">
-          battery_{{ tag.status === TagStatus.CHARGING ? TagStatus.FULL : 'std' }}
+          battery_{{ tag.status === batteryStatus.CHARGING ? batteryStatus.FULL : 'std' }}
         </mat-icon>
         <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.status)">
           {{ tag.batteryLevel }}%
