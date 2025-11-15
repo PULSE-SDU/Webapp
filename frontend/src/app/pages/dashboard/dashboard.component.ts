@@ -6,6 +6,7 @@ import { InfoCard } from '../../shared/components/info-cards/models/info-card.mo
 import { StatusDistribution } from '../../shared/components/status-distribution/status-distribution';
 import { Tag } from '../../shared/models/tag.model';
 import { BatteryStatus } from '../../enums';
+import { BatteryHistoryGraphComponent } from '../../shared/components/battery-history-graph/battery-history-graph.component';
 
 interface StatusItem {
   label: string;
@@ -17,7 +18,13 @@ interface StatusItem {
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, EquipmentAttentionComponent, InfoCards, StatusDistribution],
+  imports: [
+    CommonModule,
+    EquipmentAttentionComponent,
+    InfoCards,
+    StatusDistribution,
+    BatteryHistoryGraphComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

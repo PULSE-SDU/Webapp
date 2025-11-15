@@ -40,4 +40,16 @@
       <app-status-distribution [statusData]="statusDistribution"></app-status-distribution>
     </div>
   </div>
+
+  <!-- Battery History Graph -->
+  @if (equipmentNeedingAttention.length > 0) {
+    <div class="battery-history-section">
+      <app-battery-history-graph
+        [equipmentName]="equipmentNeedingAttention[0].equipmentName"
+        [equipmentType]="equipmentNeedingAttention[0].type || 'Medical Equipment'"
+        [location]="equipmentNeedingAttention[0].location || 'Unknown Location'"
+        [currentBatteryPercentage]="equipmentNeedingAttention[0].batteryLevel || 0"
+      ></app-battery-history-graph>
+    </div>
+  }
 </div>
