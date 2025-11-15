@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './modules/dashboard/dashboard.component';
-import { TagsBrowser } from './modules/tags-page/components/tags-browser/tags-browser';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TagsBrowser } from './pages/tags/components/tags-browser/tags-browser';
 
 export const routes: Routes = [
   // TODO: add real routes here (remove redirect to) and do:
