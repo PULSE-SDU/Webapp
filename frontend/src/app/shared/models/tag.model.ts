@@ -1,4 +1,4 @@
-import { TagStatus } from '../../enums';
+import { BatteryStatus } from '../../enums';
 
 export interface Tag {
   tagId: string;
@@ -6,7 +6,7 @@ export interface Tag {
   type?: string;
   location?: string;
   batteryLevel?: number;
-  status?: TagStatus;
+  status: BatteryStatus;
   prediction?: string;
   voltage?: number;
 }

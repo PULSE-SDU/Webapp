@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Filters } from '../../../../shared/components/filters/filters';
 import { TagsList } from '../tags-list/tags-list';
 import { Tag } from '../../../../shared/models/tag.model';
-import { FilterType, TagStatus } from '../../../../enums';
+import { FilterType, BatteryStatus } from '../../../../enums';
 import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
@@ -28,7 +28,7 @@ export class TagsBrowser {
       key: 'status',
       type: FilterType.SELECT,
       placeholder: 'All statuses',
-      options: Object.values(TagStatus),
+      options: Object.values(BatteryStatus),
       multiple: true,
     },
     {
@@ -42,64 +42,64 @@ export class TagsBrowser {
   tags: Tag[] = [
     {
       tagId: '1',
-      batteryLevel: 1,
-      status: TagStatus.FULL,
+      batteryLevel: 100,
+      status: BatteryStatus.FULL,
       prediction: '30 days left',
       voltage: 3,
     },
     {
       tagId: '2',
-      batteryLevel: 0.5,
-      status: TagStatus.WARNING,
+      batteryLevel: 30,
+      status: BatteryStatus.WARNING,
       prediction: '15 days left',
       voltage: 2.5,
     },
     {
       tagId: '3',
-      batteryLevel: 0.2,
-      status: TagStatus.CRITICAL,
+      batteryLevel: 10,
+      status: BatteryStatus.CRITICAL,
       prediction: '5 days left',
       voltage: 1.5,
     },
     {
       tagId: '4',
-      batteryLevel: 0.85,
-      status: TagStatus.FULL,
+      batteryLevel: 95,
+      status: BatteryStatus.FULL,
       prediction: '45 days left',
       voltage: 3.2,
     },
     {
       tagId: '5',
-      batteryLevel: 0.65,
-      status: TagStatus.WARNING,
+      batteryLevel: 20,
+      status: BatteryStatus.WARNING,
       prediction: '20 days left',
       voltage: 2.9,
     },
     {
       tagId: '6',
       batteryLevel: 0.4,
-      status: TagStatus.WARNING,
+      status: BatteryStatus.WARNING,
       prediction: '12 days left',
       voltage: 2.6,
     },
     {
       tagId: '7',
       batteryLevel: 0.95,
-      status: TagStatus.FULL,
+      status: BatteryStatus.FULL,
       prediction: '60 days left',
       voltage: 3.3,
     },
     {
       tagId: '8',
       batteryLevel: 0.12,
-      status: TagStatus.CRITICAL,
+      status: BatteryStatus.CRITICAL,
       prediction: '3 days left',
       voltage: 1.4,
     },
     {
       tagId: '9',
       batteryLevel: 0.33,
-      status: TagStatus.CRITICAL,
+      status: BatteryStatus.CRITICAL,
       prediction: '7 days left',
       voltage: 1.8,
     },

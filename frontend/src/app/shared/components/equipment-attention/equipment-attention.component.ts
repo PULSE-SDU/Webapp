@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Tag } from '../../models/tag.model';
-import { TagStatus } from '../../../enums';
+import { BatteryStatus } from '../../../enums';
 
 @Component({
   standalone: true,
@@ -13,5 +13,5 @@ import { TagStatus } from '../../../enums';
 })
 export class EquipmentAttentionComponent {
   public equipment = input<Tag[]>([]);
-  protected readonly TagStatus = TagStatus;
+  protected readonly batteryStatus = BatteryStatus;
 }

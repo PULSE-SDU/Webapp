@@ -4,17 +4,18 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Tag } from '../../models/tag.model';
-import { TagStatus } from '../../../enums';
+import { BatteryStatus } from '../../../enums';
+import { BatteryBar } from '../battery-bar/battery-bar';
 
 @Component({
   standalone: true,
   selector: 'app-tag-details-dialog',
-  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatDialogModule, MatButtonModule, MatIconModule, BatteryBar],
   templateUrl: './tag-details-dialog.component.html',
   styleUrl: './tag-details-dialog.component.scss',
 })
 export class TagDetailsDialogComponent {
-  public readonly TagStatus = TagStatus;
+  public readonly batteryStatus = BatteryStatus;
 
   dialogRef = inject(MatDialogRef<TagDetailsDialogComponent>);
   tag = inject<Tag>(MAT_DIALOG_DATA);
@@ -24,24 +25,24 @@ export class TagDetailsDialogComponent {
   }
 
   // align signature with template usage: (batteryLevel, status)
-  getBatteryColor(status: TagStatus | undefined): string {
+  getBatteryColor(status: BatteryStatus | undefined): string {
     if (!status) return '#6b7280';
-    if (status === TagStatus.CHARGING) return '#000000';
-    if (status === TagStatus.CRITICAL) return '#ef4444';
-    if (status === TagStatus.WARNING) return '#f59e0b';
+    if (status === BatteryStatus.CHARGING) return '#000000';
+    if (status === BatteryStatus.CRITICAL) return '#ef4444';
+    if (status === BatteryStatus.WARNING) return '#f59e0b';
     return '#6b7280';
   }
 
-  getStatusClass(status: TagStatus | undefined): string {
+  getStatusClass(status: BatteryStatus | undefined): string {
     if (!status) return '';
     return `status-${status}`;
   }
 
-  getPredictionClass(prediction: string | undefined, status: TagStatus | undefined): string {
+  getPredictionClass(prediction: string | undefined, status: BatteryStatus | undefined): string {
     if (!status || !prediction) return 'prediction-normal';
-    if (status === TagStatus.CHARGING) return 'prediction-charging';
-    if (status === TagStatus.CRITICAL) return 'prediction-critical';
-    if (status === TagStatus.WARNING) return 'prediction-warning';
+    if (status === BatteryStatus.CHARGING) return 'prediction-charging';
+    if (status === BatteryStatus.CRITICAL) return 'prediction-critical';
+    if (status === BatteryStatus.WARNING) return 'prediction-warning';
     return 'prediction-normal';
   }
 }

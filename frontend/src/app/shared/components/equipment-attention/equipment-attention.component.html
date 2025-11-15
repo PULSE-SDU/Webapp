@@ -12,8 +12,8 @@
               <span class="equipment-name">{{ item.equipmentName }}</span>
               <span
                 class="status-badge"
-                [class.status-critical]="item.status === TagStatus.CRITICAL"
-                [class.status-warning]="item.status === TagStatus.WARNING"
+                [class.status-critical]="item.status === batteryStatus.CRITICAL"
+                [class.status-warning]="item.status === batteryStatus.WARNING"
               >
                 {{ item.status }}
               </span>
