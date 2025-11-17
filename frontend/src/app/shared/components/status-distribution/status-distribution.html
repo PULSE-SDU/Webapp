@@ -25,7 +25,11 @@
             <!-- Progress Bar -->
             <div class="flex-grow mx-4">
               <div class="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
-                <div class="h-full rounded-full bg-bar-fill" [style.width.%]="item.percent"></div>
+                <div
+                  class="h-full rounded-full"
+                  [style.width.%]="item.percent"
+                  [style.background-color]="getColorValue(item.color)"
+                ></div>
               </div>
             </div>
 
