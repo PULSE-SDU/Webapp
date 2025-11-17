@@ -1,0 +1,100 @@
+<div
+  class="info-cards-container grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto"
+>
+  <!--Total Equipment -->
+  <div
+    class="info-card bg-white p-5 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl"
+  >
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-sm font-medium text-gray-500">Total Equipment</h3>
+      <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+        ></path>
+      </svg>
+    </div>
+    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ totalEquipment() }}</p>
+    <p class="info-subtext text-xs text-gray-400 mt-2">Active monitoring tags</p>
+  </div>
+
+  <!--Critical Status -->
+  <div
+    class="info-card bg-white p-5 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl"
+  >
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-sm font-medium text-gray-500">Critical Status</h3>
+      <svg
+        class="w-5 h-5 text-custom-critical"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+        ></path>
+      </svg>
+    </div>
+    <p class="info-value text-3xl font-bold text-custom-critical mt-6">{{ criticalStatus() }}</p>
+    <p class="info-subtext text-xs text-gray-400 mt-2">Requires immediate attention</p>
+  </div>
+
+  <!--Warning Status -->
+  <div
+    class="info-card bg-white p-5 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl"
+  >
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-sm font-medium text-gray-500">Warning Status</h3>
+      <svg
+        class="w-5 h-5 text-custom-warning"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.102L13.828 9.828m3.153 3.153a4 4 0 005.656 0l4-4a4 4 0 10-5.656-5.656l-1.1 1.1"
+        ></path>
+      </svg>
+    </div>
+    <p class="info-value text-3xl font-bold text-custom-warning mt-6">{{ warningStatus() }}</p>
+    <p class="info-subtext text-xs text-gray-400 mt-2">Monitor closely</p>
+  </div>
+
+  <!--Average Battery -->
+  <div
+    class="info-card bg-white p-5 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl"
+  >
+    <div class="flex justify-between items-start mb-4">
+      <h3 class="text-sm font-medium text-gray-500">Average Battery</h3>
+      <svg
+        class="w-5 h-5 text-custom-success"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 7h4a2 2 0 012 2v6a2 2 0 01-2 2h-4m-2 2h-2m4-2H5a2 2 0 01-2-2V9a2 2 0 012-2h4m-2 2h2"
+        ></path>
+      </svg>
+    </div>
+    <p class="info-value text-3xl font-bold text-gray-900 mt-6">{{ averageBattery() }}%</p>
+    <div class="battery-bar w-full h-2.5 bg-gray-200 rounded-full mt-4 overflow-hidden">
+      <div
+        class="battery-level h-full bg-gray-900 rounded-full"
+        [style.width.%]="averageBattery()"
+      ></div>
+    </div>
+    <p class="info-subtext text-xs text-gray-400 mt-2">&nbsp;</p>
+  </div>
+</div>
