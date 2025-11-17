@@ -9,4 +9,5 @@ export interface Tag {
   status: BatteryStatus;
   prediction?: string;
   voltage?: number;
+  daysLeft?: number;
 }
