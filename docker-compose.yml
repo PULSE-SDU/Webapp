@@ -1,23 +1,17 @@
-version: '3.8'
-
 services:
   backend:
     build: ./backend
     image: pulse-backend-image:latest
     # depends_on:
     #   - db
-    env_file:
-      - .env
     ports:
-      - "8000:8000"
+      - "8080:8080"
 
   frontend:
     build: ./frontend
     image: pulse-frontend-image:latest
     depends_on:
       - backend
-    env_file:
-      - .env
     ports:
       - "4200:4200"
 

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "tags",
+    "battery_status",
 ]
 
 MIDDLEWARE = [
