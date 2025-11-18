@@ -11,9 +11,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+WNT_MOCK_API_URL = os.getenv("WNT_MOCK_API_URL")
 
 
 # Quick-start development settings - unsuitable for production
@@ -133,6 +138,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOWED_ORIGINS = [
     "https://github.com",
     "https://raw.githubusercontent.com",
+    "http://localhost:4200",
 ]
 
 # Allow GitHub Pages subdomains (e.g., https://username.github.io)

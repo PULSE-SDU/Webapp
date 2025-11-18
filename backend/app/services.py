@@ -1,0 +1,48 @@
+from django.forms import ValidationError
+import requests
+
+from backend.app.settings import WNT_MOCK_API_URL
+
+def fetch_all_node_addresses():
+    """Fetch all node addresses from the external WNT mock API."""
+    try:
+        url = f"{WNT_MOCK_API_URL}/nodes/all-latest"
+        response = requests.get(url)
+        response.raise_for_status()
+        data = response.json()
+        return [item["NODE_ADDRESS"] for item in data]
+    except requests.RequestException as e:
+        raise ValidationError(f"Error fetching node addresses: {str(e)}")
+    
+def fetch_node_latest(node_address):
+    """Fetch the latest measurement for a single node from the external WNT mock API."""
+    try:
+        url = f"{WNT_MOCK_API_URL}/node/{node_address}/latest"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise ValidationError(f"Error fetching latest node data for {node_address}: {str(e)}")
+
+
+def fetch_node_all(node_address):
+    """Fetch all measurements for a single node from the external WNT mock API."""
+    try:
+        url = f"{WNT_MOCK_API_URL}/node/{node_address}/all"
+        response = requests.get(url)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise ValidationError(f"Error fetching all node data for {node_address}: {str(e)}")
+
+
+def fetch_nodes_voltage_under(voltage_value):
+    """Fetch latest measurements for all nodes whose voltage is under the threshold."""
+    try:
+        url = f"{WNT_MOCK_API_URL}/nodes/voltage-under"
+        params = {"voltage_value": voltage_value}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise ValidationError(f"Error fetching nodes with voltage under {voltage_value}: {str(e)}")
