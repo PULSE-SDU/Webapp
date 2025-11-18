@@ -25,9 +25,7 @@ WNT_MOCK_API_URL = os.getenv("WNT_MOCK_API_URL")
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
-)
+SECRET_KEY = "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
