@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class StatusTitle(models.TextChoices):
     CRITICAL = "Critical"

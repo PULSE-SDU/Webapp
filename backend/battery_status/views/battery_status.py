@@ -24,13 +24,12 @@ class BatteryStatusDetail(RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
 
         battery_status_obj, created = BatteryStatus.objects.update_or_create(
-            node_address=node_address,
-            defaults=serializer.validated_data
+            node_address=node_address, defaults=serializer.validated_data
         )
         response_serializer = self.get_serializer(battery_status_obj)
         return Response(
             response_serializer.data,
-            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK
+            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
         )
 
 
