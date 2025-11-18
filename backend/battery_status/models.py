@@ -11,16 +11,16 @@ class StatusTitle(models.TextChoices):
 
 class BatteryStatus(models.Model):
     prediction = models.IntegerField()
-    statusTitle = models.CharField(choices=StatusTitle.choices)
+    status_title = models.CharField(choices=StatusTitle.choices)
     node_address = models.CharField()
 
     def __str__(self):
-        return f"{self.node_address} - {self.statusTitle} ({self.prediction} days)"
+        return f"{self.node_address} - {self.status_title} ({self.prediction} days)"
 
 class StatusSummary(models.Model):
     date = models.DateField()
-    statusTitle = models.CharField(choices=StatusTitle.choices)
+    status_title = models.CharField(choices=StatusTitle.choices)
     count = models.IntegerField()
 
     def __str__(self):
-        return f"{self.date}: {self.statusTitle} ({self.count})"
+        return f"{self.date}: {self.status_title} ({self.count})"
