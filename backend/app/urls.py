@@ -25,5 +25,5 @@ router.register(r"tags", TagViewSet, basename="tag")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(router.urls)),
+    path("api/", include("battery_status.urls")),
 ]
