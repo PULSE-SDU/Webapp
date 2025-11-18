@@ -1,0 +1,47 @@
+<div
+  class="info-cards-container grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 max-w-7xl mx-auto"
+>
+  @for (card of cardsToDisplay; track card.title) {
+    <div
+      class="info-card bg-white p-5 rounded-xl shadow-lg border border-gray-100 transition duration-300 hover:shadow-xl"
+    >
+      <div class="flex justify-between items-start mb-4">
+        <h3 class="text-sm font-medium text-gray-500">{{ card.title }}</h3>
+        <svg
+          class="w-5 h-5"
+          [class]="card.iconColor"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            [attr.d]="card.icon"
+          ></path>
+        </svg>
+      </div>
+
+      <p class="info-value text-3xl font-bold mt-6" [class]="getValueClass(card)">
+        {{ card.content }}
+        @if (card.isBattery) {
+          <span>%</span>
+        }
+      </p>
+
+      @if (card.isBattery) {
+        <div class="battery-bar w-full h-2.5 bg-gray-200 rounded-full mt-4 overflow-hidden">
+          <div
+            class="battery-level h-full bg-gray-900 rounded-full"
+            [style.width.%]="card.content"
+          ></div>
+        </div>
+      }
+
+      <p class="info-subtext text-xs text-gray-400 mt-2">{{ card.subtitle || '&nbsp;' }}</p>
+    </div>
+  } @empty {
+    <p>No info cards to display.</p>
+  }
+</div>

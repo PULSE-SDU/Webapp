@@ -1,0 +1,19 @@
+.text-custom-critical {
+  color: #dc2626;
+}
+.text-custom-warning {
+  color: #f59e0b;
+}
+.text-custom-success {
+  color: #10b981;
+}
+.text-custom-charging {
+  color: #3b82f6;
+}
+/* Progress bar */
+.bg-bar-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease-in-out;
+  background-color: #000000;
+}
