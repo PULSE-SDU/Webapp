@@ -1,4 +1,4 @@
-import { Component, input, NgModule } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { InfoCard } from './models/info-card.model';
 import { CommonModule } from '@angular/common';
 
