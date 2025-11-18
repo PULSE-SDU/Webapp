@@ -155,6 +155,3 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
-
-# WNT API Mock Configuration
-WNT_API_BASE_URL = "http://localhost:8001"
