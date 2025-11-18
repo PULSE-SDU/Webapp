@@ -32,7 +32,12 @@ jobs:
           pipenv install --deploy --system --dev
 
       - name: Run pylint
-        run: pylint --output-format=parseable .
+        id: lint
+        run: |
+          if ! pylint --output-format=parseable .; then
+            echo "⚠️ Linting failed! Please run 'pipenv run black .' to autoformat your code."
+            exit 1
+          fi
 
       - name: Run Tests
         run: python manage.py test
