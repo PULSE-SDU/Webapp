@@ -1,14 +1,12 @@
-export type TagStatus = 'charging' | 'critical' | 'warning' | 'ok';
+import { BatteryStatus } from '../../enums';
 
 export interface Tag {
   tagId: string;
-  equipmentName: string;
+  equipmentName?: string;
   type?: string;
   location?: string;
-  batteryLevel?: number; // 0-100 percentage
-  status?: TagStatus;
+  batteryLevel?: number;
+  status: BatteryStatus;
   prediction?: string;
-  voltage?: string;
-  daysLeft?: number;
-  // whatever else we need
+  voltage?: number;
 }

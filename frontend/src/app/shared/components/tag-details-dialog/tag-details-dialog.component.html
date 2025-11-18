@@ -37,16 +37,10 @@
     <div class="section-label">Battery Status</div>
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
-        <mat-icon
-          class="battery-icon"
-          [style.color]="getBatteryColor(tag.batteryLevel, tag.status)"
-        >
-          battery_{{ tag.status === 'charging' ? 'charging_full' : 'std' }}
+        <mat-icon class="battery-icon" [style.color]="getBatteryColor(tag.status)">
+          battery_{{ tag.status === batteryStatus.CHARGING ? batteryStatus.FULL : 'std' }}
         </mat-icon>
-        <span
-          class="battery-percentage-large"
-          [style.color]="getBatteryColor(tag.batteryLevel, tag.status)"
-        >
+        <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.status)">
           {{ tag.batteryLevel }}%
         </span>
       </div>
@@ -55,7 +49,7 @@
           <div
             class="battery-bar-fill"
             [style.width.%]="tag.batteryLevel"
-            [style.background-color]="getBatteryColor(tag.batteryLevel, tag.status)"
+            [style.background-color]="getBatteryColor(tag.status)"
           ></div>
         </div>
         <span class="status-badge" [ngClass]="getStatusClass(tag.status)">
