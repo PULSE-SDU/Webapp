@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
+import { EquipmentStatus } from '../../enums';
 import {
   StatusDistribution,
-  EquipmentStatus,
   StatusDistributionResponse,
-} from '../components/status-distribution-chart/models/status-distribution.model';
+} from '../models/status-distribution.model';
 
 /**
  * Service for fetching equipment status distribution data.

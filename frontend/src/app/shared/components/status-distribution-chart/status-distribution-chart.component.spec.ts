@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusDistributionChartComponent } from './status-distribution-chart.component';
 import { StatusDistributionService } from '../../services/status-distribution.service';
 import { of } from 'rxjs';
-import { EquipmentStatus } from './models/status-distribution.model';
+import { EquipmentStatus } from '../../../enums';
 
 describe('StatusDistributionChartComponent', () => {
   let component: StatusDistributionChartComponent;

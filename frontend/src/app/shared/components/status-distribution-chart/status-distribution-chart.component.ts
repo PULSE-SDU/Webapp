@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusDistributionService } from '../../services/status-distribution.service';
-import { EquipmentStatus } from './models/status-distribution.model';
+import { EquipmentStatus } from '../../../enums';
 import ApexCharts from 'apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
