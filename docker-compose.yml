@@ -4,7 +4,7 @@ services:
     image: pulse-backend-image:latest
     ports:
       - "8001:8001"
-  
+
   celery_worker:
     build: ./backend
     container_name: celery_worker
@@ -37,6 +37,8 @@ services:
     image: pulse-frontend-image:latest
     depends_on:
       - backend
+    env_file:
+      - .env
     ports:
       - "4200:4200"
 
