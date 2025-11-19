@@ -15,4 +15,3 @@ export enum EquipmentStatus {
   Critical = 'Critical',
   Charging = 'Charging',
 }
-

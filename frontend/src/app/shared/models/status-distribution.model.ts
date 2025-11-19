@@ -8,4 +8,3 @@ export interface StatusDistribution {
 export interface StatusDistributionResponse {
   data: StatusDistribution[];
 }
-

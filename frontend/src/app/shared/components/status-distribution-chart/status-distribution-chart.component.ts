@@ -32,7 +32,7 @@ export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
   private readonly statusDistributionService = inject(StatusDistributionService);
   private readonly cdr = inject(ChangeDetectorRef);
 
-  protected chartOptions = signal<ApexOptions | null>(null);
+  public chartOptions = signal<ApexOptions | null>(null);
 
   private chart?: ApexCharts;
   private viewInitialized = false;
