@@ -180,7 +180,9 @@ export class DashboardComponent {
 
   get equipmentNeedingAttention(): Tag[] {
     return this.equipmentData
-      .filter((item) => item.status === BatteryStatus.CRITICAL || item.status === BatteryStatus.WARNING)
+      .filter(
+        (item) => item.status === BatteryStatus.CRITICAL || item.status === BatteryStatus.WARNING,
+      )
       .sort((a, b) => {
         // Sort by daysLeft (ascending), then by batteryLevel (ascending)
         const aDays = a.daysLeft ?? Infinity;
