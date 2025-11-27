@@ -9,9 +9,3 @@ export enum BatteryStatus {
   WARNING = 'Warning',
   FULL = 'Full',
 }
-export enum EquipmentStatus {
-  Normal = 'Normal',
-  Warning = 'Warning',
-  Critical = 'Critical',
-  Charging = 'Charging',
-}

@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { EquipmentStatus } from '../../enums';
-import {
-  StatusDistribution,
-  StatusDistributionResponse,
-} from '../models/status-distribution.model';
+import { BatteryStatus } from '../../enums';
+import { BatteryStatusCount } from '../models/battery-status-count';
 
 /**
  * Service for fetching equipment status distribution data.
@@ -19,19 +16,19 @@ export class StatusDistributionService {
    * Fetches the current equipment status distribution.
    * @returns Observable of status distribution response
    */
-  getStatusDistribution(): Observable<StatusDistributionResponse> {
+  getStatusDistribution(): Observable<{ data: BatteryStatusCount[] }> {
     // Mock data matching the specification
-    const mockData: StatusDistribution[] = [
-      { status: EquipmentStatus.Normal, count: 6 },
-      { status: EquipmentStatus.Warning, count: 2 },
-      { status: EquipmentStatus.Critical, count: 3 },
-      { status: EquipmentStatus.Charging, count: 1 },
+    const mockData: BatteryStatusCount[] = [
+      { status: BatteryStatus.FULL, count: 6 },
+      { status: BatteryStatus.WARNING, count: 2 },
+      { status: BatteryStatus.CRITICAL, count: 3 },
+      { status: BatteryStatus.CHARGING, count: 1 },
     ];
 
     // Simulate API call with delay
     return of({ data: mockData }).pipe(delay(300));
 
     // Future backend integration:
-    // return this.http.get<StatusDistributionResponse>('/api/equipment/status-distribution/');
+    // return this.http.get<{ data: BatteryStatusCount[] }>('/api/equipment/status-distribution/');
   }
 }

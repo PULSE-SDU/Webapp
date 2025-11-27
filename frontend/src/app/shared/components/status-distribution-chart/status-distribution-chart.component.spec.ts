@@ -2,7 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusDistributionChartComponent } from './status-distribution-chart.component';
 import { StatusDistributionService } from '../../services/status-distribution.service';
 import { of } from 'rxjs';
-import { EquipmentStatus } from '../../../enums';
+import { BatteryStatus } from '../../../enums';
+import { BatteryStatusColor } from '../../models/battery-status-color';
 
 describe('StatusDistributionChartComponent', () => {
   let component: StatusDistributionChartComponent;
@@ -17,10 +18,10 @@ describe('StatusDistributionChartComponent', () => {
     mockStatusDistributionService.getStatusDistribution.and.returnValue(
       of({
         data: [
-          { status: EquipmentStatus.Normal, count: 6 },
-          { status: EquipmentStatus.Warning, count: 2 },
-          { status: EquipmentStatus.Critical, count: 3 },
-          { status: EquipmentStatus.Charging, count: 1 },
+          { status: BatteryStatus.FULL, count: 6 },
+          { status: BatteryStatus.WARNING, count: 2 },
+          { status: BatteryStatus.CRITICAL, count: 3 },
+          { status: BatteryStatus.CHARGING, count: 1 },
         ],
       }),
     );
@@ -51,11 +52,16 @@ describe('StatusDistributionChartComponent', () => {
 
   it('should set correct labels', () => {
     const chartOptions = component.chartOptions();
-    expect(chartOptions?.labels).toEqual(['Normal', 'Warning', 'Critical', 'Charging']);
+    expect(chartOptions?.labels).toEqual(['Full', 'Warning', 'Critical', 'Charging']);
   });
 
   it('should set correct colors', () => {
     const chartOptions = component.chartOptions();
-    expect(chartOptions?.colors).toEqual(['#4CAF50', '#FF9800', '#F44336', '#2196F3']);
+    expect(chartOptions?.colors).toEqual([
+      BatteryStatusColor[BatteryStatus.FULL],
+      BatteryStatusColor[BatteryStatus.WARNING],
+      BatteryStatusColor[BatteryStatus.CRITICAL],
+      BatteryStatusColor[BatteryStatus.CHARGING],
+    ]);
   });
 });

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusDistributionService } from '../../services/status-distribution.service';
-import { EquipmentStatus } from '../../../enums';
+import { BatteryStatusColor } from '../../models/battery-status-color';
 import ApexCharts from 'apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
@@ -37,13 +37,6 @@ export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
   private chart?: ApexCharts;
   private viewInitialized = false;
 
-  private readonly statusColors: Record<EquipmentStatus, string> = {
-    [EquipmentStatus.Normal]: '#4CAF50',
-    [EquipmentStatus.Warning]: '#FF9800',
-    [EquipmentStatus.Critical]: '#F44336',
-    [EquipmentStatus.Charging]: '#2196F3',
-  };
-
   ngOnInit(): void {
     this.loadChartData();
   }
@@ -67,7 +60,7 @@ export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
       next: (response) => {
         const series = response.data.map((item) => item.count);
         const labels = response.data.map((item) => item.status);
-        const colors = response.data.map((item) => this.statusColors[item.status]);
+        const colors = response.data.map((item) => BatteryStatusColor[item.status]);
 
         const options: ApexOptions = {
           series,
