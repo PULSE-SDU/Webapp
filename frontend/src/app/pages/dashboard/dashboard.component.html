@@ -45,7 +45,7 @@
   @if (equipmentNeedingAttention.length > 0) {
     <div class="battery-history-section">
       <app-battery-history-graph
-        [equipmentName]="equipmentNeedingAttention[0].equipmentName"
+        [equipmentName]="equipmentNeedingAttention[0].equipmentName || 'Unknown Equipment'"
         [equipmentType]="equipmentNeedingAttention[0].type || 'Medical Equipment'"
         [location]="equipmentNeedingAttention[0].location || 'Unknown Location'"
         [currentBatteryPercentage]="equipmentNeedingAttention[0].batteryLevel || 0"
