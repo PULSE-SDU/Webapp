@@ -39,4 +39,3 @@ class TagSerializer(serializers.ModelSerializer):
         if data.get("voltage") is not None:
             data["voltage"] = float(data["voltage"])
         return data
-
