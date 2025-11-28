@@ -1,3 +1,4 @@
+"""Models for Tag application."""
 from django.db import models
 
 
@@ -28,7 +29,9 @@ class Tag(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
+        """Meta configuration for Tag model."""
+
         ordering = ["tag_id"]
         db_table = "tags_tag"
 
