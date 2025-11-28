@@ -1,11 +1,14 @@
+"""Management command to populate database with sample tag data."""
 from django.core.management.base import BaseCommand
 from tags.models import Tag
 
 
 class Command(BaseCommand):
+    """Command to populate the database with sample tag data."""
+
     help = "Populate the database with sample tag data"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args, **kwargs):  # pylint: disable=unused-argument
         sample_tags = [
             {
                 "tag_id": "TAG001",
@@ -63,7 +66,7 @@ class Command(BaseCommand):
         updated_count = 0
 
         for tag_data in sample_tags:
-            tag, created = Tag.objects.update_or_create(
+            _, created = Tag.objects.update_or_create(  # pylint: disable=no-member
                 tag_id=tag_data["tag_id"], defaults=tag_data
             )
             if created:
@@ -72,7 +75,7 @@ class Command(BaseCommand):
                 updated_count += 1
 
         self.stdout.write(
-            self.style.SUCCESS(
+            self.style.SUCCESS(  # pylint: disable=no-member
                 f"Successfully populated database: {created_count} created, {updated_count} updated"
             )
         )

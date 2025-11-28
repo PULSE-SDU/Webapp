@@ -1,4 +1,5 @@
 # Generated migration for tags app
+# pylint: disable=missing-module-docstring,invalid-name,missing-class-docstring
 
 from django.db import migrations, models
 

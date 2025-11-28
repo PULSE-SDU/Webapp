@@ -1,3 +1,4 @@
+"""Serializers for Tag model."""
 from rest_framework import serializers
 from .models import Tag
 
@@ -15,7 +16,9 @@ class TagSerializer(serializers.ModelSerializer):
         source="battery_level", required=False, allow_null=True
     )
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
+        """Meta configuration for TagSerializer."""
+
         model = Tag
         fields = [
             "tagId",
@@ -36,3 +39,4 @@ class TagSerializer(serializers.ModelSerializer):
         if data.get("voltage") is not None:
             data["voltage"] = float(data["voltage"])
         return data
+
