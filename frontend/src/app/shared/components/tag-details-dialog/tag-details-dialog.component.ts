@@ -26,7 +26,7 @@ export class TagDetailsDialogComponent {
   // align signature with template usage: (batteryLevel, status)
   getBatteryColor(status: BatteryStatus | undefined): string {
     if (!status) return '#6b7280';
-    if (status === BatteryStatus.CHARGING) return '#000000';
+    if (status === BatteryStatus.NORMAL) return '#000000';
     if (status === BatteryStatus.CRITICAL) return '#ef4444';
     if (status === BatteryStatus.WARNING) return '#f59e0b';
     return '#6b7280';
@@ -39,7 +39,7 @@ export class TagDetailsDialogComponent {
 
   getPredictionClass(prediction: string | undefined, status: BatteryStatus | undefined): string {
     if (!status || !prediction) return 'prediction-normal';
-    if (status === BatteryStatus.CHARGING) return 'prediction-charging';
+    if (status === BatteryStatus.NORMAL) return 'prediction-charging';
     if (status === BatteryStatus.CRITICAL) return 'prediction-critical';
     if (status === BatteryStatus.WARNING) return 'prediction-warning';
     return 'prediction-normal';
