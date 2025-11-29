@@ -76,7 +76,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'Emergency - Bay 2',
       batteryLevel: 75,
-      daysLeft: 10,
+      prediction: '10 days left',
     },
     {
       tagId: 'infusion-pump-d2',
@@ -84,7 +84,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'ICU - Room 301',
       batteryLevel: 82,
-      daysLeft: 12,
+      prediction: '12 days left',
     },
     {
       tagId: 'patient-monitor-c1',
@@ -92,7 +92,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'Emergency - Bay 1',
       batteryLevel: 68,
-      daysLeft: 8,
+      prediction: '8 days left',
     },
     {
       tagId: 'ventilator-b1',
@@ -100,7 +100,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'ICU - Room 303',
       batteryLevel: 71,
-      daysLeft: 9,
+      prediction: '9 days left',
     },
     {
       tagId: 'ecg-machine-g2',
@@ -108,7 +108,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'Cardiology - Room 202',
       batteryLevel: 65,
-      daysLeft: 7,
+      prediction: '7 days left',
     },
     {
       tagId: 'pulse-oximeter-h2',
@@ -116,7 +116,7 @@ export class DashboardComponent {
       status: BatteryStatus.NORMAL,
       location: 'Emergency - Bay 4',
       batteryLevel: 58,
-      daysLeft: 6,
+      prediction: '6 days left',
     },
     {
       tagId: 'defibrillator-a2',
@@ -124,7 +124,7 @@ export class DashboardComponent {
       status: BatteryStatus.FULL,
       location: 'Emergency - Bay 2',
       batteryLevel: 85,
-      daysLeft: 15,
+      prediction: '15 days left',
     },
   ];
 
@@ -157,12 +157,7 @@ export class DashboardComponent {
         (item) => item.status === BatteryStatus.CRITICAL || item.status === BatteryStatus.WARNING,
       )
       .sort((a, b) => {
-        // Sort by daysLeft (ascending), then by batteryLevel (ascending)
-        const aDays = a.daysLeft ?? Infinity;
-        const bDays = b.daysLeft ?? Infinity;
-        if (aDays !== bDays) {
-          return aDays - bDays;
-        }
+        // Sort by batteryLevel (ascending)
         return (a.batteryLevel ?? 0) - (b.batteryLevel ?? 0);
       });
   }
@@ -191,7 +186,7 @@ export class DashboardComponent {
       [BatteryStatus.NORMAL]: { label: 'Normal', color: 'green' },
       [BatteryStatus.WARNING]: { label: 'Warning', color: 'yellow' },
       [BatteryStatus.CRITICAL]: { label: 'Critical', color: 'red' },
-      [BatteryStatus.FULL]: { label: 'Charging', color: 'blue' },
+      [BatteryStatus.FULL]: { label: 'Normal', color: 'green' },
     };
 
     return Object.entries(statusCounts)
