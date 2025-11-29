@@ -24,29 +24,28 @@ interface FakeTag {
   templateUrl: './status-distribution.html',
   styleUrl: './status-distribution.scss',
 })
-
 export class StatusDistribution {
   statusData = input<StatusIten[]>([
     { label: 'Normal', color: 'green', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
     { label: 'Critical', color: 'red', percent: 25, count: 3 },
     { label: 'Charging', color: 'blue', percent: 8, count: 1 },
-  ])
-   getColorValue(color: string): string {
+  ]);
+  getColorValue(color: string): string {
     return StatusColor[color] ?? '#9CA3AF';
-  };
+  }
 
-   /** Map item.color → BatteryStatus enum */
+  /** Map item.color → BatteryStatus enum */
   toBatteryStatus(color: string): BatteryStatus {
     const map: Record<string, BatteryStatus> = {
       green: BatteryStatus.NORMAL,
       yellow: BatteryStatus.WARNING,
       red: BatteryStatus.CRITICAL,
-      blue: BatteryStatus.FULL, 
+      blue: BatteryStatus.FULL,
     };
     return map[color] ?? BatteryStatus.NORMAL;
   }
-    /** Convert StatusItem → FakeTag required by BatteryBar */
+  /** Convert StatusItem → FakeTag required by BatteryBar */
   toTag(item: StatusIten): FakeTag {
     return {
       tagId: '',

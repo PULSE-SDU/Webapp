@@ -11,5 +11,3 @@ export const StatusColor: Record<string | BatteryStatus, string> = {
   red: '#ef4444',
   blue: '#46a2ec',
 };
-
-

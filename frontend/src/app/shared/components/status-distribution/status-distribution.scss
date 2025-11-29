@@ -1,10 +1,18 @@
-.text-custom-critical { color: var(--color-critical); }
-.text-custom-warning  { color: var(--color-warning); }
-.text-custom-success  { color: var(--color-normal); }
-.text-custom-charging { color: var(--color-full); }
+.text-custom-critical {
+  color: var(--color-critical);
+}
+.text-custom-warning {
+  color: var(--color-warning);
+}
+.text-custom-success {
+  color: var(--color-normal);
+}
+.text-custom-charging {
+  color: var(--color-full);
+}
 
 .bg-bar-fill {
-  background-color: var(--color-normal); 
+  background-color: var(--color-normal);
 }
 
 /* Progress bar 

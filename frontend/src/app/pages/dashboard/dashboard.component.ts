@@ -10,7 +10,13 @@ import { StatusDistribution } from '../../shared/components/status-distribution/
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, EquipmentAttentionComponent, MatDialogModule, MatButtonModule, StatusDistribution],
+  imports: [
+    CommonModule,
+    EquipmentAttentionComponent,
+    MatDialogModule,
+    MatButtonModule,
+    StatusDistribution,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
