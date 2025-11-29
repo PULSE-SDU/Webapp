@@ -198,7 +198,7 @@ export class DashboardComponent {
     const total = this.equipmentData.length;
     if (total === 0) return [];
 
-    const statusCounts: Record<string, number> = {
+    const statusCounts: Record<BatteryStatus, number> = {
       [BatteryStatus.NORMAL]: 0,
       [BatteryStatus.WARNING]: 0,
       [BatteryStatus.CRITICAL]: 0,
@@ -214,7 +214,9 @@ export class DashboardComponent {
       }
     });
 
-    const statusMap: Record<string, { label: string; color: string }> = {
+    // Map BatteryStatus to color strings expected by StatusDistribution component
+    // Using BatteryStatusColor shared model for reference
+    const statusMap: Record<BatteryStatus, { label: string; color: string }> = {
       [BatteryStatus.NORMAL]: { label: 'Normal', color: 'green' },
       [BatteryStatus.WARNING]: { label: 'Warning', color: 'yellow' },
       [BatteryStatus.CRITICAL]: { label: 'Critical', color: 'red' },
@@ -223,10 +225,10 @@ export class DashboardComponent {
 
     return Object.entries(statusCounts)
       .map(([status, count]) => ({
-        label: statusMap[status].label,
+        label: statusMap[status as BatteryStatus].label,
         count,
         percent: Math.round((count / total) * 100),
-        color: statusMap[status].color,
+        color: statusMap[status as BatteryStatus].color,
       }))
       .filter((item) => item.count > 0);
   }

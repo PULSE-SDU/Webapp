@@ -75,25 +75,6 @@ html {
   );
 }
 
-:root {
-  @include mat.toolbar-overrides(
-    (
-      title-text-size: 24px,
-      title-text-weight: 400,
-      standard-height: 70px,
-    )
-  );
-
-  @include mat.tabs-overrides(
-    (
-      active-focus-indicator-color: black,
-      active-hover-indicator-color: black,
-      label-text-size: 16px,
-      container-height: 70px,
-    )
-  );
-}
-
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -109,14 +90,12 @@ body {
 
   // Reset the user agent margin.
   margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
