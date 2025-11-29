@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EquipmentAttentionComponent } from '../../shared/components/equipment-attention/equipment-attention.component';
-import { InfoCards } from '../../shared/components/info-cards/info-cards';
-import { InfoCard } from '../../shared/components/info-cards/models/info-card.model';
 import { StatusDistribution } from '../../shared/components/status-distribution/status-distribution';
 import { Tag } from '../../shared/models/tag.model';
 import { BatteryStatus } from '../../enums';
@@ -21,7 +19,6 @@ interface StatusItem {
   imports: [
     CommonModule,
     EquipmentAttentionComponent,
-    InfoCards,
     StatusDistribution,
     BatteryHistoryGraphComponent,
   ],
@@ -197,39 +194,5 @@ export class DashboardComponent {
         color: statusMap[status as BatteryStatus].color,
       }))
       .filter((item) => item.count > 0);
-  }
-
-  get infoCards(): InfoCard[] {
-    return [
-      {
-        title: 'Total Equipment',
-        content: this.totalEquipment,
-        subtitle: 'Active monitoring tags',
-        icon: 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6',
-        iconColor: 'text-gray-400',
-      },
-      {
-        title: 'Critical Status',
-        content: this.criticalStatus,
-        subtitle: 'Requires immediate attention',
-        icon: 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z',
-        iconColor: 'text-custom-critical',
-      },
-      {
-        title: 'Warning Status',
-        content: this.warningStatus,
-        subtitle: 'Monitor closely',
-        icon: 'M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.102L13.828 9.828m3.153 3.153a4 4 0 005.656 0l4-4a4 4 0 10-5.656-5.656l-1.1 1.1',
-        iconColor: 'text-custom-warning',
-      },
-      {
-        title: 'Average Battery',
-        content: this.averageBattery,
-        subtitle: '',
-        icon: 'M15 7h4a2 2 0 012 2v6a2 2 0 01-2 2h-4m-2 2h-2m4-2H5a2 2 0 01-2-2V9a2 2 0 012-2h4m-2 2h2',
-        iconColor: 'text-custom-success',
-        isBattery: true,
-      },
-    ];
   }
 }

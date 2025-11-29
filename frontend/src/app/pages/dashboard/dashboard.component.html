@@ -5,11 +5,6 @@
     <p class="dashboard-subtitle">Real-time battery status for all medical equipment</p>
   </div>
 
-  <!-- Summary Cards -->
-  <div class="summary-cards-section">
-    <app-info-cards [infoCards]="infoCards"></app-info-cards>
-  </div>
-
   <!-- Alert Banner -->
   @if (criticalStatus > 0) {
     <div class="alert-banner">
