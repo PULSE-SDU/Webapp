@@ -9,12 +9,13 @@ class Command(BaseCommand):
     help = "Populate the database with sample tag data"
 
     def handle(self, *args, **kwargs):  # pylint: disable=unused-argument
+        """
+        Execute the command to populate the database with sample tag data.
+        """
         sample_tags = [
             {
                 "tag_id": "TAG001",
-                "equipment_name": "Infusion Pump A",
                 "type": "Infusion Pump",
-                "location": "Ward 3 - Room 301",
                 "battery_level": 85,
                 "status": "Full",
                 "prediction": "5 days left",
@@ -22,9 +23,7 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG002",
-                "equipment_name": "Defibrillator B",
                 "type": "Defibrillator",
-                "location": "Emergency - Bay 2",
                 "battery_level": 45,
                 "status": "Warning",
                 "prediction": "2 days left",
@@ -32,9 +31,7 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG003",
-                "equipment_name": "Monitor C",
                 "type": "Monitor",
-                "location": "ICU - Bed 5",
                 "battery_level": 15,
                 "status": "Critical",
                 "prediction": "1 day left",
@@ -42,9 +39,7 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG004",
-                "equipment_name": "Ventilator D",
                 "type": "Ventilator",
-                "location": "Ward 2 - Room 205",
                 "battery_level": 100,
                 "status": "Charging",
                 "prediction": "Charging in progress",
@@ -52,9 +47,7 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG005",
-                "equipment_name": "Syringe Pump E",
                 "type": "Syringe Pump",
-                "location": "Surgery - Room 1",
                 "battery_level": 92,
                 "status": "Full",
                 "prediction": "6 days left",

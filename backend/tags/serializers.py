@@ -9,9 +9,6 @@ class TagSerializer(serializers.ModelSerializer):
     """
 
     tagId = serializers.CharField(source="tag_id")
-    equipmentName = serializers.CharField(
-        source="equipment_name", required=False, allow_null=True
-    )
     batteryLevel = serializers.IntegerField(
         source="battery_level", required=False, allow_null=True
     )
@@ -22,9 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = [
             "tagId",
-            "equipmentName",
             "type",
-            "location",
             "batteryLevel",
             "status",
             "prediction",
