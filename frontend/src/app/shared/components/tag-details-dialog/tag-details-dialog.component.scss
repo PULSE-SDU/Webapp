@@ -128,37 +128,6 @@
   transition: width 0.3s ease;
 }
 
-.status-badge {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-
-  &.status-critical {
-    background-color: #ef4444;
-    color: white;
-  }
-
-  &.status-warning {
-    background-color: #f59e0b;
-    color: white;
-  }
-
-  &.status-normal {
-    background-color: #6b7280;
-    color: white;
-  }
-
-  &.status-full {
-    background-color: #000000;
-    color: white;
-  }
-}
-
 .prediction-container {
   background: #f9fafb;
   border-radius: 8px;
