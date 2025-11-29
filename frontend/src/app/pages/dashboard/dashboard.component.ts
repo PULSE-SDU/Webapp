@@ -7,13 +7,6 @@ import { Tag } from '../../shared/models/tag.model';
 import { BatteryStatus } from '../../enums';
 import { InfoCard } from '../../shared/components/info-cards/models/info-card.model';
 
-interface StatusItem {
-  label: string;
-  count: number;
-  percent: number;
-  color: string;
-}
-
 @Component({
   standalone: true,
   selector: 'app-dashboard',
@@ -25,99 +18,75 @@ export class DashboardComponent {
   equipmentData: Tag[] = [
     {
       tagId: 'patient-monitor-c3',
-      equipmentName: 'Patient Monitor C3',
       status: BatteryStatus.CRITICAL,
-      location: 'Emergency - Bay 1',
       batteryLevel: 15,
       prediction: '1 days left',
     },
     {
       tagId: 'pulse-oximeter-h1',
-      equipmentName: 'Pulse Oximeter H1',
       status: BatteryStatus.CRITICAL,
-      location: 'Emergency - Bay 3',
       batteryLevel: 18,
       prediction: '1 days left',
     },
     {
       tagId: 'ventilator-b3',
-      equipmentName: 'Ventilator B3',
       status: BatteryStatus.CRITICAL,
-      location: 'ICU - Room 304',
       batteryLevel: 22,
       prediction: '2 days left',
     },
     {
       tagId: 'ecg-machine-g1',
-      equipmentName: 'ECG Machine G1',
       status: BatteryStatus.CRITICAL,
-      location: 'Cardiology - Room 201',
       batteryLevel: 38,
       prediction: '4 days left',
     },
     {
       tagId: 'ventilator-b2',
-      equipmentName: 'Ventilator B2',
       status: BatteryStatus.WARNING,
-      location: 'ICU - Room 302',
       batteryLevel: 45,
       prediction: '5 days left',
     },
     {
       tagId: 'defibrillator-a1',
-      equipmentName: 'Defibrillator A1',
       status: BatteryStatus.NORMAL,
-      location: 'Emergency - Bay 2',
       batteryLevel: 75,
-      daysLeft: 10,
+      prediction: '10 days left',
     },
     {
       tagId: 'infusion-pump-d2',
-      equipmentName: 'Infusion Pump D2',
       status: BatteryStatus.NORMAL,
-      location: 'ICU - Room 301',
       batteryLevel: 82,
-      daysLeft: 12,
+      prediction: '12 days left',
     },
     {
       tagId: 'patient-monitor-c1',
-      equipmentName: 'Patient Monitor C1',
       status: BatteryStatus.NORMAL,
-      location: 'Emergency - Bay 1',
       batteryLevel: 68,
-      daysLeft: 8,
+      prediction: '8 days left',
     },
     {
       tagId: 'ventilator-b1',
-      equipmentName: 'Ventilator B1',
       status: BatteryStatus.NORMAL,
-      location: 'ICU - Room 303',
       batteryLevel: 71,
-      daysLeft: 9,
+      prediction: '9 days left',
     },
     {
       tagId: 'ecg-machine-g2',
-      equipmentName: 'ECG Machine G2',
       status: BatteryStatus.NORMAL,
-      location: 'Cardiology - Room 202',
       batteryLevel: 65,
-      daysLeft: 7,
+      prediction: '7 days left',
     },
     {
       tagId: 'pulse-oximeter-h2',
-      equipmentName: 'Pulse Oximeter H2',
       status: BatteryStatus.NORMAL,
-      location: 'Emergency - Bay 4',
       batteryLevel: 58,
-      daysLeft: 6,
+      prediction: '6 days left',
     },
     {
       tagId: 'defibrillator-a2',
-      equipmentName: 'Defibrillator A2',
       status: BatteryStatus.FULL,
-      location: 'Emergency - Bay 2',
       batteryLevel: 85,
-      daysLeft: 15,
+      prediction: '15 days left',
     },
   ];
 
@@ -184,52 +153,18 @@ export class DashboardComponent {
         (item) => item.status === BatteryStatus.CRITICAL || item.status === BatteryStatus.WARNING,
       )
       .sort((a, b) => {
-        // Sort by daysLeft (ascending), then by batteryLevel (ascending)
-        const aDays = a.daysLeft ?? Infinity;
-        const bDays = b.daysLeft ?? Infinity;
+        // Sort by prediction (extract days from string), then by batteryLevel (ascending)
+        const extractDays = (prediction?: string): number => {
+          if (!prediction) return Infinity;
+          const match = prediction.match(/(\d+)/);
+          return match ? parseInt(match[1], 10) : Infinity;
+        };
+        const aDays = extractDays(a.prediction);
+        const bDays = extractDays(b.prediction);
         if (aDays !== bDays) {
           return aDays - bDays;
         }
         return (a.batteryLevel ?? 0) - (b.batteryLevel ?? 0);
       });
-  }
-
-  get statusDistribution(): StatusItem[] {
-    const total = this.equipmentData.length;
-    if (total === 0) return [];
-
-    const statusCounts: Record<BatteryStatus, number> = {
-      [BatteryStatus.NORMAL]: 0,
-      [BatteryStatus.WARNING]: 0,
-      [BatteryStatus.CRITICAL]: 0,
-      [BatteryStatus.FULL]: 0,
-    };
-
-    this.equipmentData.forEach((item) => {
-      const status = item.status || BatteryStatus.NORMAL;
-      if (status in statusCounts) {
-        statusCounts[status]++;
-      } else {
-        statusCounts[BatteryStatus.NORMAL]++;
-      }
-    });
-
-    // Map BatteryStatus to color strings expected by StatusDistribution component
-    // Using BatteryStatusColor shared model for reference
-    const statusMap: Record<BatteryStatus, { label: string; color: string }> = {
-      [BatteryStatus.NORMAL]: { label: 'Normal', color: 'green' },
-      [BatteryStatus.WARNING]: { label: 'Warning', color: 'yellow' },
-      [BatteryStatus.CRITICAL]: { label: 'Critical', color: 'red' },
-      [BatteryStatus.FULL]: { label: 'Full', color: 'blue' },
-    };
-
-    return Object.entries(statusCounts)
-      .map(([status, count]) => ({
-        label: statusMap[status as BatteryStatus].label,
-        count,
-        percent: Math.round((count / total) * 100),
-        color: statusMap[status as BatteryStatus].color,
-      }))
-      .filter((item) => item.count > 0);
   }
 }

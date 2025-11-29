@@ -1,0 +1,17 @@
+[1mdiff --git a/frontend/src/app/shared/components/status-distribution/status-distribution.html b/frontend/src/app/shared/components/status-distribution/status-distribution.html[m
+[1mindex 98c9c11..7ceaa5c 100644[m
+[1m--- a/frontend/src/app/shared/components/status-distribution/status-distribution.html[m
+[1m+++ b/frontend/src/app/shared/components/status-distribution/status-distribution.html[m
+[36m@@ -25,7 +25,11 @@[m
+             <!-- Progress Bar -->[m
+             <div class="flex-grow mx-4">[m
+               <div class="w-full h-2 rounded-full bg-gray-200 overflow-hidden">[m
+[31m-                <div class="h-full rounded-full bg-bar-fill" [style.width.%]="item.percent"></div>[m
+[32m+[m[32m                <div[m
+[32m+[m[32m                  class="h-full rounded-full"[m
+[32m+[m[32m                  [style.width.%]="item.percent"[m
+[32m+[m[32m                  [style.background-color]="getColorValue(item.color)"[m
+[32m+[m[32m                ></div>[m
+               </div>[m
+             </div>[m
+ [m

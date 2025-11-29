@@ -15,9 +15,7 @@ describe('TagDetailsDialogComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: {
             tagId: 'TAG-001',
-            equipmentName: 'Test Equipment',
             type: 'Test Type',
-            location: 'Test Location',
             batteryLevel: 50,
             status: 'normal',
             prediction: '5 days remaining',
