@@ -15,9 +15,7 @@ class Tag(models.Model):
     ]
 
     tag_id = models.CharField(max_length=100, unique=True, db_index=True)
-    equipment_name = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=100, blank=True, null=True)
-    location = models.CharField(max_length=255, blank=True, null=True)
     battery_level = models.IntegerField(blank=True, null=True)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, blank=True, null=True
@@ -36,4 +34,4 @@ class Tag(models.Model):
         db_table = "tags_tag"
 
     def __str__(self):
-        return f"Tag {self.tag_id} - {self.equipment_name or 'Unknown'}"
+        return f"Tag {self.tag_id}"
