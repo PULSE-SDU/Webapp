@@ -1,4 +1,7 @@
 import { Component, input } from '@angular/core';
+import { BatteryStatus } from '../../../enums';
+import { BatteryBar } from '../battery-bar/battery-bar';
+import { StatusColor } from '../../models/battery-status-color';
 
 interface StatusIten {
   label: string;
@@ -7,28 +10,49 @@ interface StatusIten {
   color: string;
 }
 
+// Fake tag type for battery-bar
+interface FakeTag {
+  tagId: string;
+  batteryLevel: number;
+  status: BatteryStatus;
+}
+
 @Component({
   selector: 'app-status-distribution',
-  imports: [],
+  imports: [BatteryBar],
+  standalone: true,
   templateUrl: './status-distribution.html',
   styleUrl: './status-distribution.scss',
 })
+
 export class StatusDistribution {
   statusData = input<StatusIten[]>([
     { label: 'Normal', color: 'green', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
     { label: 'Critical', color: 'red', percent: 25, count: 3 },
     { label: 'Charging', color: 'blue', percent: 8, count: 1 },
-  ]);
+  ])
+   getColorValue(color: string): string {
+    return StatusColor[color] ?? '#9CA3AF';
+  };
 
-  getColorValue(color: string): string {
-    const colors: Record<string, string> = {
-      green: '#10B981',
-      yellow: '#F59E0B',
-      red: '#DC2626',
-      blue: '#3B82F6',
+   /** Map item.color → BatteryStatus enum */
+  toBatteryStatus(color: string): BatteryStatus {
+    const map: Record<string, BatteryStatus> = {
+      green: BatteryStatus.NORMAL,
+      yellow: BatteryStatus.WARNING,
+      red: BatteryStatus.CRITICAL,
+      blue: BatteryStatus.FULL, 
     };
-    return colors[color] || '#9CA3AF';
+    return map[color] ?? BatteryStatus.NORMAL;
+  }
+    /** Convert StatusItem → FakeTag required by BatteryBar */
+  toTag(item: StatusIten): FakeTag {
+    return {
+      tagId: '',
+      batteryLevel: item.percent,
+      status: this.toBatteryStatus(item.color),
+    };
   }
 }
 

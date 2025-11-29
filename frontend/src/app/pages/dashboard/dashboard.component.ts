@@ -5,11 +5,12 @@ import { Tag } from '../../shared/models/tag.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BatteryStatus } from '../../enums';
+import { StatusDistribution } from '../../shared/components/status-distribution/status-distribution';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, EquipmentAttentionComponent, MatDialogModule, MatButtonModule],
+  imports: [CommonModule, EquipmentAttentionComponent, MatDialogModule, MatButtonModule, StatusDistribution],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
