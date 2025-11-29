@@ -21,7 +21,7 @@ describe('StatusDistributionChartComponent', () => {
           { status: BatteryStatus.FULL, count: 6 },
           { status: BatteryStatus.WARNING, count: 2 },
           { status: BatteryStatus.CRITICAL, count: 3 },
-          { status: BatteryStatus.CHARGING, count: 1 },
+          { status: BatteryStatus.NORMAL, count: 1 },
         ],
       }),
     );
@@ -52,7 +52,7 @@ describe('StatusDistributionChartComponent', () => {
 
   it('should set correct labels', () => {
     const chartOptions = component.chartOptions();
-    expect(chartOptions?.labels).toEqual(['Full', 'Warning', 'Critical', 'Charging']);
+    expect(chartOptions?.labels).toEqual(['Full', 'Warning', 'Critical', 'Normal']);
   });
 
   it('should set correct colors', () => {
@@ -61,7 +61,7 @@ describe('StatusDistributionChartComponent', () => {
       BatteryStatusColor[BatteryStatus.FULL],
       BatteryStatusColor[BatteryStatus.WARNING],
       BatteryStatusColor[BatteryStatus.CRITICAL],
-      BatteryStatusColor[BatteryStatus.CHARGING],
+      BatteryStatusColor[BatteryStatus.NORMAL],
     ]);
   });
 });

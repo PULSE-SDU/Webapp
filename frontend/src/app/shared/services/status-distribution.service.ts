@@ -22,7 +22,7 @@ export class StatusDistributionService {
       { status: BatteryStatus.FULL, count: 6 },
       { status: BatteryStatus.WARNING, count: 2 },
       { status: BatteryStatus.CRITICAL, count: 3 },
-      { status: BatteryStatus.CHARGING, count: 1 },
+      { status: BatteryStatus.NORMAL, count: 1 },
     ];
 
     // Simulate API call with delay

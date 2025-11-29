@@ -18,7 +18,7 @@ export class StatusDistribution {
     { label: 'Normal', color: 'green', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
     { label: 'Critical', color: 'red', percent: 25, count: 3 },
-    { label: 'Charging', color: 'blue', percent: 8, count: 1 },
+    { label: 'Full', color: 'blue', percent: 8, count: 1 },
   ]);
 
   getColorValue(color: string): string {
