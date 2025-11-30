@@ -1,0 +1,24 @@
+<mat-card class="battery-history-card">
+  <mat-card-header class="card-header">
+    <mat-card-title class="card-title">Battery History</mat-card-title>
+    <mat-card-subtitle class="card-subtitle">
+      Current: {{ currentBatteryPercentage }}%
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="card-content">
+    <div class="chart-container">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [yaxis]="chartOptions.yaxis"
+        [dataLabels]="chartOptions.dataLabels"
+        [stroke]="chartOptions.stroke"
+        [fill]="chartOptions.fill"
+        [grid]="chartOptions.grid"
+        [tooltip]="chartOptions.tooltip"
+        [colors]="chartOptions.colors"
+      ></apx-chart>
+    </div>
+  </mat-card-content>
+</mat-card>
