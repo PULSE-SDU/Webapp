@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Tag } from '../../models/tag.model';
 import { BatteryStatus } from '../../../enums';
-import { BatteryStatusColor } from '../../models/battery-status-color';
+import { StatusColor } from '../../models/battery-status-color';
 
 @Component({
   standalone: true,
@@ -27,7 +27,7 @@ export class TagDetailsDialogComponent {
   // align signature with template usage: (batteryLevel, status)
   getBatteryColor(status: BatteryStatus | undefined): string {
     if (!status) return '#6b7280';
-    return BatteryStatusColor[status] || '#6b7280';
+    return StatusColor[status] || '#6b7280';
   }
 
   getStatusClass(status: BatteryStatus | undefined): string {

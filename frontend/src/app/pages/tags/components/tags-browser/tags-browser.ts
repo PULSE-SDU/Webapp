@@ -6,12 +6,12 @@ import { FilterType, BatteryStatus } from '../../../../enums';
 import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   standalone: true,
   selector: 'app-tags-browser',
-  imports: [Filters, TagsList, MatPaginator],
+  imports: [Filters, TagsList, MatPaginatorModule],
   templateUrl: './tags-browser.html',
   styleUrl: './tags-browser.scss',
 })
@@ -78,13 +78,13 @@ export class TagsBrowser {
     {
       tagId: '6',
       batteryLevel: 0.4,
-      status: BatteryStatus.WARNING,
+      status: BatteryStatus.CRITICAL,
       prediction: '12 days left',
       voltage: 2.6,
     },
     {
       tagId: '7',
-      batteryLevel: 0.95,
+      batteryLevel: 95,
       status: BatteryStatus.FULL,
       prediction: '60 days left',
       voltage: 3.3,
