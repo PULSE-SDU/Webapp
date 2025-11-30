@@ -26,6 +26,8 @@ html {
 }
 
 :root {
+  --app-radius: 20px;
+
   @include mat.toolbar-overrides(
     (
       title-text-size: 24px,
@@ -48,6 +50,31 @@ html {
       button-color: white,
     )
   );
+
+  @include mat.table-overrides(
+        (
+          background-color: white,
+        )
+  );
+
+  @include mat.paginator-overrides((
+    container-background-color: white,
+  ));
+
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: #eaeaea,
+      filled-active-indicator-color: white,
+    )
+  );
+}
+
+/* Angular Material MDC form-field  (only affects filters) */
+.filters .mat-mdc-form-field .mat-mdc-form-field-flex,
+.filters .mat-mdc-form-field .mdc-text-field,
+.filters .mat-mdc-form-field .mat-mdc-filled-control {
+  border-radius: var(--app-radius);
+  overflow: hidden;
 }
 
 .error-snackbar {

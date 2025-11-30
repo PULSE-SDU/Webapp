@@ -1,13 +1,12 @@
-<div class="flex-row border border-gray-300 rounded-xl p-[20px] items-start h-full">
-  <h1 class="text-xl font-medium ml-[10px]">Filters</h1>
+<div class="flex-row items-start h-full">
   <form
     [formGroup]="filtersFormGroup"
-    class="flex flex-1 flex-row flex-wrap gap-4 h-full items-start"
+    class="filters flex flex-1 flex-row flex-wrap gap-4 items-start"
   >
     @for (filter of filters(); track filter) {
       @switch (filter.type) {
         @case (FilterType.SELECT) {
-          <mat-form-field class="flex-1">
+          <mat-form-field appearance="fill" class="flex-1">
             <mat-label>{{ filter.placeholder }}</mat-label>
             <mat-select [multiple]="filter.multiple" [formControlName]="filter.key">
               @for (option of filter.options; track option) {
