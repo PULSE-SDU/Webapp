@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { BatteryStatusColor } from '../../models/battery-status-color';
+import { StatusColor } from '../../models/battery-status-color';
 import { BatteryStatus } from '../../../enums';
 
 @Component({
@@ -12,8 +12,8 @@ export class StatusChipComponent {
 
   getStatusColor(): string {
     const status = this.batteryStatus();
-    if (status && BatteryStatusColor[status]) {
-      return BatteryStatusColor[status];
+    if (status && StatusColor[status]) {
+      return StatusColor[status];
     }
     return 'gray';
   }

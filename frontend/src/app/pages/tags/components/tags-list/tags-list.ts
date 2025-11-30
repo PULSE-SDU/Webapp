@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { BatteryBar } from '../../../../shared/components/battery-bar/battery-bar';
 import { StatusChipComponent } from '../../../../shared/components/status-chip/status-chip';
 import { BatteryStatus } from '../../../../enums';
-import { BatteryStatusColor } from '../../../../shared/models/battery-status-color';
+import { StatusColor } from '../../../../shared/models/battery-status-color';
 
 @Component({
   standalone: true,
@@ -21,6 +21,6 @@ export class TagsList {
   protected readonly BatteryStatus = BatteryStatus;
 
   getStatusColor(status: BatteryStatus): string {
-    return BatteryStatusColor[status as BatteryStatus];
+    return StatusColor[status as BatteryStatus];
   }
 }
