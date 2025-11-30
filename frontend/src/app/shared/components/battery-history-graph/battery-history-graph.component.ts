@@ -35,9 +35,6 @@ export interface ChartOptions {
   styleUrl: './battery-history-graph.component.scss',
 })
 export class BatteryHistoryGraphComponent {
-  @Input() equipmentName = 'Equipment Name';
-  @Input() equipmentType = 'Equipment Type';
-  @Input() location = 'Location';
   @Input() currentBatteryPercentage = 98;
   @Input() historicalData?: { date: string; batteryLevel: number }[];
 

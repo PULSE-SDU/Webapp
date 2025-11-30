@@ -21,9 +21,6 @@ describe('BatteryHistoryGraphComponent', () => {
   });
 
   it('should initialize with default inputs', () => {
-    expect(component.equipmentName).toBe('Equipment Name');
-    expect(component.equipmentType).toBe('Equipment Type');
-    expect(component.location).toBe('Location');
     expect(component.currentBatteryPercentage).toBe(98);
   });
 
@@ -39,10 +36,7 @@ describe('BatteryHistoryGraphComponent', () => {
     expect(compiled.querySelector('apx-chart')).toBeTruthy();
   });
 
-  it('should display equipment information in the header', () => {
-    component.equipmentName = 'Test Equipment';
-    component.equipmentType = 'Test Type';
-    component.location = 'Test Location';
+  it('should display battery information in the header', () => {
     component.currentBatteryPercentage = 95;
     fixture.detectChanges();
 
@@ -50,9 +44,7 @@ describe('BatteryHistoryGraphComponent', () => {
     const title = compiled.querySelector('.card-title');
     const subtitle = compiled.querySelector('.card-subtitle');
 
-    expect(title?.textContent).toContain('Test Equipment');
-    expect(subtitle?.textContent).toContain('Test Type');
-    expect(subtitle?.textContent).toContain('Test Location');
+    expect(title?.textContent).toContain('Battery History');
     expect(subtitle?.textContent).toContain('95%');
   });
 });
