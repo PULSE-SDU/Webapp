@@ -1,94 +1,43 @@
-.dashboard-container {
+.home-container {
   padding: 2rem;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
-// Summary Cards Section
-.summary-cards-section {
-  margin-bottom: 2.5rem;
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: #374151;
 }
 
-// Alert Banner
-.alert-banner {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.5rem;
-  background-color: #ef4444;
-  color: white;
-  border-radius: 8px;
-  margin-bottom: 3rem;
-}
-
-.alert-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-  flex-shrink: 0;
-}
-
-.alert-text {
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
-// Two Column Layout
-.dashboard-content {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  margin-top: 0;
-}
-
-.content-column {
+.components-section {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 2rem;
 }
 
-// Responsive Design
-@media (max-width: 1024px) {
-  .dashboard-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .summary-cards-section {
-    margin-bottom: 2rem;
-  }
-
-  .alert-banner {
-    margin-bottom: 2.5rem;
-  }
+.component-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-@media (max-width: 640px) {
-  .dashboard-container {
-    padding: 1rem;
-  }
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
 
-  .summary-cards-section {
-    margin-bottom: 1.5rem;
-  }
+.dialog-demo {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
 
-  .alert-banner {
-    padding: 0.75rem 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .alert-icon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  .alert-text {
-    font-size: 0.875rem;
-  }
-
-  .dashboard-content {
-    gap: 1.5rem;
-  }
+.demo-description {
+  margin-bottom: 1rem;
+  color: #6b7280;
 }

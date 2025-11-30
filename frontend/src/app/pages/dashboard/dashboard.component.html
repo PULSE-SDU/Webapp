@@ -1,50 +1,10 @@
-<div class="dashboard-container">
-  <!-- Dashboard Header -->
-  <div class="dashboard-header">
-    <h1 class="dashboard-title">Battery Monitoring Dashboard</h1>
-    <p class="dashboard-subtitle">Real-time battery status for all medical equipment</p>
+<div class="home-container">
+  <h1 class="page-title">Equipment Monitoring</h1>
+
+  <div class="components-section">
+    <section class="component-section">
+      <h2 class="section-title">Equipment Attention Component</h2>
+      <app-equipment-attention [equipment]="equipmentData"></app-equipment-attention>
+    </section>
   </div>
-
-  <!-- Alert Banner -->
-  @if (criticalStatus > 0) {
-    <div class="alert-banner">
-      <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-        ></path>
-      </svg>
-      <span class="alert-text">
-        {{ criticalStatus }} equipment {{ criticalStatus === 1 ? 'has' : 'have' }} critical battery
-        levels and require immediate charging or replacement.
-      </span>
-    </div>
-  }
-
-  <!-- Two Column Layout -->
-  <div class="dashboard-content">
-    <!-- Left Column: Equipment Needing Attention -->
-    <div class="content-column">
-      <app-equipment-attention [equipment]="equipmentNeedingAttention"></app-equipment-attention>
-    </div>
-
-    <!-- Right Column: Status Distribution -->
-    <div class="content-column">
-      <app-status-distribution [statusData]="statusDistribution"></app-status-distribution>
-    </div>
-  </div>
-
-  <!-- Battery History Graph -->
-  @if (equipmentNeedingAttention.length > 0) {
-    <div class="battery-history-section">
-      <app-battery-history-graph
-        [equipmentName]="equipmentNeedingAttention[0].equipmentName || 'Unknown Equipment'"
-        [equipmentType]="equipmentNeedingAttention[0].type || 'Medical Equipment'"
-        [location]="equipmentNeedingAttention[0].location || 'Unknown Location'"
-        [currentBatteryPercentage]="equipmentNeedingAttention[0].batteryLevel || 0"
-      ></app-battery-history-graph>
-    </div>
-  }
 </div>
