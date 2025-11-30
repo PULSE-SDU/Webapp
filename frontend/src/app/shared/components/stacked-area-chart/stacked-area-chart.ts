@@ -1,20 +1,16 @@
 import { Component, OnInit, OnDestroy, ElementRef, inject } from '@angular/core';
 import ApexCharts from 'apexcharts';
+import { BatteryStatusColor } from '../../models/battery-status-color';
+import { BatteryStatus } from '../../../enums';
 
 @Component({
   selector: 'app-stacked-area-chart',
+  standalone: true,
   templateUrl: './stacked-area-chart.html',
   styleUrls: ['./stacked-area-chart.scss'],
 })
 export class StackedAreaChart implements OnInit, OnDestroy {
   private chart: ApexCharts | undefined;
-
-  private readonly STACKED_AREA_COLORS = {
-    critical: '#F87171',
-    warning: '#FCD34D',
-    normal: '#4ADE80',
-  };
-
   el = inject(ElementRef);
 
   ngOnInit(): void {
@@ -22,28 +18,10 @@ export class StackedAreaChart implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    this.chart?.destroy();
   }
 
-  //private fetchChartData(): void {
-  //const apiUrl = '....';
-  //this.http.get<any>(apiUrl).subscribe({
-  // next: (response) => {
-  //API data to match ApexCharts format
-  //const chartData = this.transformApiData(response);
-  //this.initializeChart(chartData);
-  //},
-  //error: (err) => {
-  // console.error('Error fetching chart data:', err);
-  //}
-  // });
-  //}
-  //private transformApiData(data: any) {
-  // { dates: [...], critical: [...], warning: [...], normal: [...] } have to figure out status endpoints
-  //const { dates, critical, warning, normal } = data;
-
+  /** Create chart data */
   private getChartData() {
     const dates = [
       '2025-10-14',
@@ -63,26 +41,27 @@ export class StackedAreaChart implements OnInit, OnDestroy {
       '2025-11-11',
     ];
 
-    const criticalCounts = [3, 2, 4, 3, 5, 4, 6, 7, 5, 4, 3, 5, 6, 3, 2];
-    const warningCounts = [2, 3, 1, 2, 1, 2, 1, 2, 3, 4, 5, 3, 2, 4, 1];
-    const normalCounts = [7, 7, 7, 7, 6, 6, 5, 3, 4, 4, 4, 4, 4, 5, 9];
+    const critical = [3, 2, 4, 3, 5, 4, 6, 7, 5, 4, 3, 5, 6, 3, 2];
+    const warning = [2, 3, 1, 2, 1, 2, 1, 2, 3, 4, 5, 3, 2, 4, 1];
+    const normal = [7, 7, 7, 7, 6, 6, 5, 3, 4, 4, 4, 4, 4, 5, 9];
 
     return [
       {
-        name: 'Normal',
-        data: dates.map((date, i) => [new Date(date).getTime(), normalCounts[i]]),
+        name: BatteryStatus.NORMAL,
+        data: dates.map((d, i) => [new Date(d).getTime(), normal[i]]),
       },
       {
-        name: 'Warning',
-        data: dates.map((date, i) => [new Date(date).getTime(), warningCounts[i]]),
+        name: BatteryStatus.WARNING,
+        data: dates.map((d, i) => [new Date(d).getTime(), warning[i]]),
       },
       {
-        name: 'Critical',
-        data: dates.map((date, i) => [new Date(date).getTime(), criticalCounts[i]]),
+        name: BatteryStatus.CRITICAL,
+        data: dates.map((d, i) => [new Date(d).getTime(), critical[i]]),
       },
     ];
   }
 
+  /** Initialize ApexChart */
   private initializeChart(): void {
     const series = this.getChartData();
 
@@ -95,17 +74,25 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         toolbar: { show: false },
         fontFamily: 'Inter, sans-serif',
       },
+
       colors: [
-        this.STACKED_AREA_COLORS.normal,
-        this.STACKED_AREA_COLORS.warning,
-        this.STACKED_AREA_COLORS.critical,
+        BatteryStatusColor[BatteryStatus.NORMAL],
+        BatteryStatusColor[BatteryStatus.WARNING],
+        BatteryStatusColor[BatteryStatus.CRITICAL],
       ],
+
       dataLabels: { enabled: false },
+
       stroke: {
         curve: 'smooth',
         width: 2,
-        colors: ['#34D399', '#FBBF24', '#EF4444'],
+        colors: [
+          BatteryStatusColor[BatteryStatus.NORMAL],
+          BatteryStatusColor[BatteryStatus.WARNING],
+          BatteryStatusColor[BatteryStatus.CRITICAL],
+        ],
       },
+
       fill: {
         type: 'gradient',
         gradient: {
@@ -113,41 +100,39 @@ export class StackedAreaChart implements OnInit, OnDestroy {
           opacityTo: 0.9,
         },
       },
+
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
         fontSize: '13px',
         fontWeight: 500,
         labels: { colors: ['#4B5563'] },
-        itemMargin: { horizontal: 15, vertical: 5 },
-        markers: {
-          size: 12,
-        },
       },
+
       xaxis: {
         type: 'datetime',
         tickAmount: 8,
         labels: {
+          style: { colors: ['#6B7280'] },
           datetimeFormatter: {
-            year: 'MMM yyyy',
             month: 'MMM d',
             day: 'MMM d',
-            hour: 'HH:mm',
+            year: 'MMM yyyy',
           },
-          style: { colors: ['#6B7280'] },
         },
-        axisBorder: { show: false },
-        axisTicks: { show: true },
       },
+
       yaxis: {
         min: 0,
         max: 12,
         tickAmount: 4,
         labels: { style: { colors: ['#6B7280'] } },
       },
+
       tooltip: {
         x: { format: 'MMM dd, yyyy' },
       },
+
       grid: { show: false },
     };
 
@@ -156,3 +141,20 @@ export class StackedAreaChart implements OnInit, OnDestroy {
     this.chart.render();
   }
 }
+
+//private fetchChartData(): void {
+//const apiUrl = '....';
+//this.http.get<any>(apiUrl).subscribe({
+// next: (response) => {
+//API data to match ApexCharts format
+//const chartData = this.transformApiData(response);
+//this.initializeChart(chartData);
+//},
+//error: (err) => {
+// console.error('Error fetching chart data:', err);
+//}
+// });
+//}
+//private transformApiData(data: any) {
+// { dates: [...], critical: [...], warning: [...], normal: [...] } have to figure out status endpoints
+//const { dates, critical, warning, normal } = data;
