@@ -26,10 +26,10 @@ interface FakeTag {
 })
 export class StatusDistribution {
   statusData = input<StatusIten[]>([
-    { label: 'Normal', color: 'green', percent: 50, count: 6 },
+    { label: 'Normal', color: 'blue', percent: 50, count: 6 },
     { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
     { label: 'Critical', color: 'red', percent: 25, count: 3 },
-    { label: 'Charging', color: 'blue', percent: 8, count: 1 },
+    { label: 'Charging', color: 'green', percent: 8, count: 1 },
   ]);
   getColorValue(color: string): string {
     return StatusColor[color] ?? '#9CA3AF';
@@ -38,10 +38,10 @@ export class StatusDistribution {
   /** Map item.color → BatteryStatus enum */
   toBatteryStatus(color: string): BatteryStatus {
     const map: Record<string, BatteryStatus> = {
-      green: BatteryStatus.NORMAL,
+      blue: BatteryStatus.NORMAL,
       yellow: BatteryStatus.WARNING,
       red: BatteryStatus.CRITICAL,
-      blue: BatteryStatus.FULL,
+      green: BatteryStatus.FULL,
     };
     return map[color] ?? BatteryStatus.NORMAL;
   }

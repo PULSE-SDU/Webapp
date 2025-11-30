@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { StatusColor } from '../../models/battery-status-color';
+import { BatteryBarData } from './models/battery-bar.types';
 
 @Component({
   selector: 'app-battery-bar',
@@ -10,7 +11,7 @@ import { StatusColor } from '../../models/battery-status-color';
   styleUrl: './battery-bar.scss',
 })
 export class BatteryBar {
-  tag = input<any>();
+  tag = input<BatteryBarData>();
   barWidthPercentage = input<number>();
 
   getStatusColor(): string {
