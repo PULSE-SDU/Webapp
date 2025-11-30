@@ -52,14 +52,16 @@ html {
   );
 
   @include mat.table-overrides(
-        (
-          background-color: white,
-        )
+    (
+      background-color: white,
+    )
   );
 
-  @include mat.paginator-overrides((
-    container-background-color: white,
-  ));
+  @include mat.paginator-overrides(
+    (
+      container-background-color: white,
+    )
+  );
 
   @include mat.form-field-overrides(
     (
@@ -114,6 +116,22 @@ body {
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
+
+  h1 {
+    font-weight: 500;
+    font-size: var(--text-2xl); /* 1.25rem (20px) */
+    line-height: var(--text-3xl--line-height); /* calc(1.75 / 1.25) */
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+    line-height: var(--text-2xl--line-height);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    line-height: var(--text-lg--line-height);
+  }
 
   // Reset the user agent margin.
   margin: 0;
