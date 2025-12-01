@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatusDistributionService } from '../../services/status-distribution.service';
-import { BatteryStatusColor } from '../../models/battery-status-color';
+import { StatusColor } from '../../models/battery-status-color';
 import ApexCharts from 'apexcharts';
 import type { ApexOptions } from 'apexcharts';
 
@@ -60,7 +60,7 @@ export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
       next: (response) => {
         const series = response.data.map((item) => item.count);
         const labels = response.data.map((item) => item.status);
-        const colors = response.data.map((item) => BatteryStatusColor[item.status]);
+        const colors = response.data.map((item) => StatusColor[item.status]);
 
         const options: ApexOptions = {
           series,

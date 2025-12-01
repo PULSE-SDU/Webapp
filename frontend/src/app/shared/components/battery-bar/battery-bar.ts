@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Tag } from '../../models/tag.model';
-import { BatteryStatusColor } from '../../models/battery-status-color';
+import { StatusColor } from '../../models/battery-status-color';
 
 @Component({
   selector: 'app-battery-bar',
@@ -14,8 +14,8 @@ export class BatteryBar {
 
   getStatusColor(): string {
     const status = this.tag()?.status;
-    if (status && BatteryStatusColor[status]) {
-      return BatteryStatusColor[status];
+    if (status && StatusColor[status]) {
+      return StatusColor[status];
     }
     return 'gray';
   }
