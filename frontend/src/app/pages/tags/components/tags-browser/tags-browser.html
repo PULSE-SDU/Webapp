@@ -3,7 +3,7 @@
   <h2 class="text-gray-500">Monitor and manage all medical equipment battery tags</h2>
   <div class="mt-6">
     <app-filters [filters]="filters"></app-filters>
-    <div class="mt-8">
+    <div class="mt-4">
       <mat-paginator
         [length]="length"
         [pageSize]="10"
@@ -11,7 +11,9 @@
         (page)="onPage($event)"
       >
       </mat-paginator>
-      <app-tags-list [tags]="pagedTags" (openTagDetails)="openTagDetails($event)"></app-tags-list>
+      <div class="border border-gray-300 rounded-xl p-[20px] shadow-xl">
+        <app-tags-list [tags]="pagedTags" (openTagDetails)="openTagDetails($event)"></app-tags-list>
+      </div>
     </div>
   </div>
 </div>
