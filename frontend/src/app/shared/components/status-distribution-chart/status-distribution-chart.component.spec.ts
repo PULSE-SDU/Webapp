@@ -3,7 +3,7 @@ import { StatusDistributionChartComponent } from './status-distribution-chart.co
 import { StatusDistributionService } from '../../services/status-distribution.service';
 import { of } from 'rxjs';
 import { BatteryStatus } from '../../../enums';
-import { BatteryStatusColor } from '../../models/battery-status-color';
+import { StatusColor } from '../../models/battery-status-color';
 
 describe('StatusDistributionChartComponent', () => {
   let component: StatusDistributionChartComponent;
@@ -58,10 +58,10 @@ describe('StatusDistributionChartComponent', () => {
   it('should set correct colors', () => {
     const chartOptions = component.chartOptions();
     expect(chartOptions?.colors).toEqual([
-      BatteryStatusColor[BatteryStatus.FULL],
-      BatteryStatusColor[BatteryStatus.WARNING],
-      BatteryStatusColor[BatteryStatus.CRITICAL],
-      BatteryStatusColor[BatteryStatus.NORMAL],
+      StatusColor[BatteryStatus.FULL],
+      StatusColor[BatteryStatus.WARNING],
+      StatusColor[BatteryStatus.CRITICAL],
+      StatusColor[BatteryStatus.NORMAL],
     ]);
   });
 });
