@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { StatusColor } from '../../models/battery-status-color';
-import { BatteryBarData } from './models/battery-bar.types';
+import { Tag } from '../../models/tag.model';
 
 @Component({
   selector: 'app-battery-bar',
@@ -9,11 +9,11 @@ import { BatteryBarData } from './models/battery-bar.types';
   styleUrl: './battery-bar.scss',
 })
 export class BatteryBar {
-  tag = input<BatteryBarData>();
+  batteryData = input<Tag>();
   barWidthPercentage = input<number>();
 
   getStatusColor(): string {
-    const status = this.tag()?.status;
+    const status = this.batteryData()?.status;
     if (status && StatusColor[status]) {
       return StatusColor[status];
     }
@@ -21,7 +21,7 @@ export class BatteryBar {
   }
 
   getBatteryLevel(): number {
-    const batteryLevel = this.tag()?.batteryLevel;
+    const batteryLevel = this.batteryData()?.batteryLevel;
     if (batteryLevel) {
       return batteryLevel;
     }
