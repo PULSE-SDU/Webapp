@@ -67,7 +67,7 @@ export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
           chart: {
             type: 'pie',
             width: '100%',
-            height: 380,
+            height: 340,
           },
           labels,
           colors,
