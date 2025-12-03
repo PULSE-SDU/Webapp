@@ -1,7 +1,28 @@
-<div class="analytics-page-container space-y-10 max-w-7xl mx-auto">
-  <h1 class="text-3xl font-bold text-gray-900">Analytics</h1>
-  <p class="text-gray-500">Historical data and performance insights</p>
-  <app-info-cards></app-info-cards>
-  <br />
-  <app-stacked-area-chart></app-stacked-area-chart>
+
+<div class="analytics-page-container max-w-7xl mx-auto px-4 py-10 space-y-10">
+
+  <!-- Header -->
+  <div class="text-center md:text-left">
+    <h1 >Analytics</h1>
+    <p class="text-gray-500">Historical data and performance insights</p>
+  </div>
+
+  <!-- Stacked Area Chart -->
+  <div class="w-full">
+    <app-stacked-area-chart></app-stacked-area-chart>
+  </div>
+
+  <!-- Battery History + Status Distribution -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="w-full h-[400px]">
+      <app-battery-history-graph></app-battery-history-graph>
+    </div>
+
+    <div class="w-full h-[400px]">
+      <app-status-distribution-chart></app-status-distribution-chart>
+    </div>
+  </div>
+  <br>
+
 </div>
+
