@@ -6,7 +6,12 @@ import { StatusDistributionChartComponent } from '../../../shared/components/sta
 
 @Component({
   selector: 'app-analytics',
-  imports: [CommonModule, StackedAreaChart, BatteryHistoryGraphComponent, StatusDistributionChartComponent],
+  imports: [
+    CommonModule,
+    StackedAreaChart,
+    BatteryHistoryGraphComponent,
+    StatusDistributionChartComponent,
+  ],
   templateUrl: './analytics.html',
   styleUrl: './analytics.scss',
 })
