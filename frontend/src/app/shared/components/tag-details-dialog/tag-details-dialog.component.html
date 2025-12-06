@@ -17,18 +17,6 @@
         <div class="info-label">Tag ID</div>
         <div class="info-value">{{ tag.tagId }}</div>
       </div>
-      <div class="info-item">
-        <div class="info-label">Equipment Name</div>
-        <div class="info-value">{{ tag.equipmentName }}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Type</div>
-        <div class="info-value">{{ tag.type }}</div>
-      </div>
-      <div class="info-item">
-        <div class="info-label">Location</div>
-        <div class="info-value">{{ tag.location }}</div>
-      </div>
     </div>
   </div>
 
@@ -38,7 +26,7 @@
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
         <mat-icon class="battery-icon" [style.color]="getBatteryColor(tag.status)">
-          battery_{{ tag.status === batteryStatus.CHARGING ? batteryStatus.FULL : 'std' }}
+          battery_{{ tag.status === batteryStatus.NORMAL ? batteryStatus.FULL : 'std' }}
         </mat-icon>
         <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.status)">
           {{ tag.batteryLevel }}%

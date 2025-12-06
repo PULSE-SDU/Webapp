@@ -9,7 +9,7 @@
         <div class="equipment-item">
           <div class="equipment-left">
             <div class="equipment-name-row">
-              <span class="equipment-name">{{ item.equipmentName }}</span>
+              <span class="equipment-name">{{ item.tagId }}</span>
               <span
                 class="status-badge"
                 [class.status-critical]="item.status === batteryStatus.CRITICAL"
@@ -18,7 +18,6 @@
                 {{ item.status }}
               </span>
             </div>
-            <div class="equipment-location">{{ item.location }}</div>
           </div>
           <div class="equipment-right">
             <div class="battery-percentage">{{ item.batteryLevel }}%</div>

@@ -1,40 +1,44 @@
 import { Component, input } from '@angular/core';
-
-interface StatusIten {
-  label: string;
-  count: number;
-  percent: number;
-  color: string;
-}
+import { BatteryStatus } from '../../../enums';
+import { BatteryBar } from '../battery-bar/battery-bar';
+import { StatusColor } from '../../models/battery-status-color';
+import { BatteryStatusCount } from '../../models/battery-status-count';
+import { Tag } from '../../models/tag.model';
 
 @Component({
   selector: 'app-status-distribution',
-  imports: [],
+  standalone: true,
+  imports: [BatteryBar],
   templateUrl: './status-distribution.html',
   styleUrl: './status-distribution.scss',
 })
 export class StatusDistribution {
-  statusData = input<StatusIten[]>([
-    { label: 'Normal', color: 'green', percent: 50, count: 6 },
-    { label: 'Warning', color: 'yellow', percent: 17, count: 2 },
-    { label: 'Critical', color: 'red', percent: 25, count: 3 },
-    { label: 'Charging', color: 'blue', percent: 8, count: 1 },
+  statusData = input<BatteryStatusCount[]>([
+    { status: BatteryStatus.NORMAL, count: 6 },
+    { status: BatteryStatus.WARNING, count: 2 },
+    { status: BatteryStatus.CRITICAL, count: 3 },
+    { status: BatteryStatus.FULL, count: 1 },
   ]);
 
-  getColorValue(color: string): string {
-    const colors: Record<string, string> = {
-      green: '#10B981',
-      yellow: '#F59E0B',
-      red: '#DC2626',
-      blue: '#3B82F6',
+  getColorValue(status: BatteryStatus): string {
+    return StatusColor[status] ?? '#9CA3AF';
+  }
+
+  getCountPercentage(count: number): number {
+    const countSum = this.statusData()
+      .map((item) => item.count)
+      .reduce((a, b) => a + b, 0);
+
+    const percentage = countSum > 0 ? (count / countSum) * 100 : 0;
+    return Math.round(percentage * 10) / 10;
+  }
+
+  /** Map BatteryStatusCount → Tag interface used by BatteryBar */
+  toTag(item: BatteryStatusCount): Tag {
+    return {
+      tagId: '',
+      status: item.status,
+      batteryLevel: this.getCountPercentage(item.count),
     };
-    return colors[color] || '#9CA3AF';
   }
 }
-
-// for future
-// fetchDataFromAPI() {
-//   this.http.get<StatusItem[]>('/api/status-data').subscribe(data => {
-//     this.statusData = data;
-//   });
-// }

@@ -26,6 +26,8 @@ html {
 }
 
 :root {
+  --app-radius: 20px;
+
   @include mat.toolbar-overrides(
     (
       title-text-size: 24px,
@@ -48,6 +50,33 @@ html {
       button-color: white,
     )
   );
+
+  @include mat.table-overrides(
+    (
+      background-color: white,
+    )
+  );
+
+  @include mat.paginator-overrides(
+    (
+      container-background-color: white,
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: #eaeaea,
+      filled-active-indicator-color: white,
+    )
+  );
+}
+
+/* Angular Material MDC form-field  (only affects filters) */
+.filters .mat-mdc-form-field .mat-mdc-form-field-flex,
+.filters .mat-mdc-form-field .mdc-text-field,
+.filters .mat-mdc-form-field .mat-mdc-filled-control {
+  border-radius: var(--app-radius);
+  overflow: hidden;
 }
 
 .error-snackbar {
@@ -75,25 +104,6 @@ html {
   );
 }
 
-:root {
-  @include mat.toolbar-overrides(
-    (
-      title-text-size: 24px,
-      title-text-weight: 400,
-      standard-height: 70px,
-    )
-  );
-
-  @include mat.tabs-overrides(
-    (
-      active-focus-indicator-color: black,
-      active-hover-indicator-color: black,
-      label-text-size: 16px,
-      container-height: 70px,
-    )
-  );
-}
-
 body {
   // Default the application to a light color theme. This can be changed to
   // `dark` to enable the dark color theme, or to `light dark` to defer to the
@@ -107,16 +117,30 @@ body {
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
 
+  h1 {
+    font-weight: 500;
+    font-size: var(--text-2xl); /* 1.25rem (20px) */
+    line-height: var(--text-3xl--line-height); /* calc(1.75 / 1.25) */
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+    line-height: var(--text-2xl--line-height);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    line-height: var(--text-lg--line-height);
+  }
+
   // Reset the user agent margin.
   margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+
 /* You can add global styles to this file, and also import other style files */
 
 html,
 body {
   height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }

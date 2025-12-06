@@ -1,0 +1,11 @@
+<div class="status-chart-container">
+  <div class="chart-header">
+    <h2 class="chart-title">Current Status Distribution</h2>
+    <p class="chart-subtitle">Equipment count by status</p>
+  </div>
+  @if (chartOptions()) {
+    <div class="chart-wrapper">
+      <div id="status-distribution-chart" #chartElement></div>
+    </div>
+  }
+</div>
