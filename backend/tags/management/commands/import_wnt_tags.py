@@ -91,17 +91,9 @@ class Command(BaseCommand):
                 self.stdout.write(f"  ... and {len(tags_data) - 5} more")
         else:
             self.stdout.write("Saving tags to database...")
-            created_count = 0
-            updated_count = 0
-
-            for tag_data in tags_data:  # pylint: disable=duplicate-code
-                _, created = Tag.objects.update_or_create(  # pylint: disable=no-member
-                    tag_id=tag_data["tag_id"], defaults=tag_data
-                )
-                if created:
-                    created_count += 1
-                else:
-                    updated_count += 1
+            created_count, updated_count = Tag.objects.bulk_update_or_create(  # pylint: disable=no-member
+                tags_data
+            )
 
             self.stdout.write(
                 self.style.SUCCESS(  # pylint: disable=no-member

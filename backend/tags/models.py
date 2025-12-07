@@ -1,5 +1,34 @@
 """Models for Tag application."""
 from django.db import models
+from typing import Dict, List, Tuple
+
+
+class TagManager(models.Manager):
+    """Custom manager for Tag model."""
+
+    def bulk_update_or_create(self, tags_data: List[Dict]) -> Tuple[int, int]:
+        """
+        Bulk update or create tags from a list of tag data dictionaries.
+
+        Args:
+            tags_data: List of dictionaries containing tag data
+
+        Returns:
+            Tuple of (created_count, updated_count)
+        """
+        created_count = 0
+        updated_count = 0
+
+        for tag_data in tags_data:
+            _, created = self.update_or_create(
+                tag_id=tag_data["tag_id"], defaults=tag_data
+            )
+            if created:
+                created_count += 1
+            else:
+                updated_count += 1
+
+        return created_count, updated_count
 
 
 class Tag(models.Model):
@@ -13,6 +42,8 @@ class Tag(models.Model):
         ("Warning", "Warning"),
         ("Full", "Full"),
     ]
+
+    objects = TagManager()
 
     tag_id = models.CharField(max_length=100, unique=True, db_index=True)
     type = models.CharField(max_length=100, blank=True, null=True)
