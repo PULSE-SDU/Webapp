@@ -94,7 +94,7 @@ class Command(BaseCommand):
             created_count = 0
             updated_count = 0
 
-            for tag_data in tags_data:
+            for tag_data in tags_data:  # pylint: disable=duplicate-code
                 _, created = Tag.objects.update_or_create(  # pylint: disable=no-member
                     tag_id=tag_data["tag_id"], defaults=tag_data
                 )
