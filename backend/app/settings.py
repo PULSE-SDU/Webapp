@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
     "corsheaders",
+    "tags",
 ]
 
 MIDDLEWARE = [
@@ -126,12 +128,24 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
+# REST Framework configuration
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+}
+
+
 # CORS configuration: allow requests from GitHub and GitHub Pages
 # - Explicit origins for github.com and raw.githubusercontent.com
 # - A regex to allow any user GitHub Pages site like https://username.github.io
 CORS_ALLOWED_ORIGINS = [
     "https://github.com",
     "https://raw.githubusercontent.com",
+    "http://localhost:4200",
 ]
 
 # Allow GitHub Pages subdomains (e.g., https://username.github.io)
@@ -141,3 +155,6 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
+
+# WNT API Mock Configuration
+WNT_API_BASE_URL = "http://localhost:8001"
