@@ -1,9 +1,10 @@
 """Models for Tag application."""
-from django.db import models
 from typing import Dict, List, Tuple
 
+from django.db import models
 
-class TagManager(models.Manager):
+
+class TagManager(models.Manager):  # pylint: disable=too-few-public-methods
     """Custom manager for Tag model."""
 
     def bulk_update_or_create(self, tags_data: List[Dict]) -> Tuple[int, int]:
