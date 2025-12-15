@@ -1,50 +1,31 @@
-from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import RetrieveUpdateAPIView
-from rest_framework.views import APIView
 from ..models import BatteryStatus
 from ..serializers import BatteryStatusSerializer
-from rest_framework import serializers
+from rest_framework import viewsets
+from rest_framework.response import Response
 
 
-class BatteryStatusDetail(RetrieveUpdateAPIView):
+class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    GET: Retrieve battery status for a specific node_address.
-
-    PUT/PATCH: Create or update battery status for a node_address.
+    ViewSet for viewing battery status
     """
 
     queryset = BatteryStatus.objects.all()
     serializer_class = BatteryStatusSerializer
     lookup_field = "node_address"
 
-    def put(self, request, **kwargs):
-        node_address = kwargs.get("node_address")
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        battery_status_obj, created = BatteryStatus.objects.update_or_create(
-            node_address=node_address, defaults=serializer.validated_data
-        )
-        response_serializer = self.get_serializer(battery_status_obj)
-        return Response(
-            response_serializer.data,
-            status=status.HTTP_201_CREATED if created else status.HTTP_200_OK,
-        )
-
-
-class BatteryStatusFiltered(APIView):
-    """View to retrieve all node_addresses with a specific status."""
-
-    def get(self, request):
+    def list(self, request, *args, **kwargs):
+        """
+        Filter by status_title: GET /battery-status?status={statusTitle}
+        Returns a list of node_address strings, or an empty list if no status is provided
+        Only accepts status_title values within the StatusTitle enum.
+        """
+        from ..models import StatusTitle
         status_title = request.query_params.get("status")
-        if not status_title:
-            raise serializers.ValidationError(
-                {"status": "Query parameter 'status' is required"}
-            )
-
+        if status_title not in StatusTitle.values:
+            return Response({"detail": f"Invalid status_title. Must be one of: {list(StatusTitle.values)}"}, status=400)
         addresses = BatteryStatus.objects.filter(status_title=status_title).values_list(
             "node_address", flat=True
         )
-
         return Response(list(addresses))
+        
