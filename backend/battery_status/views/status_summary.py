@@ -6,6 +6,7 @@ from datetime import timedelta
 from ..models import StatusSummary
 from ..serializers import StatusSummarySerializer
 
+
 class StatusSummaryList(APIView):
     """
     GET: Retrieve historical status summaries.
@@ -33,7 +34,7 @@ class StatusSummaryList(APIView):
 
         serializer = StatusSummarySerializer(queryset, many=True)
         return Response(serializer.data)
-    
+
 
 class LatestStatusSummary(APIView):
     """
@@ -42,11 +43,13 @@ class LatestStatusSummary(APIView):
 
     def get(self, request):
         latest_entry = StatusSummary.objects.order_by("-date").first()
-        
+
         if not latest_entry:
             return Response([])  # No data available
 
-        summaries = StatusSummary.objects.filter(date=latest_entry.date).order_by("status_title")
+        summaries = StatusSummary.objects.filter(date=latest_entry.date).order_by(
+            "status_title"
+        )
         serializer = StatusSummarySerializer(summaries, many=True)
-        
+
         return Response(serializer.data)

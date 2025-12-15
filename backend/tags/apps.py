@@ -1,4 +1,5 @@
 """App configuration for tags application."""
+
 from django.apps import AppConfig
 
 
