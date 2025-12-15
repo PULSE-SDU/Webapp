@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
-    "rest_framework",
     "tags",
     "battery_status",
 ]
