@@ -2,11 +2,9 @@ from django.db import models
 
 
 class StatusTitle(models.TextChoices):
-    CRITICAL = "Critical"
-    WARNING = "Warning"
-    NORMAL = "Normal"
     FULL = "Full"
-    CHARGING = "Charging"
+    DEPLETING = "Depleting"
+    DEAD = "Dead"
 
 
 class BatteryStatus(models.Model):
