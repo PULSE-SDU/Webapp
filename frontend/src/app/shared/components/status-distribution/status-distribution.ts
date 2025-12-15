@@ -14,10 +14,9 @@ import { Tag } from '../../models/tag.model';
 })
 export class StatusDistribution {
   statusData = input<BatteryStatusCount[]>([
-    { status: BatteryStatus.NORMAL, count: 6 },
-    { status: BatteryStatus.WARNING, count: 2 },
-    { status: BatteryStatus.CRITICAL, count: 3 },
-    { status: BatteryStatus.FULL, count: 1 },
+    { status: BatteryStatus.FULL, count: 6 },
+    { status: BatteryStatus.DEPLETING, count: 2 },
+    { status: BatteryStatus.DEAD, count: 3 },
   ]);
 
   getColorValue(status: BatteryStatus): string {

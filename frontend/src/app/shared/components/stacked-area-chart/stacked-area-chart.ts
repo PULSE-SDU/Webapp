@@ -47,15 +47,15 @@ export class StackedAreaChart implements OnInit, OnDestroy {
 
     return [
       {
-        name: BatteryStatus.NORMAL,
+        name: BatteryStatus.FULL,
         data: dates.map((d, i) => [new Date(d).getTime(), normal[i]]),
       },
       {
-        name: BatteryStatus.WARNING,
+        name: BatteryStatus.DEPLETING,
         data: dates.map((d, i) => [new Date(d).getTime(), warning[i]]),
       },
       {
-        name: BatteryStatus.CRITICAL,
+        name: BatteryStatus.DEAD,
         data: dates.map((d, i) => [new Date(d).getTime(), critical[i]]),
       },
     ];
@@ -76,9 +76,9 @@ export class StackedAreaChart implements OnInit, OnDestroy {
       },
 
       colors: [
-        StatusColor[BatteryStatus.NORMAL],
-        StatusColor[BatteryStatus.WARNING],
-        StatusColor[BatteryStatus.CRITICAL],
+        StatusColor[BatteryStatus.FULL],
+        StatusColor[BatteryStatus.DEPLETING],
+        StatusColor[BatteryStatus.DEAD],
       ],
 
       dataLabels: { enabled: false },
@@ -87,9 +87,9 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         curve: 'smooth',
         width: 2,
         colors: [
-          StatusColor[BatteryStatus.NORMAL],
-          StatusColor[BatteryStatus.WARNING],
-          StatusColor[BatteryStatus.CRITICAL],
+          StatusColor[BatteryStatus.FULL],
+          StatusColor[BatteryStatus.DEPLETING],
+          StatusColor[BatteryStatus.DEAD],
         ],
       },
 

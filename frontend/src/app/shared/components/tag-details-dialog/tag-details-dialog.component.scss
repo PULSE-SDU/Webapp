@@ -96,12 +96,6 @@
   gap: 12px;
 }
 
-.battery-icon {
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-}
-
 .battery-percentage-large {
   font-size: 24px;
   font-weight: 700;
@@ -165,22 +159,6 @@
 .prediction-text {
   font-size: 16px;
   font-weight: 600;
-
-  &.prediction-critical {
-    color: #ef4444;
-  }
-
-  &.prediction-warning {
-    color: #f59e0b;
-  }
-
-  &.prediction-normal {
-    color: #6b7280;
-  }
-
-  &.prediction-full {
-    color: #000000;
-  }
 }
 
 .prediction-context {

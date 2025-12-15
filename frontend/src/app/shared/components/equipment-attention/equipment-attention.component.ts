@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { Tag } from '../../models/tag.model';
 import { BatteryStatus } from '../../../enums';
+import { StatusChipComponent } from '../status-chip/status-chip';
 
 @Component({
   standalone: true,
   selector: 'app-equipment-attention',
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, StatusChipComponent],
   templateUrl: './equipment-attention.component.html',
   styleUrl: './equipment-attention.component.scss',
 })
