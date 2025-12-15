@@ -20,4 +20,3 @@ black = {line-length = 79}
 
 [requires]
 python_version = "3.14"
-python_full_version = "3.14.0"
