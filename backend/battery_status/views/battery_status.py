@@ -3,13 +3,13 @@ from ..models import BatteryStatus
 from ..serializers import BatteryStatusSerializer
 from rest_framework import viewsets
 from rest_framework.response import Response
-
+from ..services.battery_status_updater import update_battery_status_from_wnt
 
 class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet for viewing battery status
     """
-
+    update_battery_status_from_wnt()
     queryset = BatteryStatus.objects.all()
     serializer_class = BatteryStatusSerializer
     lookup_field = "node_address"
