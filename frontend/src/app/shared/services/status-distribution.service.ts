@@ -19,10 +19,9 @@ export class StatusDistributionService {
   getStatusDistribution(): Observable<{ data: BatteryStatusCount[] }> {
     // Mock data matching the specification
     const mockData: BatteryStatusCount[] = [
-      { status: BatteryStatus.FULL, count: 6 },
-      { status: BatteryStatus.WARNING, count: 2 },
-      { status: BatteryStatus.CRITICAL, count: 3 },
-      { status: BatteryStatus.NORMAL, count: 1 },
+      { status: BatteryStatus.GOOD, count: 6 },
+      { status: BatteryStatus.LOW, count: 2 },
+      { status: BatteryStatus.OFFLINE, count: 3 },
     ];
 
     // Simulate API call with delay

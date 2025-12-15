@@ -18,10 +18,9 @@ describe('StatusDistributionChartComponent', () => {
     mockStatusDistributionService.getStatusDistribution.and.returnValue(
       of({
         data: [
-          { status: BatteryStatus.FULL, count: 6 },
-          { status: BatteryStatus.WARNING, count: 2 },
-          { status: BatteryStatus.CRITICAL, count: 3 },
-          { status: BatteryStatus.NORMAL, count: 1 },
+          { status: BatteryStatus.GOOD, count: 6 },
+          { status: BatteryStatus.LOW, count: 2 },
+          { status: BatteryStatus.OFFLINE, count: 3 },
         ],
       }),
     );
@@ -58,10 +57,9 @@ describe('StatusDistributionChartComponent', () => {
   it('should set correct colors', () => {
     const chartOptions = component.chartOptions();
     expect(chartOptions?.colors).toEqual([
-      StatusColor[BatteryStatus.FULL],
-      StatusColor[BatteryStatus.WARNING],
-      StatusColor[BatteryStatus.CRITICAL],
-      StatusColor[BatteryStatus.NORMAL],
+      StatusColor[BatteryStatus.GOOD],
+      StatusColor[BatteryStatus.LOW],
+      StatusColor[BatteryStatus.OFFLINE],
     ]);
   });
 });

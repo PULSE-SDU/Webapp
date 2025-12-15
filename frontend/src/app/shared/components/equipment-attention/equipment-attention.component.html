@@ -10,13 +10,7 @@
           <div class="equipment-left">
             <div class="equipment-name-row">
               <span class="equipment-name">{{ item.tagId }}</span>
-              <span
-                class="status-badge"
-                [class.status-critical]="item.status === batteryStatus.CRITICAL"
-                [class.status-warning]="item.status === batteryStatus.WARNING"
-              >
-                {{ item.status }}
-              </span>
+              <app-status-chip [batteryStatus]="item.status"></app-status-chip>
             </div>
           </div>
           <div class="equipment-right">

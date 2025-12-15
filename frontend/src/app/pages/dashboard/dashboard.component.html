@@ -11,7 +11,7 @@
   </div>
 
   <!-- Alert Banner -->
-  @if (criticalStatus > 0) {
+  @if (deadStatus > 0) {
     <div class="alert-banner">
       <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
@@ -22,8 +22,8 @@
         ></path>
       </svg>
       <span class="alert-text">
-        {{ criticalStatus }} equipment {{ criticalStatus === 1 ? 'has' : 'have' }} critical battery
-        levels and require immediate charging or replacement.
+        {{ deadStatus }} equipment {{ deadStatus === 1 ? 'has' : 'have' }} a dead battery and
+        require immediate charging or replacement.
       </span>
     </div>
   }

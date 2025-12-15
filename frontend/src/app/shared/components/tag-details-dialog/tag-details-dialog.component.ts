@@ -24,7 +24,6 @@ export class TagDetailsDialogComponent {
     this.dialogRef.close();
   }
 
-  // align signature with template usage: (batteryLevel, status)
   getBatteryColor(status: BatteryStatus | undefined): string {
     if (!status) return '#6b7280';
     return StatusColor[status] || '#6b7280';
@@ -33,13 +32,5 @@ export class TagDetailsDialogComponent {
   getStatusClass(status: BatteryStatus | undefined): string {
     if (!status) return '';
     return `status-${status}`;
-  }
-
-  getPredictionClass(prediction: string | undefined, status: BatteryStatus | undefined): string {
-    if (!status || !prediction) return 'prediction-normal';
-    if (status === BatteryStatus.NORMAL) return 'prediction-normal';
-    if (status === BatteryStatus.CRITICAL) return 'prediction-critical';
-    if (status === BatteryStatus.WARNING) return 'prediction-warning';
-    return 'prediction-normal';
   }
 }
