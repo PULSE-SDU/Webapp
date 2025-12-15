@@ -25,9 +25,13 @@
     <div class="section-label">Battery Status</div>
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
-        <mat-icon class="battery-icon" [style.color]="getBatteryColor(tag.status)">
-          battery_{{ tag.status === batteryStatus.NORMAL ? batteryStatus.FULL : 'std' }}
-        </mat-icon>
+        @if (tag.status === batteryStatus.FULL) {
+          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_full</mat-icon>
+        } @else if (tag.status === batteryStatus.DEPLETING) {
+          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_alert</mat-icon>
+        } @else {
+          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_std</mat-icon>
+        }
         <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.status)">
           {{ tag.batteryLevel }}%
         </span>
@@ -55,7 +59,7 @@
         <mat-icon class="prediction-icon">event</mat-icon>
       </div>
       <div class="prediction-content">
-        <div class="prediction-text" [ngClass]="getPredictionClass(tag.prediction, tag.status)">
+        <div class="prediction-text" [style.color]="getBatteryColor(tag.status)">
           {{ tag.prediction }}
         </div>
         <div class="prediction-context">Based on current usage patterns and battery health</div>
