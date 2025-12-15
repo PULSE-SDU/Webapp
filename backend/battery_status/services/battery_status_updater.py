@@ -10,7 +10,7 @@ def update_battery_status_from_wnt():
     """
     tags = fetch_all_latest()
     for tag in tags:
-        node_address = tag.get("NODE_ADDRESS")
+        node_address = int(tag.get("NODE_ADDRESS"))
         voltage = tag.get("VOLTAGE")
         online_status = tag.get("ONLINE_STATUS_STRING")
         if online_status == "online":
