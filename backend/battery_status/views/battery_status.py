@@ -1,8 +1,7 @@
 from rest_framework.response import Response
-from ..models import BatteryStatus
+from ..models import BatteryStatus, StatusTitle
 from ..serializers import BatteryStatusSerializer
 from rest_framework import viewsets
-from ..models import StatusTitle
 
 
 class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):

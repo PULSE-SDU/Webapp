@@ -9,17 +9,15 @@ from .settings import WNT_MOCK_API_URL
 
 def fetch_all_node_addresses():
     """
-    Fetch all node addresses from the external WNT mock API.
+    Fetch all nodes from the external WNT mock API.
     """
     try:
         url = f"{WNT_MOCK_API_URL}/nodes/all-latest"
         response = requests.get(url, timeout=10)
         response.raise_for_status()
-        data = response.json()
-        return [item["NODE_ADDRESS"] for item in data]
+        return response.json()
     except requests.RequestException as e:
         raise ValidationError(f"Error fetching node addresses: {str(e)}") from e
-
 
 def fetch_node_latest(node_address):
     """
@@ -35,7 +33,6 @@ def fetch_node_latest(node_address):
             f"Error fetching latest node data for {node_address}: {str(e)}"
         ) from e
 
-
 def fetch_node_all(node_address):
     """
     Fetch all measurements for a single node from the external WNT mock API.
@@ -49,7 +46,6 @@ def fetch_node_all(node_address):
         raise ValidationError(
             f"Error fetching all node data for {node_address}: {str(e)}"
         ) from e
-
 
 def fetch_nodes_voltage_under(voltage_value):
     """
