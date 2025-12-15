@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Filters } from '../../../../shared/components/filters/filters';
 import { TagsList } from '../tags-list/tags-list';
 import { Tag } from '../../../../shared/models/tag.model';
@@ -6,7 +6,8 @@ import { FilterType, BatteryStatus } from '../../../../enums';
 import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { TagService } from '../../../../shared/services/tag.service';
 
 @Component({
   standalone: true,
@@ -15,8 +16,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   templateUrl: './tags-browser.html',
   styleUrl: './tags-browser.scss',
 })
-export class TagsBrowser {
+export class TagsBrowser implements OnInit {
   private dialog = inject(MatDialog);
+  private tagService = inject(TagService);
 
   filters: FilterDescriptor[] = [
     {
@@ -39,89 +41,72 @@ export class TagsBrowser {
     },
   ];
 
-  tags: Tag[] = [
-    {
-      tagId: '1',
-      batteryLevel: 100,
-      status: BatteryStatus.FULL,
-      prediction: '30 days left',
-      voltage: 3,
-    },
-    {
-      tagId: '2',
-      batteryLevel: 30,
-      status: BatteryStatus.DEPLETING,
-      prediction: '15 days left',
-      voltage: 2.5,
-    },
-    {
-      tagId: '3',
-      batteryLevel: 10,
-      status: BatteryStatus.DEAD,
-      prediction: '5 days left',
-      voltage: 1.5,
-    },
-    {
-      tagId: '4',
-      batteryLevel: 95,
-      status: BatteryStatus.FULL,
-      prediction: '45 days left',
-      voltage: 3.2,
-    },
-    {
-      tagId: '5',
-      batteryLevel: 20,
-      status: BatteryStatus.DEPLETING,
-      prediction: '20 days left',
-      voltage: 2.9,
-    },
-    {
-      tagId: '6',
-      batteryLevel: 0.4,
-      status: BatteryStatus.DEAD,
-      prediction: '12 days left',
-      voltage: 2.6,
-    },
-    {
-      tagId: '7',
-      batteryLevel: 95,
-      status: BatteryStatus.FULL,
-      prediction: '60 days left',
-      voltage: 3.3,
-    },
-    {
-      tagId: '8',
-      batteryLevel: 0.12,
-      status: BatteryStatus.DEAD,
-      prediction: '3 days left',
-      voltage: 1.4,
-    },
-    {
-      tagId: '9',
-      batteryLevel: 0.33,
-      status: BatteryStatus.DEAD,
-      prediction: '7 days left',
-      voltage: 1.8,
-    },
-  ];
+  tags: Tag[] = [];
 
-  length = this.tags.length;
+  length = 0;
+  pageSize = 10;
+  pageIndex = 0;
 
-  // tags that are actually shown in the list
   pagedTags: Tag[] = [];
 
-  constructor() {
-    this.setPage(0, 10);
+  ngOnInit() {
+    this.loadTags();
   }
 
-  setPage(pageIndex: number, pageSize: number) {
-    const start = pageIndex * pageSize;
-    const end = start + pageSize;
+  loadTags() {
+    this.tagService.getTags().subscribe({
+      next: (data: Tag[]) => {
+        this.tags = data;
+        this.updatePagedTags(); // Show list immediately
+
+        // Then fetch AI predictions one by one (by DB pk)
+        this.tags.forEach((tag) => {
+          if (tag.id == null) {
+            tag.prediction = 'No id';
+            return;
+          }
+
+          this.tagService.getPrediction(tag.id).subscribe({
+            next: (pred) => {
+              tag.prediction = pred;
+            },
+            error: (err) => {
+              console.error(`Error fetching prediction for ${tag.tagId}:`, err);
+              tag.prediction = 'No Prediction Data';
+            },
+          });
+        });
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  fetchPrediction(tag: Tag) {
+    if (tag.id == null) return;
+
+    this.tagService.getPrediction(tag.id).subscribe({
+      next: (prediction: string) => {
+        this.tags = this.tags.map(t =>
+          t.id === tag.id ? { ...t, prediction } : t
+        );
+        this.updatePagedTags();
+      },
+      error: (err: any) =>
+        console.error(`Error fetching prediction for ${tag.tagId}:`, err),
+    });
+  }
+
+
+  updatePagedTags() {
+    const start = this.pageIndex * this.pageSize;
+    const end = start + this.pageSize;
     this.pagedTags = this.tags.slice(start, end);
   }
 
-  onPage(event: { pageIndex: number; pageSize: number }) {
-    this.setPage(event.pageIndex, event.pageSize);
+  onPage(event: PageEvent) {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.updatePagedTags();
   }
 
   openTagDetails(tag: Tag): void {

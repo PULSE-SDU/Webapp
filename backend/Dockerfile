@@ -17,4 +17,5 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && python manage.py populate_tags && python manage.py runserver 0.0.0.0:8000"]
+#CMD ["sh", "-c", "python manage.py migrate && python manage.py populate_tags && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py import_wnt_tags --api-url http://host.docker.internal:8001 && python manage.py runserver 0.0.0.0:8000"]

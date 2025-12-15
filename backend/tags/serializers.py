@@ -1,4 +1,5 @@
 """Serializers for Tag model."""
+
 from rest_framework import serializers
 from .models import Tag
 
@@ -18,6 +19,7 @@ class TagSerializer(serializers.ModelSerializer):
 
         model = Tag
         fields = [
+            "id",
             "tagId",
             "batteryLevel",
             "status",
