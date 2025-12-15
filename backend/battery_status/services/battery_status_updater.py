@@ -12,8 +12,8 @@ def update_battery_status_from_wnt():
     for tag in tags:
         node_address = tag.get("NODE_ADDRESS")
         voltage = tag.get("VOLTAGE")
-        online = tag.get("ONLINE_STATUS_STRING", "online")
-        if online:
+        online_status = tag.get("ONLINE_STATUS_STRING")
+        if online_status == "online":
             if voltage is not None and float(voltage) > 2.8:
                 status = StatusTitle.NORMAL
             else:
