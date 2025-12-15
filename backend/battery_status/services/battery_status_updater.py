@@ -1,6 +1,7 @@
 from battery_status.models import BatteryStatus, StatusTitle
 from app.services import fetch_all_latest
 
+
 def update_battery_status_from_wnt():
     """
     Retrieves the latest node addresses from the WNT API, categorizes them by status, and updates BatteryStatus objects.
@@ -27,4 +28,3 @@ def update_battery_status_from_wnt():
                 "prediction": 0,  # TODO: change this when we have prediction
             },
         )
-        

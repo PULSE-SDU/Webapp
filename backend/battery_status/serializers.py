@@ -7,6 +7,7 @@ class BatteryStatusSerializer(serializers.ModelSerializer):
         model = BatteryStatus
         fields = "__all__"
 
+
 class StatusSummarySerializer(serializers.ModelSerializer):
     class Meta:
         model = StatusSummary

@@ -1,4 +1,5 @@
 """Client for interacting with WNT_API_mock service."""
+
 import urllib.request
 import urllib.error
 import json
@@ -11,7 +12,7 @@ class WNTAPIClient:
     def __init__(self, base_url: str = "http://localhost:8001"):
         """
         Initialize the WNT API client.
-        
+
         Args:
             base_url: Base URL of the WNT_API_mock service
         """
@@ -20,7 +21,7 @@ class WNTAPIClient:
     def get_all_latest_nodes(self) -> Optional[List[Dict]]:
         """
         Fetch the latest measurement for each node.
-        
+
         Returns:
             List of node data dictionaries, or None if request fails
         """
@@ -39,10 +40,10 @@ class WNTAPIClient:
     def get_node_latest(self, node_address: str) -> Optional[Dict]:
         """
         Fetch the latest measurement for a specific node.
-        
+
         Args:
             node_address: The node address to fetch data for
-            
+
         Returns:
             Node data dictionary, or None if request fails
         """
@@ -61,10 +62,10 @@ class WNTAPIClient:
     def get_node_all(self, node_address: str) -> Optional[List[Dict]]:
         """
         Fetch all historical measurements for a specific node.
-        
+
         Args:
             node_address: The node address to fetch data for
-            
+
         Returns:
             List of node data dictionaries, or None if request fails
         """
@@ -83,10 +84,10 @@ class WNTAPIClient:
     def get_nodes_low_voltage(self, voltage_value: float) -> Optional[List[Dict]]:
         """
         Fetch nodes with voltage below threshold.
-        
+
         Args:
             voltage_value: The voltage threshold
-            
+
         Returns:
             List of node data dictionaries, or None if request fails
         """

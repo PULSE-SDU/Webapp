@@ -5,10 +5,12 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from ..services.battery_status_updater import update_battery_status_from_wnt
 
+
 class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
     """
     ViewSet for viewing battery status
     """
+
     update_battery_status_from_wnt()
     queryset = BatteryStatus.objects.all()
     serializer_class = BatteryStatusSerializer
@@ -21,11 +23,16 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
         Only accepts status_title values within the StatusTitle enum.
         """
         from ..models import StatusTitle
+
         status_title = request.query_params.get("status")
         if status_title not in StatusTitle.values:
-            return Response({"detail": f"Invalid status_title. Must be one of: {list(StatusTitle.values)}"}, status=400)
+            return Response(
+                {
+                    "detail": f"Invalid status_title. Must be one of: {list(StatusTitle.values)}"
+                },
+                status=400,
+            )
         addresses = BatteryStatus.objects.filter(status_title=status_title).values_list(
             "node_address", flat=True
         )
         return Response(list(addresses))
-        

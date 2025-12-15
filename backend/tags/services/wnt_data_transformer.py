@@ -1,4 +1,5 @@
 """Data transformer for converting WNT_API_mock data to Django Tag model format."""
+
 from typing import Dict, Optional
 
 
@@ -32,7 +33,9 @@ class WNTDataTransformer:
             try:
                 voltage = float(voltage)
             except (ValueError, TypeError):
-                print(f"Warning: Invalid voltage value for node {node_address}: {voltage}")
+                print(
+                    f"Warning: Invalid voltage value for node {node_address}: {voltage}"
+                )
                 voltage = None
         else:
             voltage = None

@@ -1,4 +1,5 @@
 """Admin configuration for Tag model."""
+
 from django.contrib import admin
 from .models import Tag
 

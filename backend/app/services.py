@@ -19,6 +19,7 @@ def fetch_all_latest():
     except requests.RequestException as e:
         raise ValidationError(f"Error fetching node addresses: {str(e)}") from e
 
+
 def fetch_node_latest(node_address):
     """
     Fetch the latest measurement for a single node from the external WNT mock API.
@@ -33,6 +34,7 @@ def fetch_node_latest(node_address):
             f"Error fetching latest node data for {node_address}: {str(e)}"
         ) from e
 
+
 def fetch_node_all(node_address):
     """
     Fetch all measurements for a single node from the external WNT mock API.
@@ -46,6 +48,7 @@ def fetch_node_all(node_address):
         raise ValidationError(
             f"Error fetching all node data for {node_address}: {str(e)}"
         ) from e
+
 
 def fetch_nodes_voltage_under(voltage_value):
     """
