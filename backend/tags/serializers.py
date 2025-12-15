@@ -19,7 +19,6 @@ class TagSerializer(serializers.ModelSerializer):
         model = Tag
         fields = [
             "tagId",
-            "type",
             "batteryLevel",
             "status",
             "prediction",

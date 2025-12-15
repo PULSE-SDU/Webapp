@@ -15,7 +15,6 @@ class Command(BaseCommand):
         sample_tags = [
             {
                 "tag_id": "TAG001",
-                "type": "Infusion Pump",
                 "battery_level": 85,
                 "status": "Full",
                 "prediction": "5 days left",
@@ -23,7 +22,6 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG002",
-                "type": "Defibrillator",
                 "battery_level": 45,
                 "status": "Warning",
                 "prediction": "2 days left",
@@ -31,7 +29,6 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG003",
-                "type": "Monitor",
                 "battery_level": 15,
                 "status": "Critical",
                 "prediction": "1 day left",
@@ -39,7 +36,6 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG004",
-                "type": "Ventilator",
                 "battery_level": 100,
                 "status": "Charging",
                 "prediction": "Charging in progress",
@@ -47,7 +43,6 @@ class Command(BaseCommand):
             },
             {
                 "tag_id": "TAG005",
-                "type": "Syringe Pump",
                 "battery_level": 92,
                 "status": "Full",
                 "prediction": "6 days left",

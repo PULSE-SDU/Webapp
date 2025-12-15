@@ -11,13 +11,12 @@ class TagAdmin(admin.ModelAdmin):
 
     list_display = [
         "tag_id",
-        "type",
         "battery_level",
         "status",
         "voltage",
         "updated_at",
     ]
-    list_filter = ["status", "type"]
+    list_filter = ["status"]
     search_fields = ["tag_id"]
     readonly_fields = ["created_at", "updated_at"]
     ordering = ["tag_id"]

@@ -47,7 +47,6 @@ class Tag(models.Model):
     objects = TagManager()
 
     tag_id = models.CharField(max_length=100, unique=True, db_index=True)
-    type = models.CharField(max_length=100, blank=True, null=True)
     battery_level = models.IntegerField(blank=True, null=True)
     status = models.CharField(
         max_length=20, choices=STATUS_CHOICES, blank=True, null=True
