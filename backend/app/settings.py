@@ -11,18 +11,21 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+WNT_MOCK_API_URL = os.getenv("WNT_MOCK_API_URL")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
-)
+SECRET_KEY = "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     "tags",
+    "battery_status",
 ]
 
 MIDDLEWARE = [
@@ -155,6 +159,3 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
-
-# WNT API Mock Configuration
-WNT_API_BASE_URL = "http://localhost:8001"

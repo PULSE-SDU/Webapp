@@ -1,4 +1,5 @@
 """Management command to populate database with sample tag data."""
+
 from django.core.management.base import BaseCommand
 from tags.models import Tag
 
@@ -50,9 +51,9 @@ class Command(BaseCommand):
             },
         ]
 
-        created_count, updated_count = Tag.objects.bulk_update_or_create(  # pylint: disable=no-member
+        created_count, updated_count = Tag.objects.bulk_update_or_create(
             sample_tags
-        )
+        )  # pylint: disable=no-member
 
         self.stdout.write(
             self.style.SUCCESS(  # pylint: disable=no-member

@@ -1,4 +1,5 @@
 """Management command to import tags from WNT_API_mock service."""
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from tags.models import Tag
@@ -13,7 +14,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """Add command line arguments."""
-        default_url = getattr(settings, 'WNT_API_BASE_URL', 'http://localhost:8001')
+        default_url = getattr(settings, "WNT_API_BASE_URL", "http://localhost:8001")
         parser.add_argument(
             "--dry-run",
             action="store_true",
@@ -70,9 +71,7 @@ class Command(BaseCommand):
             )
             return
 
-        self.stdout.write(
-            f"Successfully transformed {len(tags_data)} tags"
-        )
+        self.stdout.write(f"Successfully transformed {len(tags_data)} tags")
 
         # Preview or save to database
         if dry_run:
@@ -83,16 +82,20 @@ class Command(BaseCommand):
             )
             self.stdout.write("\nPreview of tags to be imported:")
             for tag_data in tags_data[:5]:  # Show first 5 as preview
-                self.stdout.write(f"  - {tag_data['tag_id']}: "
-                                f"{tag_data['status']} "
-                                f"({tag_data['battery_level']}%, "
-                                f"{tag_data['voltage']}V)")
+                self.stdout.write(
+                    f"  - {tag_data['tag_id']}: "
+                    f"{tag_data['status']} "
+                    f"({tag_data['battery_level']}%, "
+                    f"{tag_data['voltage']}V)"
+                )
             if len(tags_data) > 5:
                 self.stdout.write(f"  ... and {len(tags_data) - 5} more")
         else:
             self.stdout.write("Saving tags to database...")
-            created_count, updated_count = Tag.objects.bulk_update_or_create(  # pylint: disable=no-member
-                tags_data
+            created_count, updated_count = (
+                Tag.objects.bulk_update_or_create(  # pylint: disable=no-member
+                    tags_data
+                )
             )
 
             self.stdout.write(

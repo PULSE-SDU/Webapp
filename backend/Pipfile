@@ -7,9 +7,13 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+python-dotenv = "*"
+requests = "*"
+black = "*"
 
 [dev-packages]
 pylint = "*"
+pylint-django = "*"
 
 [scripts]
 lint = "pylint ."
