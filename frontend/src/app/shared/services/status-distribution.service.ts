@@ -20,9 +20,8 @@ export class StatusDistributionService {
     // Mock data matching the specification
     const mockData: BatteryStatusCount[] = [
       { status: BatteryStatus.FULL, count: 6 },
-      { status: BatteryStatus.WARNING, count: 2 },
-      { status: BatteryStatus.CRITICAL, count: 3 },
-      { status: BatteryStatus.NORMAL, count: 1 },
+      { status: BatteryStatus.DEPLETING, count: 2 },
+      { status: BatteryStatus.DEAD, count: 3 },
     ];
 
     // Simulate API call with delay
