@@ -14,7 +14,7 @@ def update_battery_status_from_wnt():
         voltage = tag.get("VOLTAGE")
         online = tag.get("ONLINE_STATUS_STRING", "online")
         if online:
-            if voltage is not None and float(voltage) > 2.5:
+            if voltage is not None and float(voltage) > 2.8:
                 status = StatusTitle.FULL
             else:
                 status = StatusTitle.DEPLETING  # TODO: change this when we have prediction
@@ -27,4 +27,4 @@ def update_battery_status_from_wnt():
                 "prediction": 0,  # TODO: change this when we have prediction
             },
         )
-
+        

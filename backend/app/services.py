@@ -7,7 +7,7 @@ from django.forms import ValidationError
 from .settings import WNT_MOCK_API_URL
 
 
-def fetch_all_node_addresses():
+def fetch_all_latest():
     """
     Fetch all nodes from the external WNT mock API.
     """
