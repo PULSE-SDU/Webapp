@@ -4,8 +4,7 @@ export enum FilterType {
 }
 
 export enum BatteryStatus {
-  NORMAL = 'Normal',
-  CRITICAL = 'Critical',
-  WARNING = 'Warning',
-  FULL = 'Full',
+  GOOD = 'Good',
+  LOW = 'Low',
+  OFFLINE = 'Offline',
 }
