@@ -5,11 +5,11 @@
   </mat-card-header>
   <mat-card-content class="card-content">
     <div class="equipment-list">
-      @for (item of equipment(); track item.tagId) {
+      @for (item of equipment(); track item.nodeAddress) {
         <div class="equipment-item">
           <div class="equipment-left">
             <div class="equipment-name-row">
-              <span class="equipment-name">{{ item.tagId }}</span>
+              <span class="equipment-name">{{ item.nodeAddress }}</span>
               <app-status-chip [batteryStatus]="item.status"></app-status-chip>
             </div>
           </div>

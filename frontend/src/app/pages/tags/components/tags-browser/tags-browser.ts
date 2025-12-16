@@ -61,17 +61,17 @@ export class TagsBrowser implements OnInit {
 
         // Then fetch AI predictions one by one (by DB pk)
         this.tags.forEach((tag) => {
-          if (tag.id == null) {
-            tag.prediction = 'No id';
+          if (tag.nodeAddress == null) {
+            tag.prediction = 'No nodeAddress';
             return;
           }
 
-          this.tagService.getPrediction(tag.id).subscribe({
+          this.tagService.getPrediction(tag.nodeAddress).subscribe({
             next: (pred) => {
               tag.prediction = pred;
             },
             error: (err) => {
-              console.error(`Error fetching prediction for ${tag.tagId}:`, err);
+              console.error(`Error fetching prediction for ${tag.nodeAddress}:`, err);
               tag.prediction = 'No Prediction Data';
             },
           });
@@ -82,17 +82,17 @@ export class TagsBrowser implements OnInit {
   }
 
   fetchPrediction(tag: Tag) {
-    if (tag.id == null) return;
+    if (tag.nodeAddress == null) return;
 
-    this.tagService.getPrediction(tag.id).subscribe({
+    this.tagService.getPrediction(tag.nodeAddress).subscribe({
       next: (prediction: string) => {
         this.tags = this.tags.map(t =>
-          t.id === tag.id ? { ...t, prediction } : t
+          t.nodeAddress === tag.nodeAddress ? { ...t, prediction } : t
         );
         this.updatePagedTags();
       },
       error: (err: any) =>
-        console.error(`Error fetching prediction for ${tag.tagId}:`, err),
+        console.error(`Error fetching prediction for ${tag.nodeAddress}:`, err),
     });
   }
 

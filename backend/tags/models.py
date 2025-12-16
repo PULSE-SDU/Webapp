@@ -22,7 +22,7 @@ class TagManager(models.Manager):  # pylint: disable=too-few-public-methods
 
         for tag_data in tags_data:
             _, created = self.update_or_create(
-                tag_id=tag_data["tag_id"], defaults=tag_data
+                node_address=tag_data["node_address"], defaults=tag_data
             )
             if created:
                 created_count += 1
@@ -37,20 +37,10 @@ class Tag(models.Model):
     Model representing a battery tag for medical equipment.
     """
 
-    STATUS_CHOICES = [
-        ("Charging", "Charging"),
-        ("Critical", "Critical"),
-        ("Warning", "Warning"),
-        ("Full", "Full"),
-    ]
-
     objects = TagManager()
 
-    tag_id = models.CharField(max_length=100, unique=True, db_index=True)
+    node_address = models.CharField(max_length=100, unique=True, db_index=True)
     battery_level = models.IntegerField(blank=True, null=True)
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, blank=True, null=True
-    )
     prediction = models.CharField(max_length=255, blank=True, null=True)
     voltage = models.DecimalField(
         max_digits=5, decimal_places=2, blank=True, null=True
@@ -61,8 +51,8 @@ class Tag(models.Model):
     class Meta:  # pylint: disable=too-few-public-methods
         """Meta configuration for Tag model."""
 
-        ordering = ["tag_id"]
+        ordering = ["node_address"]
         db_table = "tags_tag"
 
     def __str__(self):
-        return f"Tag {self.tag_id}"
+        return f"Tag {self.node_address}"

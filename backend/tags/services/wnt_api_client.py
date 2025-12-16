@@ -4,6 +4,8 @@ import urllib.request
 import urllib.error
 import json
 from typing import Dict, List, Optional
+from app.settings import WNT_MOCK_API_URL
+
 
 
 class WNTAPIClient:
@@ -25,7 +27,7 @@ class WNTAPIClient:
         Returns:
             List of node data dictionaries, or None if request fails
         """
-        url = f"{self.base_url}/nodes/all-latest"
+        url = f"{WNT_MOCK_API_URL}/nodes/all-latest"
         try:
             with urllib.request.urlopen(url, timeout=10) as response:
                 data = json.loads(response.read().decode())
@@ -47,7 +49,7 @@ class WNTAPIClient:
         Returns:
             Node data dictionary, or None if request fails
         """
-        url = f"{self.base_url}/node/{node_address}/latest"
+        url = f"{WNT_MOCK_API_URL}/nodes/voltage-under"
         try:
             with urllib.request.urlopen(url, timeout=10) as response:
                 data = json.loads(response.read().decode())
@@ -69,7 +71,7 @@ class WNTAPIClient:
         Returns:
             List of node data dictionaries, or None if request fails
         """
-        url = f"{self.base_url}/node/{node_address}/all"
+        url = f"{WNT_MOCK_API_URL}/node/{node_address}/all"
         try:
             with urllib.request.urlopen(url, timeout=10) as response:
                 data = json.loads(response.read().decode())
@@ -91,7 +93,7 @@ class WNTAPIClient:
         Returns:
             List of node data dictionaries, or None if request fails
         """
-        url = f"{self.base_url}/nodes/voltage-under?voltage_value={voltage_value}"
+        url = f"{WNT_MOCK_API_URL}/nodes/voltage-under?voltage_value={voltage_value}"
         try:
             with urllib.request.urlopen(url, timeout=10) as response:
                 data = json.loads(response.read().decode())

@@ -18,15 +18,12 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):  # pylint: disable=too-many-anc
 
     queryset = Tag.objects.all()  # pylint: disable=no-member
     serializer_class = TagSerializer
+    lookup_field = "node_address"
+    filterset_fields = ["prediction"]
+    search_fields = ["node_address", "prediction", "battery_level", "voltage"]
 
     wnt_client = WNTAPIClient()
     infer_client = InferencerClient()
-
-    @action(detail=True, methods=["get"], url_path="details")
-    def details(self, request, pk=None):
-        tag = self.get_object()
-        serializer = self.get_serializer(tag)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=["get"], url_path="prediction")
     def prediction(self, request, pk=None):
