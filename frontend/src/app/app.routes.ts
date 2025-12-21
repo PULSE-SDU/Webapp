@@ -7,7 +7,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'tag-list', component: TagsBrowser },
   { path: 'analytics', component: Analytics },
-  { path: '**', redirectTo: 'dashboard' },
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard' },
 ];
