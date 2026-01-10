@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, inject } from '@angular/core';
 import ApexCharts from 'apexcharts';
 import { StatusColor } from '../../models/battery-status-color';
-import { BatteryStatus } from '../../../enums';
+import { BatteryStatusTitle } from '../../../enums';
 
 @Component({
   selector: 'app-stacked-area-chart',
@@ -47,15 +47,15 @@ export class StackedAreaChart implements OnInit, OnDestroy {
 
     return [
       {
-        name: BatteryStatus.GOOD,
+        name: BatteryStatusTitle.GOOD,
         data: dates.map((d, i) => [new Date(d).getTime(), normal[i]]),
       },
       {
-        name: BatteryStatus.LOW,
+        name: BatteryStatusTitle.LOW,
         data: dates.map((d, i) => [new Date(d).getTime(), warning[i]]),
       },
       {
-        name: BatteryStatus.OFFLINE,
+        name: BatteryStatusTitle.OFFLINE,
         data: dates.map((d, i) => [new Date(d).getTime(), critical[i]]),
       },
     ];
@@ -76,9 +76,9 @@ export class StackedAreaChart implements OnInit, OnDestroy {
       },
 
       colors: [
-        StatusColor[BatteryStatus.GOOD],
-        StatusColor[BatteryStatus.LOW],
-        StatusColor[BatteryStatus.OFFLINE],
+        StatusColor[BatteryStatusTitle.GOOD],
+        StatusColor[BatteryStatusTitle.LOW],
+        StatusColor[BatteryStatusTitle.OFFLINE],
       ],
 
       dataLabels: { enabled: false },
@@ -87,9 +87,9 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         curve: 'smooth',
         width: 2,
         colors: [
-          StatusColor[BatteryStatus.GOOD],
-          StatusColor[BatteryStatus.LOW],
-          StatusColor[BatteryStatus.OFFLINE],
+          StatusColor[BatteryStatusTitle.GOOD],
+          StatusColor[BatteryStatusTitle.LOW],
+          StatusColor[BatteryStatusTitle.OFFLINE],
         ],
       },
 

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
-import { BatteryStatus } from '../../enums';
-import { BatteryStatusCount } from '../models/battery-status-count';
+import { BatteryStatusTitle } from '../../../enums';
+import { BatteryStatusCount } from '../../models/battery-status-count';
 
 /**
  * Service for fetching equipment status distribution data.
@@ -19,9 +19,9 @@ export class StatusDistributionService {
   getStatusDistribution(): Observable<{ data: BatteryStatusCount[] }> {
     // Mock data matching the specification
     const mockData: BatteryStatusCount[] = [
-      { status: BatteryStatus.GOOD, count: 6 },
-      { status: BatteryStatus.LOW, count: 2 },
-      { status: BatteryStatus.OFFLINE, count: 3 },
+      { status: BatteryStatusTitle.GOOD, count: 6 },
+      { status: BatteryStatusTitle.LOW, count: 2 },
+      { status: BatteryStatusTitle.OFFLINE, count: 3 },
     ];
 
     // Simulate API call with delay

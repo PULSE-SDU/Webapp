@@ -1,9 +1,9 @@
 import { Component, input } from '@angular/core';
-import { BatteryStatus } from '../../../enums';
+import { BatteryStatusTitle } from '../../../enums';
 import { BatteryBar } from '../battery-bar/battery-bar';
 import { StatusColor } from '../../models/battery-status-color';
 import { BatteryStatusCount } from '../../models/battery-status-count';
-import { Tag } from '../../models/tag.model';
+import { BatteryStatus } from '../../models/battery-status.model';
 
 @Component({
   selector: 'app-status-distribution',
@@ -14,12 +14,12 @@ import { Tag } from '../../models/tag.model';
 })
 export class StatusDistribution {
   statusData = input<BatteryStatusCount[]>([
-    { status: BatteryStatus.GOOD, count: 6 },
-    { status: BatteryStatus.LOW, count: 2 },
-    { status: BatteryStatus.OFFLINE, count: 3 },
+    { status: BatteryStatusTitle.GOOD, count: 6 },
+    { status: BatteryStatusTitle.LOW, count: 2 },
+    { status: BatteryStatusTitle.OFFLINE, count: 3 },
   ]);
 
-  getColorValue(status: BatteryStatus): string {
+  getColorValue(status: BatteryStatusTitle): string {
     return StatusColor[status] ?? '#9CA3AF';
   }
 
@@ -33,11 +33,10 @@ export class StatusDistribution {
   }
 
   /** Map BatteryStatusCount → Tag interface used by BatteryBar */
-  toTag(item: BatteryStatusCount): Tag {
+  toBatteryStatus(item: BatteryStatusCount): BatteryStatus {
     return {
-      tagId: '',
-      status: item.status,
-      batteryLevel: this.getCountPercentage(item.count),
+      status_title: item.status,
+      battery_percentage: this.getCountPercentage(item.count),
     };
   }
 }

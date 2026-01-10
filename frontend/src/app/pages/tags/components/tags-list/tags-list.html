@@ -1,8 +1,8 @@
 <table mat-table [dataSource]="tags()">
-  <!-- Tag ID Column -->
+  <!-- Node address Column -->
   <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>Tag ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.tagId }}</td>
+    <th mat-header-cell *matHeaderCellDef>Node Address</th>
+    <td mat-cell *matCellDef="let element">{{ element.nodeAddress }}</td>
   </ng-container>
 
   <!-- Battery Level Column -->

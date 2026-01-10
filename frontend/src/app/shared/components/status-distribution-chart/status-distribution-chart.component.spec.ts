@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { StatusDistributionChartComponent } from './status-distribution-chart.component';
-import { StatusDistributionService } from '../../services/status-distribution.service';
+import { StatusDistributionService } from '../../services/battery-status/status-distribution.service';
 import { of } from 'rxjs';
-import { BatteryStatus } from '../../../enums';
+import { BatteryStatusTitle } from '../../../enums';
 import { StatusColor } from '../../models/battery-status-color';
 
 describe('StatusDistributionChartComponent', () => {
@@ -18,9 +18,9 @@ describe('StatusDistributionChartComponent', () => {
     mockStatusDistributionService.getStatusDistribution.and.returnValue(
       of({
         data: [
-          { status: BatteryStatus.GOOD, count: 6 },
-          { status: BatteryStatus.LOW, count: 2 },
-          { status: BatteryStatus.OFFLINE, count: 3 },
+          { status: BatteryStatusTitle.GOOD, count: 6 },
+          { status: BatteryStatusTitle.LOW, count: 2 },
+          { status: BatteryStatusTitle.OFFLINE, count: 3 },
         ],
       }),
     );
@@ -57,9 +57,9 @@ describe('StatusDistributionChartComponent', () => {
   it('should set correct colors', () => {
     const chartOptions = component.chartOptions();
     expect(chartOptions?.colors).toEqual([
-      StatusColor[BatteryStatus.GOOD],
-      StatusColor[BatteryStatus.LOW],
-      StatusColor[BatteryStatus.OFFLINE],
+      StatusColor[BatteryStatusTitle.GOOD],
+      StatusColor[BatteryStatusTitle.LOW],
+      StatusColor[BatteryStatusTitle.OFFLINE],
     ]);
   });
 });

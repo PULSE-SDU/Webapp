@@ -15,7 +15,7 @@
     <div class="info-grid">
       <div class="info-item">
         <div class="info-label">Tag ID</div>
-        <div class="info-value">{{ tag.tagId }}</div>
+        <div class="info-value">{{ tag.node_address }}</div>
       </div>
     </div>
   </div>
@@ -25,27 +25,27 @@
     <div class="section-label">Battery Status</div>
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
-        @if (tag.status === batteryStatus.GOOD) {
-          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_full</mat-icon>
-        } @else if (tag.status === batteryStatus.LOW) {
-          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_alert</mat-icon>
+        @if (tag.batteryStatus?.status_title === batteryStatus.GOOD) {
+          <mat-icon [style.color]="getBatteryColor(tag.batteryStatus?.status_title)">battery_full</mat-icon>
+        } @else if (tag.batteryStatus?.status_title === batteryStatus.LOW) {
+          <mat-icon [style.color]="getBatteryColor(tag.batteryStatus?.status_title)">battery_alert</mat-icon>
         } @else {
-          <mat-icon [style.color]="getBatteryColor(tag.status)">battery_std</mat-icon>
+          <mat-icon [style.color]="getBatteryColor(tag.batteryStatus?.status_title)">battery_std</mat-icon>
         }
-        <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.status)">
-          {{ tag.batteryLevel }}%
+        <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.batteryStatus?.status_title)">
+          {{ tag.batteryStatus?.battery_percentage }}%
         </span>
       </div>
       <div class="battery-bar-container">
         <div class="battery-bar-wrapper">
           <div
             class="battery-bar-fill"
-            [style.width.%]="tag.batteryLevel"
-            [style.background-color]="getBatteryColor(tag.status)"
+            [style.width.%]="tag.batteryStatus?.battery_percentage"
+            [style.background-color]="getBatteryColor(tag.batteryStatus?.status_title)"
           ></div>
         </div>
-        <span class="status-badge" [ngClass]="getStatusClass(tag.status)">
-          {{ tag.status }}
+        <span class="status-badge" [ngClass]="getStatusClass(tag.batteryStatus?.status_title)">
+          {{ tag.batteryStatus?.status_title }}
         </span>
       </div>
     </div>
@@ -59,8 +59,8 @@
         <mat-icon class="prediction-icon">event</mat-icon>
       </div>
       <div class="prediction-content">
-        <div class="prediction-text" [style.color]="getBatteryColor(tag.status)">
-          {{ tag.prediction }}
+        <div class="prediction-text" [style.color]="getBatteryColor(tag.batteryStatus?.status_title)">
+          <p>{{ (tag.batteryStatus?.prediction_days ?? 0) }}d {{ (tag.batteryStatus?.prediction_hours ?? 0) }}h</p>
         </div>
         <div class="prediction-context">Based on current usage patterns and battery health</div>
       </div>

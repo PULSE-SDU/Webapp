@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { StatusColor } from '../../models/battery-status-color';
-import { BatteryStatus } from '../../../enums';
+import { BatteryStatusTitle } from '../../../enums';
 
 @Component({
   selector: 'app-status-chip',
@@ -8,7 +8,7 @@ import { BatteryStatus } from '../../../enums';
   styleUrls: ['./status-chip.scss'],
 })
 export class StatusChipComponent {
-  batteryStatus = input<BatteryStatus>();
+  batteryStatus = input<BatteryStatusTitle>();
 
   getStatusColor(): string {
     const status = this.batteryStatus();

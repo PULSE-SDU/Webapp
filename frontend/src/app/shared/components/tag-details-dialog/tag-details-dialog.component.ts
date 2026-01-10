@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Tag } from '../../models/tag.model';
-import { BatteryStatus } from '../../../enums';
+import { BatteryStatusTitle } from '../../../enums';
 import { StatusColor } from '../../models/battery-status-color';
 
 @Component({
@@ -15,7 +15,7 @@ import { StatusColor } from '../../models/battery-status-color';
   styleUrl: './tag-details-dialog.component.scss',
 })
 export class TagDetailsDialogComponent {
-  public readonly batteryStatus = BatteryStatus;
+  public readonly batteryStatus = BatteryStatusTitle;
 
   dialogRef = inject(MatDialogRef<TagDetailsDialogComponent>);
   tag = inject<Tag>(MAT_DIALOG_DATA);
@@ -24,12 +24,12 @@ export class TagDetailsDialogComponent {
     this.dialogRef.close();
   }
 
-  getBatteryColor(status: BatteryStatus | undefined): string {
+  getBatteryColor(status: BatteryStatusTitle | undefined): string {
     if (!status) return '#6b7280';
     return StatusColor[status] || '#6b7280';
   }
 
-  getStatusClass(status: BatteryStatus | undefined): string {
+  getStatusClass(status: BatteryStatusTitle | undefined): string {
     if (!status) return '';
     return `status-${status}`;
   }

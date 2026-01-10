@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StatusDistributionService } from '../../services/status-distribution.service';
+import { StatusDistributionService } from '../../services/battery-status/status-distribution.service';
 import { StatusColor } from '../../models/battery-status-color';
 import ApexCharts from 'apexcharts';
 import type { ApexOptions } from 'apexcharts';
