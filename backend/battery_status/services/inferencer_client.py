@@ -1,11 +1,24 @@
 import json
 import urllib.request
+import urllib.error
+import socket
 from typing import Any, Dict, List, Optional
 
 
 class InferencerClient:
     def __init__(self, base_url: str = "http://host.docker.internal:6767"):
         self.base_url = base_url.rstrip("/")
+
+    def is_available(self) -> bool:
+        """
+        Check if the inference service is reachable.
+        """
+        try:
+            req = urllib.request.Request(self.base_url, method="HEAD")
+            with urllib.request.urlopen(req, timeout=3) as resp:
+                return True
+        except (urllib.error.URLError, urllib.error.HTTPError, socket.timeout, ConnectionRefusedError, OSError):
+            return False
 
     def predict(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         url = f"{self.base_url}/predict"

@@ -174,3 +174,46 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
+
+# Logging Configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{levelname}] {asctime} {name} {module}.{funcName}:{lineno} - {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "[{levelname}] {name} - {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "battery_status": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "tags": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "celery": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}

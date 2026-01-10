@@ -14,7 +14,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         """Add command line arguments."""
-        default_url = getattr(settings, "WNT_API_BASE_URL", "http://localhost:8001")
+        default_url = getattr(settings, "WNT_MOCK_API_URL", "http://localhost:8001")
         parser.add_argument(
             "--dry-run",
             action="store_true",
