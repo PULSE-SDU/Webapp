@@ -18,19 +18,20 @@ class BatteryStatusUpdater:
         Retrieves predictions for all tags from the inference service.
         """
         try:
-            wnt_tag_id = int(float(tag.tag_id))
+            wnt_tag_id = int(float(tag.node_address))
         except (ValueError, TypeError):
-            wnt_tag_id = tag.tag_id
-
+            wnt_tag_id = tag.node_address
+        
         print(
             "DEBUG tag.pk=",
             tag.pk,
-            "tag.tag_id=",
-            repr(tag.tag_id),
+            "tag.node_address=",
+            repr(tag.node_address),
             "wnt_tag_id=",
             wnt_tag_id,
         )
 
+        self.wnt_client.get_node_all(tag.node_address)
         window = self.wnt_client.get_battery_window(wnt_tag_id)
         pred = None
         if not window or "readings" not in window:
@@ -38,13 +39,13 @@ class BatteryStatusUpdater:
 
         try:
             return self.infer_client.predict_from_wnt_window(
-                tag_id=str(tag.tag_id),
+                tag_id=str(tag.node_address),
                 wnt_readings=window["readings"],
                 baseline_voltage=window.get("baselinevoltage", 3.1),
                 cycle_start_epoch=window.get("cyclestartepoch"),
             )
         except Exception as e:
-            print(f"Inference Error for {tag.tag_id}: {e}")
+            print(f"Inference Error for {tag.node_address}: {e}")
 
     def extract_prediction_values(self, tag: Tag):
         """
@@ -68,6 +69,7 @@ class BatteryStatusUpdater:
             return int(round(f / 24)), int(round(f))
 
         pred = self.get_prediction(tag)
+        print(f"Prediction for tag {tag.node_address}: {pred}")
         if pred is None:
             return None, None
 
