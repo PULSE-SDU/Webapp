@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from battery_status.tasks import update_battery_status_task
 
+
 class Command(BaseCommand):
     help = "Trigger battery status update via Celery task."
 

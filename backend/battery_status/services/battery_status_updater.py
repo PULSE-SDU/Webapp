@@ -4,10 +4,12 @@ from tags.services.wnt_api_client import WNTAPIClient
 from tags.models import Tag, OnlineStatus
 from .inferencer_client import InferencerClient
 
+
 class BatteryStatusUpdater:
     """
     Service class to update battery statuses from WNT API and inference service.
     """
+
     wnt_client = WNTAPIClient()
     infer_client = InferencerClient()
 
@@ -19,7 +21,7 @@ class BatteryStatusUpdater:
             wnt_tag_id = int(float(tag.tag_id))
         except (ValueError, TypeError):
             wnt_tag_id = tag.tag_id
-        
+
         print(
             "DEBUG tag.pk=",
             tag.pk,
@@ -33,7 +35,7 @@ class BatteryStatusUpdater:
         pred = None
         if not window or "readings" not in window:
             return pred
-        
+
         try:
             return self.infer_client.predict_from_wnt_window(
                 tag_id=str(tag.tag_id),
@@ -44,12 +46,12 @@ class BatteryStatusUpdater:
         except Exception as e:
             print(f"Inference Error for {tag.tag_id}: {e}")
 
-
     def extract_prediction_values(self, tag: Tag):
         """
         Extracts days and hours from prediction data for a tag.
         Returns (days, hours) tuple or (None, None) if unavailable.
         """
+
         def _is_number(value):
             try:
                 float(value)
@@ -99,7 +101,6 @@ class BatteryStatusUpdater:
 
         return None, None
 
-
     def get_status_title(self, tag: Tag):
         days, hours = self.extract_prediction_values(tag)
 
@@ -121,16 +122,14 @@ class BatteryStatusUpdater:
 
         return status
 
-
     def calculate_status_based_on_voltage(self, voltage: float):
         min_v, max_v = 2.6, 3.1
         calculated_level = 0
-        
+
         if voltage is not None:
             pct = ((voltage - min_v) / (max_v - min_v)) * 100
             calculated_level = max(0, min(100, round(pct)))
         return calculated_level
-
 
     def update_battery_status(self):
         """
@@ -141,7 +140,11 @@ class BatteryStatusUpdater:
             node_address = tag.node_address
             status = self.get_status_title(tag)
             days, hours = self.extract_prediction_values(tag)
-            battery_percentage = self.calculate_status_based_on_voltage(float(tag.voltage)) if tag.voltage is not None else 0
+            battery_percentage = (
+                self.calculate_status_based_on_voltage(float(tag.voltage))
+                if tag.voltage is not None
+                else 0
+            )
             BatteryStatus.objects.update_or_create(
                 node_address=node_address,
                 defaults={

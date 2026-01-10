@@ -4,9 +4,11 @@ from typing import Dict, List, Tuple
 
 from django.db import models
 
+
 class OnlineStatus(models.TextChoices):
     ONLINE = "online"
     OFFLINE = "offline"
+
 
 class TagManager(models.Manager):  # pylint: disable=too-few-public-methods
     """Custom manager for Tag model."""
@@ -45,7 +47,9 @@ class Tag(models.Model):
 
     tag_id = models.AutoField(primary_key=True)
     node_address = models.CharField(max_length=100, unique=True, db_index=True)
-    online_status = models.CharField(max_length=50, choices=OnlineStatus.choices, blank=True, null=True)
+    online_status = models.CharField(
+        max_length=50, choices=OnlineStatus.choices, blank=True, null=True
+    )
     voltage = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -8,7 +8,9 @@ app = Celery("app")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
+
 @beat_init.connect
 def run_startup_task(sender, **kwargs):
     from battery_status.tasks import update_battery_status_task
+
     update_battery_status_task.delay()

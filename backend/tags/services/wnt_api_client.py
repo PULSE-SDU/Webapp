@@ -9,7 +9,6 @@ import requests
 from app.settings import WNT_MOCK_API_URL
 
 
-
 class WNTAPIClient:
     """Client for fetching data from WNT_API_mock service."""
 
