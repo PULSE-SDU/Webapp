@@ -1,12 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, effect } from '@angular/core';
 import { Filters } from '../../../../shared/components/filters/filters';
 import { TagsList } from '../tags-list/tags-list';
 import { Tag } from '../../../../shared/models/tag.model';
-import { FilterType, BatteryStatus } from '../../../../enums';
 import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TagStateService } from '../../../../state/tag-state';
+import { BatteryStatusTitle, FilterType } from '../../../../enums';
+import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
 
 @Component({
   standalone: true,
@@ -15,8 +16,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   templateUrl: './tags-browser.html',
   styleUrl: './tags-browser.scss',
 })
-export class TagsBrowser {
+export class TagsBrowser implements OnInit {
   private dialog = inject(MatDialog);
+  tagState = inject(TagStateService);
+  tags = this.tagState.tags;
+
+  length = 0;
+  pageSize = 10;
+  pageIndex = 0;
+
+  pagedTags: Tag[] = [];
 
   filters: FilterDescriptor[] = [
     {
@@ -28,96 +37,33 @@ export class TagsBrowser {
       key: 'status',
       type: FilterType.SELECT,
       placeholder: 'All statuses',
-      options: Object.values(BatteryStatus),
+      options: Object.values(BatteryStatusTitle),
       multiple: true,
     },
     {
       key: 'prediction',
       type: FilterType.SELECT,
       placeholder: 'Prediction',
-      options: ['Less than 7 days', '7-30 days', 'More than 30 days'],
+      options: ['Less than 24 hours', '1-3 days', 'More than 3 days'],
     },
   ];
 
-  tags: Tag[] = [
-    {
-      tagId: '1',
-      batteryLevel: 100,
-      status: BatteryStatus.GOOD,
-      prediction: '30 days left',
-      voltage: 3,
-    },
-    {
-      tagId: '2',
-      batteryLevel: 30,
-      status: BatteryStatus.LOW,
-      prediction: '15 days left',
-      voltage: 2.5,
-    },
-    {
-      tagId: '3',
-      batteryLevel: 10,
-      status: BatteryStatus.OFFLINE,
-      prediction: '5 days left',
-      voltage: 1.5,
-    },
-    {
-      tagId: '4',
-      batteryLevel: 95,
-      status: BatteryStatus.GOOD,
-      prediction: '45 days left',
-      voltage: 3.2,
-    },
-    {
-      tagId: '5',
-      batteryLevel: 20,
-      status: BatteryStatus.LOW,
-      prediction: '20 days left',
-      voltage: 2.9,
-    },
-    {
-      tagId: '6',
-      batteryLevel: 0.4,
-      status: BatteryStatus.OFFLINE,
-      prediction: '12 days left',
-      voltage: 2.6,
-    },
-    {
-      tagId: '7',
-      batteryLevel: 95,
-      status: BatteryStatus.GOOD,
-      prediction: '60 days left',
-      voltage: 3.3,
-    },
-    {
-      tagId: '8',
-      batteryLevel: 0.12,
-      status: BatteryStatus.OFFLINE,
-      prediction: '3 days left',
-      voltage: 1.4,
-    },
-    {
-      tagId: '9',
-      batteryLevel: 0.33,
-      status: BatteryStatus.OFFLINE,
-      prediction: '7 days left',
-      voltage: 1.8,
-    },
-  ];
+  ngOnInit() {
+    this.tagState.loadTags();
+    this.setPage(this.pageIndex, this.pageSize);
 
-  length = this.tags.length;
-
-  // tags that are actually shown in the list
-  pagedTags: Tag[] = [];
-
-  constructor() {
-    this.setPage(0, 10);
+    effect(() => {
+      const current = this.tags();
+      this.length = current.length;
+      this.setPage(this.pageIndex, this.pageSize);
+    });
   }
 
   setPage(pageIndex: number, pageSize: number) {
     const start = pageIndex * pageSize;
     const end = start + pageSize;
-    this.pagedTags = this.tags.slice(start, end);
+    const all = this.tags();
+    this.pagedTags = all.slice(start, end);
   }
 
   onPage(event: { pageIndex: number; pageSize: number }) {
