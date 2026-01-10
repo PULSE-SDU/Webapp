@@ -36,7 +36,7 @@ class WNTAPIClient:
             print(f"Error decoding JSON response: {e}")
             return None
 
-    def get_node_latest(self, node_address: str) -> Optional[Dict]:
+    def get_node_latest(self, node_address) -> Optional[Dict]:
         """
         Fetch the latest measurement for a specific node.
 
@@ -46,7 +46,7 @@ class WNTAPIClient:
         Returns:
             Node data dictionary, or None if request fails
         """
-        url = f"{WNT_MOCK_API_URL}/nodes/voltage-under"
+        url = f"{WNT_MOCK_API_URL}/node/{node_address}/latest"
         try:
             with urllib.request.urlopen(url, timeout=10) as response:
                 data = json.loads(response.read().decode())
@@ -118,6 +118,6 @@ class WNTAPIClient:
                 "baselinevoltage": data.get("baselinevoltage"),
                 "cyclestartepoch": data.get("cyclestartepoch"),
             }
-        except Exception as e:
-            print(f"Failed to fetch battery window for tag {tag_id}: {e}")
+        except urllib.error.URLError as e:
+            print(f"Error fetching data from WNT API: {e}")
             return None

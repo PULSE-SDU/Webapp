@@ -10,7 +10,11 @@ app.autodiscover_tasks()
 
 
 @beat_init.connect
-def run_startup_task(sender, **kwargs):
+def run_startup_task(**kwargs):
+    """Triggered when the Celery beat scheduler starts — enqueue the
+    battery status update task once at startup.
+    """
+    # pylint: disable=import-outside-toplevel
     from battery_status.tasks import update_battery_status_task
 
     update_battery_status_task.delay()

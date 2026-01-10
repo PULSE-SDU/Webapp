@@ -20,7 +20,10 @@ class BatteryStatus(models.Model):
     prediction_hours = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.node_address} - {self.status_title} ({self.prediction_days} days, {self.prediction_hours} hours)"
+        return (
+            f"{self.node_address} - {self.status_title} ("
+            f"{self.prediction_days} days, {self.prediction_hours} hours)"
+        )
 
 
 class StatusSummary(models.Model):
