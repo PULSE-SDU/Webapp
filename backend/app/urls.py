@@ -17,13 +17,9 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from tags.views import TagViewSet
-
-router = DefaultRouter()
-router.register(r"tags", TagViewSet, basename="tag")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include(router.urls)),
+    path("api/", include("battery_status.urls")),
+    path("api/", include("tags.urls")),
 ]

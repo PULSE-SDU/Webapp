@@ -11,24 +11,40 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
+
+WNT_MOCK_API_URL = os.getenv("WNT_MOCK_API_URL")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
-)
+SECRET_KEY = "django-insecure-df0oy14dz+tzo^hh3xa(*3t23klyvu+og@5r-t)jelj6ut8ht3"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Celery Configuration
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+CELERY_TIMEZONE = "Europe/Copenhagen"
+
+CELERY_BEAT_SCHEDULE = {
+    "update-battery-status-every-hour": {
+        "task": "battery_status.tasks.update_battery_status_task",
+        "schedule": crontab(minute=0),
+    },
+}
 
 # Application definition
 
@@ -40,8 +56,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_filters",
     "corsheaders",
     "tags",
+    "battery_status",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +154,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 
@@ -155,6 +174,3 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
-
-# WNT API Mock Configuration
-WNT_API_BASE_URL = "http://localhost:8001"
