@@ -33,3 +33,18 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
             "node_address", flat=True
         )
         return Response(list(addresses))
+
+    def count_by_status(self, request, *args, **kwargs):
+        """
+        GET /battery-status/count-by-status/
+        Returns a count of battery statuses grouped by status_title.
+        """
+        from django.db.models import Count
+
+        counts = (
+            BatteryStatus.objects.values("status_title")
+            .annotate(count=Count("status_title"))
+            .order_by("status_title")
+        )
+
+        return Response(counts)
