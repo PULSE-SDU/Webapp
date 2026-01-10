@@ -1,11 +1,10 @@
 """Views for Tag API endpoints."""
 
 from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework import status
+
 from .models import Tag
 from .serializers import TagSerializer
+from .services.wnt_api_client import WNTAPIClient
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):  # pylint: disable=too-many-ancestors
@@ -16,14 +15,8 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):  # pylint: disable=too-many-anc
 
     queryset = Tag.objects.all()  # pylint: disable=no-member
     serializer_class = TagSerializer
-    lookup_field = "tag_id"
+    lookup_field = "node_address"
+    filterset_fields = ["prediction"]
+    search_fields = ["node_address", "prediction", "battery_level", "voltage"]
 
-    @action(detail=True, methods=["get"], url_path="details")
-    def details(self, request, tag_id=None):  # pylint: disable=unused-argument
-        """
-        Custom endpoint for retrieving detailed information about a tag.
-        GET /api/tags/{tag_id}/details/
-        """
-        tag = self.get_object()
-        serializer = self.get_serializer(tag)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    wnt_client = WNTAPIClient()

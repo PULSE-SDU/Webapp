@@ -1,0 +1,50 @@
+import json
+import urllib.request
+from typing import Any, Dict, List, Optional
+
+
+class InferencerClient:
+    def __init__(self, base_url: str = "http://host.docker.internal:6767"):
+        self.base_url = base_url.rstrip("/")
+
+    def predict(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        url = f"{self.base_url}/predict"
+        data = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=data,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+
+    @staticmethod
+    def _map_wnt_reading(r: Dict[str, Any]) -> Dict[str, Any]:
+        out = dict(r)
+        if "MEASUREMENTTIMEEPOCH" in out and "MEASUREMENT_TIME_EPOCH" not in out:
+            out["MEASUREMENT_TIME_EPOCH"] = out.pop("MEASUREMENTTIMEEPOCH")
+        if "MEASUREMENTTIME" in out and "MEASUREMENT_TIME" not in out:
+            out["MEASUREMENT_TIME"] = out.pop("MEASUREMENTTIME")
+        if "POSITIONMETERX" in out and "POSITION_METER_X" not in out:
+            out["POSITION_METER_X"] = out.pop("POSITIONMETERX")
+        if "POSITIONMETERY" in out and "POSITION_METER_Y" not in out:
+            out["POSITION_METER_Y"] = out.pop("POSITIONMETERY")
+        return out
+
+    def predict_from_wnt_window(
+        self,
+        tag_id: str,
+        wnt_readings: List[Dict[str, Any]],
+        baseline_voltage: float = 3.1,
+        cycle_start_epoch: Optional[float] = None,
+    ) -> Dict[str, Any]:
+        readings = [self._map_wnt_reading(r) for r in wnt_readings]
+
+        payload = {
+            "tag_id": tag_id,
+            "baseline_voltage": baseline_voltage,
+            "cycle_start_epoch": cycle_start_epoch,
+            "readings": readings,
+        }
+        return self.predict(payload)

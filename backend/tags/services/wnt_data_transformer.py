@@ -21,8 +21,9 @@ class WNTDataTransformer:
             Dictionary formatted for Django Tag model, or None if required fields missing
         """
         # Extract required fields with fallback
-        node_address = node_data.get("NODE_ADDRESS") or node_data.get("node_address")
-        voltage = node_data.get("VOLTAGE") or node_data.get("voltage")
+        node_address = node_data.get("NODE_ADDRESS")
+        voltage = node_data.get("VOLTAGE")
+        online_status = node_data.get("ONLINE_STATUS_STRING")
 
         if not node_address:
             print(f"Warning: Missing NODE_ADDRESS in node data: {node_data}")
@@ -40,14 +41,10 @@ class WNTDataTransformer:
         else:
             voltage = None
 
-        # Build tag data - only basic fields
-        # battery_level, status, and prediction will be populated by ML/status endpoints
         tag_data = {
-            "tag_id": str(node_address),
+            "node_address": int(node_address),
             "voltage": round(voltage, 2) if voltage is not None else None,
-            "battery_level": None,
-            "status": None,
-            "prediction": None,
+            "online_status": online_status,
         }
 
         return tag_data

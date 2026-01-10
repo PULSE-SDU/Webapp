@@ -2,8 +2,8 @@ from rest_framework.response import Response
 from ..models import BatteryStatus
 from ..serializers import BatteryStatusSerializer
 from rest_framework import viewsets
-from rest_framework.response import Response
-from ..services.battery_status_updater import update_battery_status_from_wnt
+from ..services.battery_status_updater import BatteryStatusUpdater
+from ..models import StatusTitle
 
 
 class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
@@ -11,7 +11,6 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
     ViewSet for viewing battery status
     """
 
-    update_battery_status_from_wnt()
     queryset = BatteryStatus.objects.all()
     serializer_class = BatteryStatusSerializer
     lookup_field = "node_address"
@@ -22,8 +21,8 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
         Returns a list of node_address strings, or an empty list if no status is provided
         Only accepts status_title values within the StatusTitle enum.
         """
-        from ..models import StatusTitle
 
+        BatteryStatusUpdater().update_battery_status()
         status_title = request.query_params.get("status")
         if status_title not in StatusTitle.values:
             return Response(
