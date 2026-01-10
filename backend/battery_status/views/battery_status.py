@@ -2,7 +2,6 @@ from rest_framework.response import Response
 from ..models import BatteryStatus
 from ..serializers import BatteryStatusSerializer
 from rest_framework import viewsets
-from ..services.battery_status_updater import BatteryStatusUpdater
 from ..models import StatusTitle
 
 
@@ -22,7 +21,6 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
         Only accepts status_title values within the StatusTitle enum.
         """
 
-        BatteryStatusUpdater().update_battery_status()
         status_title = request.query_params.get("status")
         if status_title not in StatusTitle.values:
             return Response(

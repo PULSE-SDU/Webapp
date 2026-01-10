@@ -1,4 +1,4 @@
-from ..models import BatteryStatus, StatusTitle, Prediction
+from ..models import BatteryStatus, StatusTitle
 import re
 from tags.services.wnt_api_client import WNTAPIClient
 from tags.models import Tag, OnlineStatus
@@ -8,7 +8,6 @@ class BatteryStatusUpdater:
     """
     Service class to update battery statuses from WNT API and inference service.
     """
-    tags = Tag.objects.all()
     wnt_client = WNTAPIClient()
     infer_client = InferencerClient()
 
@@ -46,7 +45,11 @@ class BatteryStatusUpdater:
             print(f"Inference Error for {tag.tag_id}: {e}")
 
 
-    def convert_to_prediction_model(self, tag: Tag):
+    def extract_prediction_values(self, tag: Tag):
+        """
+        Extracts days and hours from prediction data for a tag.
+        Returns (days, hours) tuple or (None, None) if unavailable.
+        """
         def _is_number(value):
             try:
                 float(value)
@@ -56,16 +59,16 @@ class BatteryStatusUpdater:
 
         def _from_days(d):
             f = float(d)
-            return Prediction(days=int(round(f)), hours=int(round(f * 24)))
+            return int(round(f)), int(round(f * 24))
 
         def _from_hours(h):
             f = float(h)
-            return Prediction(days=int(round(f / 24)), hours=int(round(f)))
+            return int(round(f / 24)), int(round(f))
 
         pred = self.get_prediction(tag)
         if pred is None:
-            return None
-        
+            return None, None
+
         try:
             days = pred.get("predicted_rul_days")
             hours = pred.get("predicted_rul_hours")
@@ -92,19 +95,17 @@ class BatteryStatusUpdater:
                 return _from_hours(m_hours.group(1))
             if _is_number(s):
                 return _from_days(s)
-            return None
+            return None, None
 
-        return None
+        return None, None
 
 
     def get_status_title(self, tag: Tag):
-        remaining_time = self.convert_to_prediction_model(tag)
+        days, hours = self.extract_prediction_values(tag)
 
-        if tag.online_status == OnlineStatus.OFFLINE:
-            status = StatusTitle.OFFLINE
-        elif tag.online_status == OnlineStatus.ONLINE:
-            if remaining_time is not None:
-                if remaining_time.days == 0 and remaining_time.hours <= 24:
+        if tag.online_status == OnlineStatus.ONLINE:
+            if days is not None and hours is not None:
+                if days == 0 and hours <= 24:
                     status = StatusTitle.LOW
                 else:
                     status = StatusTitle.NORMAL
@@ -115,6 +116,8 @@ class BatteryStatusUpdater:
                     status = StatusTitle.NORMAL
                 else:
                     status = StatusTitle.LOW
+        else:
+            status = StatusTitle.OFFLINE
 
         return status
 
@@ -133,16 +136,18 @@ class BatteryStatusUpdater:
         """
         Updates BatteryStatus entries based on **current/latest** Tag data.
         """
-        for tag in self.tags:
+        tags = Tag.objects.all()
+        for tag in tags:
             node_address = tag.node_address
             status = self.get_status_title(tag)
-            prediction = self.convert_to_prediction_model(tag)
+            days, hours = self.extract_prediction_values(tag)
             battery_percentage = self.calculate_status_based_on_voltage(float(tag.voltage)) if tag.voltage is not None else 0
             BatteryStatus.objects.update_or_create(
                 node_address=node_address,
                 defaults={
                     "status_title": status,
-                    "prediction": prediction,
+                    "prediction_days": days if days is not None else 0,
+                    "prediction_hours": hours if hours is not None else 0,
                     "battery_percentage": battery_percentage,
                 },
             )

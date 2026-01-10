@@ -41,3 +41,10 @@
 
 # Angular local cache
 .angular
+
+# Celery runtime files
+backend/celerybeat-schedule-**
+backend/celerybeat-schedule**
+backend/celerybeat.pid
+backend/celery-worker.pid
+backend/celery*.db

@@ -11,6 +11,8 @@ requests = "*"
 black = "*"
 django = "*"
 django-filter = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 pylint = "*"

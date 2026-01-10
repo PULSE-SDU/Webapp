@@ -4,6 +4,8 @@ import urllib.request
 import urllib.error
 import json
 from typing import Dict, List, Optional
+
+import requests
 from app.settings import WNT_MOCK_API_URL
 
 
@@ -11,14 +13,10 @@ from app.settings import WNT_MOCK_API_URL
 class WNTAPIClient:
     """Client for fetching data from WNT_API_mock service."""
 
-    def __init__(self, base_url: str = "http://localhost:8001"):
+    def __init__(self):
         """
         Initialize the WNT API client.
-
-        Args:
-            base_url: Base URL of the WNT_API_mock service
         """
-        self.base_url = base_url.rstrip("/")
 
     def get_all_latest_nodes(self) -> Optional[List[Dict]]:
         """
@@ -103,4 +101,24 @@ class WNTAPIClient:
             return None
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON response: {e}")
+            return None
+
+    def get_battery_window(self, tag_id):
+        """
+        Calls the /battery-window endpoint and returns a dict with keys:
+        'readings', 'baselinevoltage', 'cyclestartepoch'.
+        """
+        url = f"{WNT_MOCK_API_URL}/battery-window"
+        params = {"tagid": tag_id}
+        try:
+            response = requests.get(url, params=params, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            return {
+                "readings": data.get("readings", []),
+                "baselinevoltage": data.get("baselinevoltage"),
+                "cyclestartepoch": data.get("cyclestartepoch"),
+            }
+        except Exception as e:
+            print(f"Failed to fetch battery window for tag {tag_id}: {e}")
             return None

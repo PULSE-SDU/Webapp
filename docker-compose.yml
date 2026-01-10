@@ -2,10 +2,35 @@ services:
   backend:
     build: ./backend
     image: pulse-backend-image:latest
-    # depends_on:
-    #   - db
     ports:
       - "8001:8001"
+  
+  celery_worker:
+    build: ./backend
+    container_name: celery_worker
+    command: celery -A app worker --loglevel=info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  celery_beat:
+    build: ./backend
+    container_name: celery_beat
+    command: celery -A app beat --loglevel=info
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
 
   frontend:
     build: ./frontend

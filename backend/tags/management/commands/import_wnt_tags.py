@@ -37,7 +37,7 @@ class Command(BaseCommand):
         self.stdout.write(f"Connecting to WNT_API_mock at {api_url}...")
 
         # Initialize client and transformer
-        client = WNTAPIClient(base_url=api_url)
+        client = WNTAPIClient()
         transformer = WNTDataTransformer()
 
         # Fetch data from WNT_API_mock

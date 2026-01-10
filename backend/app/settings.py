@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,6 +33,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Celery Configuration
+
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
+CELERY_TIMEZONE = "Europe/Copenhagen"
+
+CELERY_BEAT_SCHEDULE = {
+    "update-battery-status-every-hour": {
+        "task": "battery_status.tasks.update_battery_status_task",
+        "schedule": crontab(minute=0),
+    },
+}
 
 # Application definition
 
