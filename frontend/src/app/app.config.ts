@@ -1,6 +1,8 @@
 import {
   ApplicationConfig,
   ErrorHandler,
+  inject,
+  provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZoneChangeDetection,
 } from '@angular/core';
@@ -10,6 +12,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpErrorInterceptor } from './core/interceptors/http-error.interceptor';
 import { GlobalErrorHandler } from './core/errors/global-error-handler';
+import { TagStateService } from './state/tag-state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,6 +20,10 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
+    provideAppInitializer(() => {
+      const tagService = inject(TagStateService);
+      return tagService.loadTags();
+    }),
     { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
     { provide: ErrorHandler, useClass: GlobalErrorHandler },
   ],

@@ -165,6 +165,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://github.com",
     "https://raw.githubusercontent.com",
     "http://localhost:4200",
+    "http://127.0.0.1:4200"
 ]
 
 # Allow GitHub Pages subdomains (e.g., https://username.github.io)

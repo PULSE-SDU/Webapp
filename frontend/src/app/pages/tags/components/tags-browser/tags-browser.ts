@@ -49,7 +49,6 @@ export class TagsBrowser implements OnInit {
   ];
 
   ngOnInit() {
-    this.tagState.loadTags();
     this.setPage(this.pageIndex, this.pageSize);
 
     effect(() => {
