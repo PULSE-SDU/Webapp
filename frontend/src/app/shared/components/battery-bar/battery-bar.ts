@@ -13,7 +13,7 @@ export class BatteryBar {
   barWidthPercentage = input<number>();
 
   getStatusColor(): string {
-    const status = this.batteryData()?.status_title;
+    const status = this.batteryData()?.title;
     if (status && StatusColor[status]) {
       return StatusColor[status];
     }
@@ -21,7 +21,7 @@ export class BatteryBar {
   }
 
   getBatteryLevel(): number {
-    const batteryLevel = this.batteryData()?.battery_percentage;
+    const batteryLevel = this.batteryData()?.percentage;
     if (batteryLevel) {
       return batteryLevel;
     }

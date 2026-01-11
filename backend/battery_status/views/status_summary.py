@@ -30,7 +30,7 @@ class StatusSummaryList(APIView):
             start_date = timezone.now().date() - timedelta(days=days)
             queryset = queryset.filter(date__gte=start_date)
 
-        queryset = queryset.order_by("-date", "status_title")
+        queryset = queryset.order_by("-date", "title")
 
         serializer = StatusSummarySerializer(queryset, many=True)
         return Response(serializer.data)
@@ -48,7 +48,7 @@ class LatestStatusSummary(APIView):
             return Response([])  # No data available
 
         summaries = StatusSummary.objects.filter(date=latest_entry.date).order_by(
-            "status_title"
+            "title"
         )
         serializer = StatusSummarySerializer(summaries, many=True)
 

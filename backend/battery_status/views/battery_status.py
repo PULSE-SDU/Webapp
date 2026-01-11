@@ -20,15 +20,15 @@ class BatteryStatusViewSet(viewsets.ReadOnlyModelViewSet):
         Only accepts status_title values within the StatusTitle enum.
         """
 
-        status_title = request.query_params.get("status")
-        if status_title not in StatusTitle.values:
+        title = request.query_params.get("status")
+        if title not in StatusTitle.values:
             return Response(
                 {
-                    "detail": f"Invalid status_title. Must be one of: {list(StatusTitle.values)}"
+                    "detail": f"Invalid status title. Must be one of: {list(StatusTitle.values)}"
                 },
                 status=400,
             )
-        addresses = BatteryStatus.objects.filter(status_title=status_title).values_list(
+        addresses = BatteryStatus.objects.filter(title=title).values_list(
             "node_address", flat=True
         )
         return Response(list(addresses))

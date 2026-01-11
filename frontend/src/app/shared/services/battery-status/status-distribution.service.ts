@@ -19,7 +19,7 @@ export class StatusDistributionService {
   getStatusDistribution(): Observable<{ data: BatteryStatusCount[] }> {
     // Mock data matching the specification
     const mockData: BatteryStatusCount[] = [
-      { status: BatteryStatusTitle.GOOD, count: 6 },
+      { status: BatteryStatusTitle.NORMAL, count: 6 },
       { status: BatteryStatusTitle.LOW, count: 2 },
       { status: BatteryStatusTitle.OFFLINE, count: 3 },
     ];

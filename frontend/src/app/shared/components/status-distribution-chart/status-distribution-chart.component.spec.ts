@@ -18,7 +18,7 @@ describe('StatusDistributionChartComponent', () => {
     mockStatusDistributionService.getStatusDistribution.and.returnValue(
       of({
         data: [
-          { status: BatteryStatusTitle.GOOD, count: 6 },
+          { status: BatteryStatusTitle.NORMAL, count: 6 },
           { status: BatteryStatusTitle.LOW, count: 2 },
           { status: BatteryStatusTitle.OFFLINE, count: 3 },
         ],
@@ -57,7 +57,7 @@ describe('StatusDistributionChartComponent', () => {
   it('should set correct colors', () => {
     const chartOptions = component.chartOptions();
     expect(chartOptions?.colors).toEqual([
-      StatusColor[BatteryStatusTitle.GOOD],
+      StatusColor[BatteryStatusTitle.NORMAL],
       StatusColor[BatteryStatusTitle.LOW],
       StatusColor[BatteryStatusTitle.OFFLINE],
     ]);

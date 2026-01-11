@@ -10,13 +10,13 @@
           <div class="equipment-left">
             <div class="equipment-name-row">
               <span class="equipment-name">{{ item.node_address }}</span>
-              <app-status-chip [batteryStatus]="item.batteryStatus?.status_title"></app-status-chip>
+              <app-status-chip [batteryStatus]="item.battery_status?.title"></app-status-chip>
             </div>
           </div>
           <div class="equipment-right">
-            <div class="battery-percentage">{{ item.batteryStatus?.battery_percentage }}%</div>
-            @if (item.batteryStatus?.prediction_days || item.batteryStatus?.prediction_days) {
-              <div class="days-left"><p>{{ (item.batteryStatus?.prediction_days ?? 0) }}d {{ (item.batteryStatus?.prediction_hours ?? 0) }}h</p></div>
+            <div class="battery-percentage">{{ item.battery_status?.percentage }}%</div>
+            @if (item.battery_status?.prediction_days || item.battery_status?.prediction_days) {
+              <div class="days-left"><p>{{ (item.battery_status?.prediction_days ?? 0) }}d {{ (item.battery_status?.prediction_hours ?? 0) }}h</p></div>
             }
           </div>
         </div>

@@ -14,7 +14,7 @@ import { BatteryStatus } from '../../models/battery-status.model';
 })
 export class StatusDistribution {
   statusData = input<BatteryStatusCount[]>([
-    { status: BatteryStatusTitle.GOOD, count: 6 },
+    { status: BatteryStatusTitle.NORMAL, count: 6 },
     { status: BatteryStatusTitle.LOW, count: 2 },
     { status: BatteryStatusTitle.OFFLINE, count: 3 },
   ]);
@@ -35,8 +35,8 @@ export class StatusDistribution {
   /** Map BatteryStatusCount → Tag interface used by BatteryBar */
   toBatteryStatus(item: BatteryStatusCount): BatteryStatus {
     return {
-      status_title: item.status,
-      battery_percentage: this.getCountPercentage(item.count),
+      title: item.status,
+      percentage: this.getCountPercentage(item.count),
     };
   }
 }

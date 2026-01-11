@@ -36,9 +36,9 @@ export class TagStateService {
     tag.node_address === nodeAddress
     ? {
       ...tag,
-      batteryStatus: {
-        status_title: status.status_title,
-        battery_percentage: status.battery_percentage,
+      battery_status: {
+        title: status.title,
+        percentage: status.percentage,
         prediction_days: status.prediction_days,
         prediction_hours: status.prediction_hours,
       } as BatteryStatus

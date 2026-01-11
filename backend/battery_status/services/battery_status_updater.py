@@ -118,17 +118,17 @@ class BatteryStatusUpdater:
         if tag.online_status == OnlineStatus.ONLINE:
             if days is not None and hours is not None:
                 if days == 0 and hours <= 24:
-                    status = StatusTitle.LOW
+                    title = StatusTitle.LOW
                 else:
-                    status = StatusTitle.NORMAL
+                    title = StatusTitle.NORMAL
             # Fallback to voltage
             else:
                 voltage_pct = self.get_battery_percentage(float(tag.voltage))
-                status = StatusTitle.NORMAL if voltage_pct > 20 else StatusTitle.LOW
+                title = StatusTitle.NORMAL if voltage_pct > 20 else StatusTitle.LOW
         else:
-            status = StatusTitle.OFFLINE
+            title = StatusTitle.OFFLINE
 
-        return status
+        return title
 
     def get_battery_percentage(self, voltage: float):
         min_v, max_v = 2.6, 3.1
@@ -160,8 +160,8 @@ class BatteryStatusUpdater:
                 logger.debug(f"Processing tag {node_address}")
 
                 days, hours = self.extract_prediction_values(tag)
-                status = self.get_status_title(tag, predicted_days=days, predicted_hours=hours)
-                battery_percentage = (
+                title = self.get_status_title(tag, predicted_days=days, predicted_hours=hours)
+                percentage = (
                     self.get_battery_percentage(float(tag.voltage))
                     if tag.voltage is not None
                     else 0
@@ -169,14 +169,14 @@ class BatteryStatusUpdater:
 
                 existing = existing_statuses.get(node_address)
                 if existing:
-                    existing = self.update_existing_status(existing, status, days, hours, battery_percentage)
+                    existing = self.update_existing_status(existing, title, days, hours, percentage)
                     to_update.append(existing)
                 else:
-                    status = self.create_battery_status(node_address, status, days, hours, battery_percentage)
+                    status = self.create_battery_status(node_address, title, days, hours, percentage)
                     to_create.append(status)
 
                 logger.debug(
-                    f"Prepared battery status for tag {node_address}: {status}, {days}d/{hours}h, {battery_percentage}%"
+                    f"Prepared battery status for tag {node_address}: {title}, {days}d/{hours}h, {percentage}%"
                 )
             except Exception as e:
                 error_count += 1
@@ -190,7 +190,7 @@ class BatteryStatusUpdater:
         if to_update:
             BatteryStatus.objects.bulk_update(
                 to_update,
-                ["status_title", "prediction_days", "prediction_hours", "battery_percentage"],
+                ["title", "prediction_days", "prediction_hours", "percentage"],
                 batch_size=500,
             )
 
@@ -221,34 +221,34 @@ class BatteryStatusUpdater:
     def get_existing_statuses(self):
         existing_statuses = {}
         for status in (
-            BatteryStatus.objects.only("id", "node_address", "status_title", "prediction_days", "prediction_hours", "battery_percentage")
+            BatteryStatus.objects.only("id", "node_address", "title", "prediction_days", "prediction_hours", "percentage")
             .order_by("node_address", "-id")
         ):
             if status.node_address not in existing_statuses:
                 existing_statuses[status.node_address] = status
         return existing_statuses
     
-    def create_battery_status(self, node_address, status_title, days, hours, percentage):
+    def create_battery_status(self, node_address, title, days, hours, percentage):
         return BatteryStatus(
             node_address=node_address,
-            status_title=status_title,
+            title=title,
             prediction_days=days if days is not None else 0,
             prediction_hours=hours if hours is not None else 0,
-            battery_percentage=percentage,
+            percentage=percentage,
         )
     
-    def update_existing_status(self, existing: BatteryStatus, status, days, hours, battery_percentage) -> BatteryStatus:
-        existing.status_title = status
-        existing.prediction_days = days
-        existing.prediction_hours = hours
-        existing.battery_percentage = battery_percentage
+    def update_existing_status(self, existing: BatteryStatus, title, days, hours, percentage) -> BatteryStatus:
+        existing.title = title
+        existing.prediction_days = days if days is not None else 0
+        existing.prediction_hours = hours if hours is not None else 0
+        existing.percentage = percentage
         return existing
 
-    def create_new_status(self, node_address, status, days, hours, battery_percentage) -> BatteryStatus:
+    def create_new_status(self, node_address, title, days, hours, percentage) -> BatteryStatus:
         return BatteryStatus(
             node_address=node_address,
-            status_title=status,
+            title=title,
             prediction_days=days,
             prediction_hours=hours,
-            battery_percentage=battery_percentage,
+            percentage=percentage,
         )

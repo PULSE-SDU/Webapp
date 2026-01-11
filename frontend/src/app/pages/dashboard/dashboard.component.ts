@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { EquipmentAttentionComponent } from '../../shared/components/equipment-attention/equipment-attention.component';
 import { InfoCards } from '../../shared/components/info-cards/info-cards';
 import { StatusDistribution } from '../../shared/components/status-distribution/status-distribution';
@@ -11,7 +11,7 @@ import { StatusColor } from '../../shared/models/battery-status-color';
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, EquipmentAttentionComponent, InfoCards, StatusDistribution],
+  imports: [EquipmentAttentionComponent, InfoCards, StatusDistribution],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -23,16 +23,16 @@ export class DashboardComponent {
   }
 
   get depletingStatus(): number {
-    return this.equipmentData.filter((item) => item.batteryStatus?.status_title === BatteryStatusTitle.LOW).length;
+    return this.equipmentData.filter((item) => item.battery_status?.title === BatteryStatusTitle.LOW).length;
   }
 
   get deadStatus(): number {
-    return this.equipmentData.filter((item) => item.batteryStatus?.status_title === BatteryStatusTitle.OFFLINE).length;
+    return this.equipmentData.filter((item) => item.battery_status?.title === BatteryStatusTitle.OFFLINE).length;
   }
 
   get averageBattery(): number {
     const validBatteryLevels = this.equipmentData
-      .map((item) => item.batteryStatus?.battery_percentage)
+      .map((item) => item.battery_status?.percentage)
       .filter((level): level is number => level !== undefined);
 
     if (validBatteryLevels.length === 0) return 0;
@@ -77,18 +77,18 @@ export class DashboardComponent {
 
   get equipmentNeedingAttention(): Tag[] {
     return this.equipmentData
-      .filter((item) => item.batteryStatus?.status_title === BatteryStatusTitle.OFFLINE || item.batteryStatus?.status_title === BatteryStatusTitle.LOW)
+      .filter((item) => item.battery_status?.title === BatteryStatusTitle.OFFLINE || item.battery_status?.title === BatteryStatusTitle.LOW)
       .sort((a, b) => {
         // Sort by prediction (extract days from string), then by batteryLevel (ascending)
 
-        const aDays = a.batteryStatus?.prediction_days;
-        const bDays = b.batteryStatus?.prediction_days;
+        const aDays = a.battery_status?.prediction_days;
+        const bDays = b.battery_status?.prediction_days;
         if (aDays && bDays) {
           if (aDays !== bDays) {
             return aDays - bDays;
           }
         }
-        return (a.batteryStatus?.battery_percentage ?? 0) - (b.batteryStatus?.battery_percentage ?? 0);
+        return (a.battery_status?.percentage ?? 0) - (b.battery_status?.percentage ?? 0);
       });
   }
 }

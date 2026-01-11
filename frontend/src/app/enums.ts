@@ -4,7 +4,7 @@ export enum FilterType {
 }
 
 export enum BatteryStatusTitle {
-  GOOD = 'Good',
+  NORMAL = 'Normal',
   LOW = 'Low',
   OFFLINE = 'Offline',
 }
