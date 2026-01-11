@@ -9,7 +9,7 @@ import {
   inject,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { StatusDistributionService } from '../../services/battery-status/status-distribution.service';
 import { StatusColor } from '../../models/battery-status-color';
 import ApexCharts from 'apexcharts';
@@ -21,7 +21,7 @@ import type { ApexOptions } from 'apexcharts';
  */
 @Component({
   selector: 'app-status-distribution-chart',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './status-distribution-chart.component.html',
   styleUrl: './status-distribution-chart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

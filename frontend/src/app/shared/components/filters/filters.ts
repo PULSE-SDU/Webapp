@@ -1,5 +1,5 @@
 import { Component, OnInit, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FilterDescriptor, FilterValue } from './models/filter-descriptor';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterType } from '../../../enums';
@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-filters',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -22,8 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatOptionModule,
     MatButtonModule,
     MatIconModule,
-    FormsModule,
-  ],
+    FormsModule
+],
   templateUrl: './filters.html',
   styleUrls: ['./filters.scss'],
 })

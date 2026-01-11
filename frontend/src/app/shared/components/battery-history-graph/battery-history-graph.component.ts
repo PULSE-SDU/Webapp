@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
@@ -30,7 +30,7 @@ export interface ChartOptions {
 @Component({
   standalone: true,
   selector: 'app-battery-history-graph',
-  imports: [CommonModule, MatCardModule, NgApexchartsModule],
+  imports: [MatCardModule, NgApexchartsModule],
   templateUrl: './battery-history-graph.component.html',
   styleUrl: './battery-history-graph.component.scss',
 })
