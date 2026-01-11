@@ -3,7 +3,7 @@
     [formGroup]="filtersFormGroup"
     class="filters flex flex-1 flex-row flex-wrap gap-4 items-start"
   >
-    @for (filter of filters(); track filter) {
+    @for (filter of filters(); track filter.key) {
       @switch (filter.type) {
         @case (FilterType.SELECT) {
           <mat-form-field appearance="fill" class="flex-1">
@@ -27,7 +27,7 @@
         }
       }
     }
-    <button matButton="outlined" class="self-center min-w-[150px]" (click)="clearFilters()">
+    <button type="button" matButton="outlined" class="self-center min-w-[150px]" (click)="clearFilters()">
       Clear Filters
     </button>
   </form>

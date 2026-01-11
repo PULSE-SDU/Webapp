@@ -31,7 +31,7 @@ export class Filters implements OnInit {
   public filtersFormGroup: FormGroup = new FormGroup({});
 
   public filters = input<FilterDescriptor[]>([]);
-  public updateFilter = output<FilterValue>();
+  public updateFilter = output<Record<string, FilterValue>>();
 
   ngOnInit() {
     const formControls: Record<string, FormControl> = {};
@@ -42,7 +42,7 @@ export class Filters implements OnInit {
     }
     this.filtersFormGroup = new FormGroup(formControls);
 
-    this.filtersFormGroup.valueChanges.subscribe((values: FilterValue) => {
+    this.filtersFormGroup.valueChanges.subscribe(values => {
       this.updateFilter.emit(values);
     });
   }

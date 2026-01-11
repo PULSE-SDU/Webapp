@@ -4,9 +4,8 @@ import { NotificationService } from '../notification.service';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { catchError } from 'rxjs/operators';
-import { BatteryStatusTitle } from '../../../enums';
-import { BatteryStatusCount } from '../../models/battery-status-count';
 import { BatteryStatus } from '../../models/battery-status.model';
+import { FilterValue } from '../../components/filters/models/filter-descriptor';
 
 @Injectable({
   providedIn: 'root',
@@ -24,22 +23,34 @@ export class CurrentStatusService {
     ));
   }
 
-  filterTagsByStatus(statusTitle: BatteryStatusTitle): Observable<string[]> {
-    const params = new HttpParams().set('status', statusTitle as unknown as string);
-    return this.http.get<string[]>(`${environment.apiUrl}/battery-status`, { params }).pipe(
-      catchError((error) => {
-        this.notificationService.showError('Failed to filter tags by status.');
-        return throwError(() => error);
+  filterTags(statusTitle?: FilterValue, predictionDays?: FilterValue): Observable<string[]> {
+    let params = new HttpParams();
+    if (statusTitle && statusTitle.length > 0) {
+      const statusTitleParam = Array.isArray(statusTitle) ? statusTitle.join(',') : statusTitle;
+      params = params.set('title', statusTitleParam);
+    }
+    if (predictionDays) {
+      if (Array.isArray(predictionDays)) {
+        params = params.set('prediction_days', predictionDays.join(','));
+      } else {
+        params = params.set('prediction_days__gte', predictionDays.toString());
       }
-    ));
+    }
+    return this.http.get<string[]>(`${environment.apiUrl}/battery-status/`, { params }).pipe(
+      catchError((error) => {
+        this.notificationService.showError('Failed to filter battery status.');
+        return throwError(() => error);
+      })
+    );
   }
 
-  getBatteryStatusCount(): Observable<BatteryStatusCount> {
-    return this.http.get<BatteryStatusCount>(`${environment.apiUrl}/battery-status/count-by-status`).pipe(
+  searchTags(searchValue: FilterValue): Observable<string[]> {
+    const search = searchValue.toString();
+    return this.http.get<string[]>(`${environment.apiUrl}/battery-status/`, { params: { search } }).pipe(
       catchError((error) => {
-        this.notificationService.showError('Failed to get count by status.');
+        this.notificationService.showError('Could not find battery status for the search term.');
         return throwError(() => error);
-      }
-    ));
+      })
+    );
   }
 }

@@ -21,13 +21,5 @@ export class TagService {
       })
     );
   }
-
-  getTagDetails(nodeAddress: string): Observable<Tag> {
-    return this.http.get<Tag>(`${environment.apiUrl}/tags/${nodeAddress}`).pipe(
-      catchError((error) => {
-        this.notificationService.showError('Failed to fetch tag details.');
-        return throwError(() => error);
-      }),
-    );
-  }
 }
+

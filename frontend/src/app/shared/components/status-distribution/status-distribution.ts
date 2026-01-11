@@ -35,6 +35,8 @@ export class StatusDistribution {
   /** Map BatteryStatusCount → Tag interface used by BatteryBar */
   toBatteryStatus(item: BatteryStatusCount): BatteryStatus {
     return {
+      id: 0,
+      node_address: '',
       title: item.status,
       percentage: this.getCountPercentage(item.count),
     };
