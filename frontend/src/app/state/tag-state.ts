@@ -19,7 +19,9 @@ export class TagStateService {
       this.tagService.getTags().subscribe(tags => {
         const baseTags: Tag[] = tags.map(t => ({
           node_address: t.node_address,
-          voltage: t.voltage
+          voltage: t.voltage,
+          created_at: t.created_at,
+          updated_at: t.updated_at,
         }));
 
         this._tags.set(baseTags);

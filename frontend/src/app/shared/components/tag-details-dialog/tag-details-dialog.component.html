@@ -68,7 +68,7 @@
   </div>
 
   <!-- Technical Properties Section -->
-  @if (tag.voltage) {
+  @if (tag.voltage && tag.created_at && tag.updated_at) {
     <div class="dialog-section">
       <div class="section-label">Technical Properties</div>
       <div class="technical-properties">
@@ -77,7 +77,18 @@
           <div class="property-label">Voltage</div>
           <div class="property-value">{{ tag.voltage }}</div>
         </div>
+        <div class="property-card">
+          <mat-icon class="property-icon">date_range</mat-icon>
+          <div class="property-label">Created At</div>
+          <div class="text-[16px] font-bold text-gray-800">{{ tag.created_at | date: 'medium' }}</div>
+        </div>
+        <div class="property-card">
+          <mat-icon class="property-icon">date_range</mat-icon>
+          <div class="property-label">Updated At</div>
+          <div class="text-[16px] font-bold text-gray-800">{{ tag.updated_at | date: 'medium' }}</div>
+        </div>
       </div>
     </div>
   }
+
 </div>
