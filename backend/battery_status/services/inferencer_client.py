@@ -11,13 +11,22 @@ class InferencerClient:
 
     def is_available(self) -> bool:
         """
-        Check if the inference service is reachable.
+        Check if the inference service is reachable and model is loaded using /health endpoint.
+        Returns True if status is ok and model_loaded is True, False otherwise.
         """
+        url = f"{self.base_url}/health"
+        req = urllib.request.Request(
+            url,
+            headers={"Content-Type": "application/json"},
+            method="GET",
+        )
         try:
-            req = urllib.request.Request(self.base_url, method="HEAD")
-            with urllib.request.urlopen(req, timeout=3) as resp:
-                return True
-        except (urllib.error.URLError, urllib.error.HTTPError, socket.timeout, ConnectionRefusedError, OSError):
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+                return (
+                    result.get("status") == "ok" and result.get("model_loaded") is True
+                )
+        except (urllib.error.URLError, socket.timeout, ConnectionError, ValueError):
             return False
 
     def predict(self, payload: Dict[str, Any]) -> Dict[str, Any]:

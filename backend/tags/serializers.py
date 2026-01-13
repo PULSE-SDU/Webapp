@@ -8,7 +8,7 @@ class TagSerializer(serializers.ModelSerializer):
     """
     Serializer for Tag model that converts between snake_case and camelCase.
     """
+
     class Meta:
         model = Tag
         fields = "__all__"
-

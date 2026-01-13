@@ -4,6 +4,9 @@ import logging
 from tags.services.wnt_api_client import WNTAPIClient
 from tags.models import Tag, OnlineStatus
 from .inferencer_client import InferencerClient
+import time
+import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 logger = logging.getLogger(__name__)
 
@@ -19,44 +22,71 @@ class BatteryStatusUpdater:
     def __init__(self):
         self.skip_predictions = False
 
-    def get_prediction(self, tag: Tag):
+    def get_prediction(self, tag: Tag, max_retries=3, retry_delay=2):
         """
-        Retrieves predictions for all tags from the inference service.
+        Retrieves predictions for all tags from the inference service, with retry on failure.
         """
-        # Skip if inference service is unavailable
         if self.skip_predictions:
             return None
-        
         try:
             wnt_tag_id = int(float(tag.node_address))
         except (ValueError, TypeError):
             wnt_tag_id = tag.node_address
-        
-        logger.debug(
-            f"Getting prediction for tag.pk={tag.pk}, tag.node_address={repr(tag.node_address)}, wnt_tag_id={wnt_tag_id}"
-        )
+        for attempt in range(1, max_retries + 1):
+            try:
+                self.wnt_client.get_node_all(tag.node_address)
+                window = self.wnt_client.get_battery_window(wnt_tag_id)
+                if not window or "readings" not in window:
+                    logger.warning(f"No battery window data for tag {tag.node_address}")
+                    return None
+                logger.info(
+                    f"Fetching prediction from inference service for tag {tag.node_address}"
+                )
+                return self.infer_client.predict_from_wnt_window(
+                    tag_id=str(tag.node_address),
+                    wnt_readings=window["readings"],
+                    baseline_voltage=window.get("baselinevoltage", 3.1),
+                    cycle_start_epoch=window.get("cyclestartepoch"),
+                )
+            except (
+                requests.exceptions.RequestException,
+                ConnectionError,
+                TimeoutError,
+            ) as e:
+                if attempt < max_retries:
+                    time.sleep(retry_delay)
+                else:
+                    logger.error(
+                        f"All {max_retries} attempts failed for tag {tag.node_address}",
+                        exc_info=True,
+                    )
+                    return None
+            except Exception as e:
+                logger.error(
+                    f"Inference Error for {tag.node_address}: {e}", exc_info=True
+                )
+                return None
 
-        self.wnt_client.get_node_all(tag.node_address)
-        window = self.wnt_client.get_battery_window(wnt_tag_id)
-        pred = None
-        if not window or "readings" not in window:
-            logger.warning(f"No battery window data for tag {tag.node_address}")
-            return pred
-
-        try:
-            return self.infer_client.predict_from_wnt_window(
-                tag_id=str(tag.node_address),
-                wnt_readings=window["readings"],
-                baseline_voltage=window.get("baselinevoltage", 3.1),
-                cycle_start_epoch=window.get("cyclestartepoch"),
-            )
-        except Exception as e:
-            logger.error(f"Inference Error for {tag.node_address}: {e}", exc_info=True)
-            return None
+    def format_days_hours(self, value, input_type="hours"):
+        """
+        Converts a float value (in hours or days) to (days, hours) tuple.
+        input_type: 'hours' or 'days'.
+        Ensures hours is always 0-23.
+        """
+        if input_type == "days":
+            total_hours = float(value) * 24
+        else:
+            total_hours = float(value)
+        days = int(total_hours // 24)
+        hours = int(round(total_hours % 24))
+        if hours == 24:
+            days += 1
+            hours = 0
+        return days, hours
 
     def extract_prediction_values(self, tag: Tag):
         """
-        Extracts days and hours from prediction data for a tag.
+        Always extracts (days, hours) from predicted_rul_hours if present.
         Returns (days, hours) tuple or (None, None) if unavailable.
         """
 
@@ -67,46 +97,23 @@ class BatteryStatusUpdater:
             except (ValueError, TypeError):
                 return False
 
-        def _from_days(d):
-            f = float(d)
-            return int(round(f)), int(round(f * 24))
-
-        def _from_hours(h):
-            f = float(h)
-            return int(round(f / 24)), int(round(f))
-
         pred = self.get_prediction(tag)
         if pred is None:
             return None, None
 
         try:
-            days = pred.get("predicted_rul_days")
             hours = pred.get("predicted_rul_hours")
-            if days is not None and _is_number(days):
-                return _from_days(days)
             if hours is not None and _is_number(hours):
-                return _from_hours(hours)
-
+                return self.format_days_hours(hours, input_type="hours")
+            days = pred.get("predicted_rul_days")
+            if days is not None and _is_number(days):
+                return self.format_days_hours(days, input_type="days")
             for key in ("remaining_life", "prediction", "result"):
                 val = pred.get(key)
                 if val is not None and _is_number(val):
-                    return _from_days(val)
+                    return self.format_days_hours(val, input_type="days")
         except AttributeError:
             pass
-
-        # Handle different prediction formats (e.g. 5 days)
-        if isinstance(pred, str):
-            s = pred.strip().lower()
-            m_days = re.match(r"^([0-9]+(?:\.[0-9]+)?)\s*days?$", s)
-            if m_days:
-                return _from_days(m_days.group(1))
-            m_hours = re.match(r"^([0-9]+(?:\.[0-9]+)?)\s*hours?$", s)
-            if m_hours:
-                return _from_hours(m_hours.group(1))
-            if _is_number(s):
-                return _from_days(s)
-            return None, None
-
         return None, None
 
     def get_status_title(self, tag: Tag, predicted_days=None, predicted_hours=None):
@@ -139,9 +146,9 @@ class BatteryStatusUpdater:
             calculated_level = max(0, min(100, round(pct)))
         return calculated_level
 
-    def update_battery_status(self):
+    def update_battery_status(self, max_workers=10):
         """
-        Updates BatteryStatus entries based on **current/latest** Tag data.
+        Updates BatteryStatus entries based on **current/latest** Tag data, using parallel processing.
         """
 
         tags_qs = Tag.objects.all()
@@ -153,14 +160,17 @@ class BatteryStatusUpdater:
         to_update = []
         to_create = []
         error_count = 0
+        tags = list(tags_qs.iterator())
 
-        for tag in tags_qs.iterator():
+        def process_tag(tag):
             try:
                 node_address = tag.node_address
                 logger.debug(f"Processing tag {node_address}")
 
                 days, hours = self.extract_prediction_values(tag)
-                title = self.get_status_title(tag, predicted_days=days, predicted_hours=hours)
+                title = self.get_status_title(
+                    tag, predicted_days=days, predicted_hours=hours
+                )
                 percentage = (
                     self.get_battery_percentage(float(tag.voltage))
                     if tag.voltage is not None
@@ -169,21 +179,32 @@ class BatteryStatusUpdater:
 
                 existing = existing_statuses.get(node_address)
                 if existing:
-                    existing = self.update_existing_status(existing, title, days, hours, percentage)
-                    to_update.append(existing)
+                    existing = self.update_existing_status(
+                        existing, title, days, hours, percentage
+                    )
+                    return ("update", existing)
                 else:
-                    status = self.create_battery_status(node_address, title, days, hours, percentage)
-                    to_create.append(status)
-
-                logger.debug(
-                    f"Prepared battery status for tag {node_address}: {title}, {days}d/{hours}h, {percentage}%"
-                )
+                    status = self.create_battery_status(
+                        node_address, title, days, hours, percentage
+                    )
+                    return ("create", status)
             except Exception as e:
-                error_count += 1
                 logger.error(
                     f"Error updating battery status for tag {getattr(tag, 'node_address', 'unknown')}: {e}",
                     exc_info=True,
                 )
+                return ("error", None)
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            futures = {executor.submit(process_tag, tag): tag for tag in tags}
+            for future in as_completed(futures):
+                result_type, status_obj = future.result()
+                if result_type == "update":
+                    to_update.append(status_obj)
+                elif result_type == "create":
+                    to_create.append(status_obj)
+                elif result_type == "error":
+                    error_count += 1
 
         if to_create:
             BatteryStatus.objects.bulk_create(to_create, batch_size=500)
@@ -206,7 +227,6 @@ class BatteryStatusUpdater:
             logger.warning("No tags found in database. Battery status update skipped.")
             return False
 
-        logger.info("Checking inference service availability...")
         if self.infer_client.is_available():
             self.skip_predictions = False
             return True
@@ -217,17 +237,21 @@ class BatteryStatusUpdater:
             )
             self.skip_predictions = True
             return True
-        
+
     def get_existing_statuses(self):
         existing_statuses = {}
-        for status in (
-            BatteryStatus.objects.only("id", "node_address", "title", "prediction_days", "prediction_hours", "percentage")
-            .order_by("node_address", "-id")
-        ):
+        for status in BatteryStatus.objects.only(
+            "id",
+            "node_address",
+            "title",
+            "prediction_days",
+            "prediction_hours",
+            "percentage",
+        ).order_by("node_address", "-id"):
             if status.node_address not in existing_statuses:
                 existing_statuses[status.node_address] = status
         return existing_statuses
-    
+
     def create_battery_status(self, node_address, title, days, hours, percentage):
         return BatteryStatus(
             node_address=node_address,
@@ -236,15 +260,19 @@ class BatteryStatusUpdater:
             prediction_hours=hours if hours is not None else 0,
             percentage=percentage,
         )
-    
-    def update_existing_status(self, existing: BatteryStatus, title, days, hours, percentage) -> BatteryStatus:
+
+    def update_existing_status(
+        self, existing: BatteryStatus, title, days, hours, percentage
+    ) -> BatteryStatus:
         existing.title = title
         existing.prediction_days = days if days is not None else 0
         existing.prediction_hours = hours if hours is not None else 0
         existing.percentage = percentage
         return existing
 
-    def create_new_status(self, node_address, title, days, hours, percentage) -> BatteryStatus:
+    def create_new_status(
+        self, node_address, title, days, hours, percentage
+    ) -> BatteryStatus:
         return BatteryStatus(
             node_address=node_address,
             title=title,
