@@ -45,7 +45,6 @@ class Tag(models.Model):
 
     objects = TagManager()
 
-    tag_id = models.AutoField(primary_key=True)
     node_address = models.CharField(max_length=100, unique=True, db_index=True)
     online_status = models.CharField(
         max_length=50, choices=OnlineStatus.choices, blank=True, null=True

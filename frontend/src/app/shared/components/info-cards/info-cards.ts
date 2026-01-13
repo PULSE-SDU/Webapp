@@ -1,10 +1,9 @@
 import { Component, input } from '@angular/core';
 import { InfoCard } from './models/info-card.model';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-info-cards',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './info-cards.html',
   styleUrl: './info-cards.scss',
 })

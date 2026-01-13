@@ -1,5 +1,5 @@
 import { Component, OnInit, input, output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FilterDescriptor, FilterValue } from './models/filter-descriptor';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FilterType } from '../../../enums';
@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-filters',
   standalone: true,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -32,7 +31,7 @@ export class Filters implements OnInit {
   public filtersFormGroup: FormGroup = new FormGroup({});
 
   public filters = input<FilterDescriptor[]>([]);
-  public updateFilter = output<FilterValue>();
+  public updateFilter = output<Record<string, FilterValue>>();
 
   ngOnInit() {
     const formControls: Record<string, FormControl> = {};
@@ -43,7 +42,7 @@ export class Filters implements OnInit {
     }
     this.filtersFormGroup = new FormGroup(formControls);
 
-    this.filtersFormGroup.valueChanges.subscribe((values: FilterValue) => {
+    this.filtersFormGroup.valueChanges.subscribe((values) => {
       this.updateFilter.emit(values);
     });
   }

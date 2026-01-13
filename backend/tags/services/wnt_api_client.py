@@ -36,7 +36,7 @@ class WNTAPIClient:
             print(f"Error decoding JSON response: {e}")
             return None
 
-    def get_node_latest(self, node_address) -> Optional[Dict]:
+    def get_node_latest(self, node_address: str) -> Optional[Dict]:
         """
         Fetch the latest measurement for a specific node.
 

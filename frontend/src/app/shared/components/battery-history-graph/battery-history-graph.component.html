@@ -2,7 +2,7 @@
   <mat-card-header class="card-header">
     <mat-card-title class="card-title">Battery History</mat-card-title>
     <mat-card-subtitle class="card-subtitle">
-      Current: {{ currentBatteryPercentage }}%
+      Current: {{ currentStatusDistribution()?.average_percentage }}%
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content class="card-content">

@@ -1,12 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Filters } from '../../../../shared/components/filters/filters';
 import { TagsList } from '../tags-list/tags-list';
 import { Tag } from '../../../../shared/models/tag.model';
-import { FilterType, BatteryStatus } from '../../../../enums';
 import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { FilterDescriptor } from '../../../../shared/components/filters/models/filter-descriptor';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { TagStateService } from '../../../../state/tag-state';
+import { BatteryStatusTitle, FilterType } from '../../../../enums';
+import {
+  FilterDescriptor,
+  FilterValue,
+} from '../../../../shared/components/filters/models/filter-descriptor';
+import { CurrentStatusService } from '../../../../shared/services/battery-status/current-status.service';
+import { PredictionFilterMap, PredictionFilterOption } from '../../models/prediction-filter-values';
 
 @Component({
   standalone: true,
@@ -15,8 +21,18 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   templateUrl: './tags-browser.html',
   styleUrl: './tags-browser.scss',
 })
-export class TagsBrowser {
+export class TagsBrowser implements OnInit {
   private dialog = inject(MatDialog);
+  private tagState = inject(TagStateService);
+  private batteryStatusService = inject(CurrentStatusService);
+
+  tags = this.tagState.tags;
+  length = 0;
+  pageSize = 10;
+  pageIndex = 0;
+
+  pagedTags: Tag[] = [];
+  filteredTags: Tag[] = [];
 
   filters: FilterDescriptor[] = [
     {
@@ -25,99 +41,30 @@ export class TagsBrowser {
       placeholder: 'Search tags...',
     },
     {
-      key: 'status',
+      key: 'title',
       type: FilterType.SELECT,
       placeholder: 'All statuses',
-      options: Object.values(BatteryStatus),
+      options: Object.values(BatteryStatusTitle),
       multiple: true,
     },
     {
-      key: 'prediction',
+      key: 'prediction_day',
       type: FilterType.SELECT,
       placeholder: 'Prediction',
-      options: ['Less than 7 days', '7-30 days', 'More than 30 days'],
+      options: Object.keys(PredictionFilterMap),
     },
   ];
 
-  tags: Tag[] = [
-    {
-      tagId: '1',
-      batteryLevel: 100,
-      status: BatteryStatus.GOOD,
-      prediction: '30 days left',
-      voltage: 3,
-    },
-    {
-      tagId: '2',
-      batteryLevel: 30,
-      status: BatteryStatus.LOW,
-      prediction: '15 days left',
-      voltage: 2.5,
-    },
-    {
-      tagId: '3',
-      batteryLevel: 10,
-      status: BatteryStatus.OFFLINE,
-      prediction: '5 days left',
-      voltage: 1.5,
-    },
-    {
-      tagId: '4',
-      batteryLevel: 95,
-      status: BatteryStatus.GOOD,
-      prediction: '45 days left',
-      voltage: 3.2,
-    },
-    {
-      tagId: '5',
-      batteryLevel: 20,
-      status: BatteryStatus.LOW,
-      prediction: '20 days left',
-      voltage: 2.9,
-    },
-    {
-      tagId: '6',
-      batteryLevel: 0.4,
-      status: BatteryStatus.OFFLINE,
-      prediction: '12 days left',
-      voltage: 2.6,
-    },
-    {
-      tagId: '7',
-      batteryLevel: 95,
-      status: BatteryStatus.GOOD,
-      prediction: '60 days left',
-      voltage: 3.3,
-    },
-    {
-      tagId: '8',
-      batteryLevel: 0.12,
-      status: BatteryStatus.OFFLINE,
-      prediction: '3 days left',
-      voltage: 1.4,
-    },
-    {
-      tagId: '9',
-      batteryLevel: 0.33,
-      status: BatteryStatus.OFFLINE,
-      prediction: '7 days left',
-      voltage: 1.8,
-    },
-  ];
-
-  length = this.tags.length;
-
-  // tags that are actually shown in the list
-  pagedTags: Tag[] = [];
-
-  constructor() {
-    this.setPage(0, 10);
+  ngOnInit() {
+    this.filteredTags = this.tags();
+    this.length = this.filteredTags.length;
+    this.setPage(this.pageIndex, this.pageSize);
   }
 
   setPage(pageIndex: number, pageSize: number) {
     const start = pageIndex * pageSize;
     const end = start + pageSize;
-    this.pagedTags = this.tags.slice(start, end);
+    this.pagedTags = this.filteredTags.slice(start, end);
   }
 
   onPage(event: { pageIndex: number; pageSize: number }) {
@@ -131,5 +78,52 @@ export class TagsBrowser {
       height: '90vh',
       data: tag,
     });
+  }
+
+  updateFilter(values: Record<string, unknown>) {
+    this.filters = this.filters.map((f) => ({
+      ...f,
+      value: values[f.key] as FilterValue,
+    }));
+
+    const searchValue = this.filters.find((f) => f.key === 'search')?.value;
+    const titleValue = this.filters.find((f) => f.key === 'title')?.value;
+    let predictionValue = this.filters.find((f) => f.key === 'prediction_day')?.value;
+
+    if (predictionValue && (predictionValue as string).length !== 0) {
+      predictionValue = this.mapPredictionFilter(predictionValue as string);
+    } else {
+      predictionValue = undefined;
+    }
+
+    this.batteryStatusService
+      .filterTags(titleValue, predictionValue)
+      .subscribe((node_addresses) => {
+        this.filteredTags = this.tags().filter((tag) =>
+          node_addresses.some((node_address) => node_address === tag.node_address),
+        );
+
+        if (searchValue && (searchValue as string).length !== 0) {
+          this.batteryStatusService
+            .searchTags(searchValue as string)
+            .subscribe((node_addresses) => {
+              this.filteredTags = this.filteredTags.filter((tag) =>
+                node_addresses.some((node_address) => node_address === tag.node_address),
+              );
+              this.setPage(this.pageIndex, this.pageSize);
+              this.length = this.filteredTags.length;
+            });
+        } else {
+          this.setPage(this.pageIndex, this.pageSize);
+          this.length = this.filteredTags.length;
+        }
+      });
+  }
+
+  private mapPredictionFilter(value: string): string[] | string | undefined {
+    if (value in PredictionFilterMap) {
+      return PredictionFilterMap[value as PredictionFilterOption];
+    }
+    return value && value.length !== 0 ? value : undefined;
   }
 }

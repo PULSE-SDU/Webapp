@@ -3,8 +3,8 @@ export enum FilterType {
   SEARCH = 'search',
 }
 
-export enum BatteryStatus {
-  GOOD = 'Good',
+export enum BatteryStatusTitle {
+  NORMAL = 'Normal',
   LOW = 'Low',
   OFFLINE = 'Offline',
 }

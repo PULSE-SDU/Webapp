@@ -16,7 +16,6 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):  # pylint: disable=too-many-anc
     queryset = Tag.objects.all()  # pylint: disable=no-member
     serializer_class = TagSerializer
     lookup_field = "node_address"
-    filterset_fields = ["voltage"]
-    search_fields = ["node_address", "voltage"]
+    search_fields = ["voltage"]
 
     wnt_client = WNTAPIClient()

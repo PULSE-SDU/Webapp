@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'app-header',
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, MatTabsModule],
+  imports: [RouterModule, MatToolbarModule, MatIconModule, MatTabsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })

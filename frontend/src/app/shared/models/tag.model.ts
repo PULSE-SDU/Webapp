@@ -1,9 +1,9 @@
-import { BatteryStatus } from '../../enums';
+import { BatteryStatus } from './battery-status.model';
 
 export interface Tag {
-  tagId: string;
-  batteryLevel?: number;
-  status: BatteryStatus;
-  prediction?: string;
-  voltage?: number;
+  node_address: string;
+  voltage: number;
+  created_at?: string;
+  updated_at?: string;
+  battery_status?: BatteryStatus;
 }

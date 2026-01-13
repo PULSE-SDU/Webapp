@@ -1,19 +1,21 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   signal,
   ViewChild,
   ElementRef,
-  AfterViewInit,
   inject,
   ChangeDetectorRef,
+  input,
+  effect,
+  AfterViewInit, // <-- add this
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { StatusDistributionService } from '../../services/status-distribution.service';
+
 import { StatusColor } from '../../models/battery-status-color';
 import ApexCharts from 'apexcharts';
 import type { ApexOptions } from 'apexcharts';
+import { Summary } from '../../models/summary.model';
+import { BatteryStatusTitle } from '../../../enums';
 
 /**
  * Component that displays equipment status distribution as a pie chart.
@@ -21,93 +23,93 @@ import type { ApexOptions } from 'apexcharts';
  */
 @Component({
   selector: 'app-status-distribution-chart',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './status-distribution-chart.component.html',
   styleUrl: './status-distribution-chart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StatusDistributionChartComponent implements OnInit, AfterViewInit {
+export class StatusDistributionChartComponent implements AfterViewInit {
   @ViewChild('chartElement', { static: false }) chartElement?: ElementRef;
 
-  private readonly statusDistributionService = inject(StatusDistributionService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   public chartOptions = signal<ApexOptions | null>(null);
+  currentStatusDistribution = input<Summary>();
 
   private chart?: ApexCharts;
   private viewInitialized = false;
 
-  ngOnInit(): void {
-    this.loadChartData();
-  }
-
   ngAfterViewInit(): void {
     this.viewInitialized = true;
-    // Try to render if data is already loaded
-    // Use setTimeout to ensure DOM is fully ready
-    setTimeout(() => {
-      if (this.chartOptions() && this.chartElement?.nativeElement) {
-        this.renderChart(this.chartOptions()!);
-      }
-    }, 0);
+    if (this.chartOptions()) {
+      this.renderChart(this.chartOptions()!);
+    }
   }
 
-  /**
-   * Loads chart data from the service and configures the chart options
-   */
+  private _statusEffect = effect(() => {
+    if (this.currentStatusDistribution()) {
+      this.loadChartData();
+      console.log(this.chartOptions());
+      // Only render if view is initialized and chartElement is available
+      if (this.viewInitialized && this.chartOptions()) {
+        this.renderChart(this.chartOptions()!);
+      }
+    }
+  });
+
   private loadChartData(): void {
-    this.statusDistributionService.getStatusDistribution().subscribe({
-      next: (response) => {
-        const series = response.data.map((item) => item.count);
-        const labels = response.data.map((item) => item.status);
-        const colors = response.data.map((item) => StatusColor[item.status]);
+    const summary = this.currentStatusDistribution();
+    if (!summary) {
+      return;
+    }
+    const series = [summary.normal_count, summary.low_count, summary.offline_count];
+    const labels = [BatteryStatusTitle.NORMAL, BatteryStatusTitle.LOW, BatteryStatusTitle.OFFLINE];
+    const colors = [
+      StatusColor[BatteryStatusTitle.NORMAL],
+      StatusColor[BatteryStatusTitle.LOW],
+      StatusColor[BatteryStatusTitle.OFFLINE],
+    ];
 
-        const options: ApexOptions = {
-          series,
-          chart: {
-            type: 'pie',
-            width: '100%',
-            height: 340,
+    const options: ApexOptions = {
+      series,
+      chart: {
+        type: 'pie',
+        width: '100%',
+        height: 340,
+      },
+      labels,
+      colors,
+      legend: {
+        position: 'bottom',
+        horizontalAlign: 'center',
+        fontSize: '14px',
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number) => {
+          return val.toFixed(1) + '%';
+        },
+      },
+      plotOptions: {
+        pie: {
+          donut: {
+            size: '0%',
           },
-          labels,
-          colors,
-          legend: {
-            position: 'bottom',
-            horizontalAlign: 'center',
-            fontSize: '14px',
-          },
-          dataLabels: {
-            enabled: true,
-            formatter: (val: number) => {
-              return val.toFixed(1) + '%';
-            },
-          },
-          plotOptions: {
-            pie: {
-              donut: {
-                size: '0%',
-              },
-            },
-          },
-        };
+        },
+      },
+    };
 
-        this.chartOptions.set(options);
-        this.cdr.markForCheck();
+    this.chartOptions.set(options);
+    this.cdr.markForCheck();
 
-        // Render chart if view is already initialized
-        // Use setTimeout to ensure DOM is fully ready and change detection has run
-        if (this.viewInitialized) {
-          setTimeout(() => {
-            if (this.chartElement?.nativeElement) {
-              this.renderChart(options);
-            }
-          }, 100);
+    // Render chart if view is already initialized
+    if (this.viewInitialized) {
+      setTimeout(() => {
+        if (this.chartElement?.nativeElement) {
+          this.renderChart(options);
         }
-      },
-      error: (error) => {
-        console.error('Error loading status distribution:', error);
-      },
-    });
+      }, 100);
+    }
   }
 
   /**

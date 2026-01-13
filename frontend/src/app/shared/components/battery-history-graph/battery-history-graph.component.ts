@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, effect, input } from '@angular/core';
+
 import { MatCardModule } from '@angular/material/card';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import {
@@ -13,6 +13,7 @@ import {
   ApexGrid,
   ApexTooltip,
 } from 'ng-apexcharts';
+import { Summary } from '../../models/summary.model';
 
 export interface ChartOptions {
   series: ApexAxisChartSeries;
@@ -30,26 +31,29 @@ export interface ChartOptions {
 @Component({
   standalone: true,
   selector: 'app-battery-history-graph',
-  imports: [CommonModule, MatCardModule, NgApexchartsModule],
+  imports: [MatCardModule, NgApexchartsModule],
   templateUrl: './battery-history-graph.component.html',
   styleUrl: './battery-history-graph.component.scss',
 })
 export class BatteryHistoryGraphComponent {
-  @Input() currentBatteryPercentage = 98;
-  @Input() historicalData?: { date: string; batteryLevel: number }[];
+  currentStatusDistribution = input<Summary>();
+  historicData = input<Summary[]>();
 
-  public chartOptions: ChartOptions;
+  public chartOptions!: ChartOptions;
 
-  constructor() {
-    const dummyData = this.generateDummyData();
-    const dates = dummyData.map((d) => d.date);
-    const values = dummyData.map((d) => d.batteryLevel);
+  private _historicDataEffect = effect(() => {
+    if (this.historicData()) {
+      this.initializeChart();
+    }
+  });
 
+  initializeChart() {
+    const chartData = this.transformSummaryData(this.historicData());
     this.chartOptions = {
       series: [
         {
           name: 'Battery Level',
-          data: values,
+          data: chartData.values,
         },
       ],
       chart: {
@@ -78,7 +82,7 @@ export class BatteryHistoryGraphComponent {
         },
       },
       xaxis: {
-        categories: dates,
+        categories: chartData.dates,
         labels: {
           style: {
             colors: '#6b7280',
@@ -115,23 +119,17 @@ export class BatteryHistoryGraphComponent {
     };
   }
 
-  private generateDummyData(): { date: string; batteryLevel: number }[] {
-    return [
-      { date: 'Oct 7', batteryLevel: 95.2 },
-      { date: 'Oct 9', batteryLevel: 96.8 },
-      { date: 'Oct 11', batteryLevel: 98.1 },
-      { date: 'Oct 13', batteryLevel: 99.5 },
-      { date: 'Oct 15', batteryLevel: 99.8 },
-      { date: 'Oct 17', batteryLevel: 100.0 },
-      { date: 'Oct 19', batteryLevel: 99.7 },
-      { date: 'Oct 21', batteryLevel: 98.9 },
-      { date: 'Oct 23', batteryLevel: 97.5 },
-      { date: 'Oct 25', batteryLevel: 98.3 },
-      { date: 'Oct 27', batteryLevel: 99.1 },
-      { date: 'Oct 29', batteryLevel: 99.6 },
-      { date: 'Oct 31', batteryLevel: 99.9 },
-      { date: 'Nov 2', batteryLevel: 99.4 },
-      { date: 'Nov 4', batteryLevel: 98.7 },
-    ];
+  private transformSummaryData(data: Summary[] | undefined): { dates: string[]; values: number[] } {
+    if (!data || data.length === 0) {
+      return { dates: [], values: [] };
+    }
+    // Sort by date ascending
+    const sorted = [...data].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    );
+    return {
+      dates: sorted.map((s) => s.date),
+      values: sorted.map((s) => s.average_percentage),
+    };
   }
 }

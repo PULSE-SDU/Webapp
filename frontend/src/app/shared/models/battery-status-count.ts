@@ -1,6 +1,6 @@
-import { BatteryStatus } from '../../enums';
+import { BatteryStatusTitle } from '../../enums';
 
 export interface BatteryStatusCount {
-  status: BatteryStatus;
+  status: BatteryStatusTitle;
   count: number;
 }

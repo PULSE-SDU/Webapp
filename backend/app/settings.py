@@ -154,7 +154,10 @@ REST_FRAMEWORK = {
     "DEFAULT_PARSER_CLASSES": [
         "rest_framework.parsers.JSONParser",
     ],
-    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+    ],
 }
 
 
@@ -165,6 +168,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://github.com",
     "https://raw.githubusercontent.com",
     "http://localhost:4200",
+    "http://127.0.0.1:4200",
 ]
 
 # Allow GitHub Pages subdomains (e.g., https://username.github.io)
@@ -174,3 +178,46 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 
 # If you prefer to allow all origins during development, you can enable the line below
 # CORS_ALLOW_ALL_ORIGINS = True
+
+# Logging Configuration
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{levelname}] {asctime} {name} {module}.{funcName}:{lineno} - {message}",
+            "style": "{",
+        },
+        "simple": {
+            "format": "[{levelname}] {name} - {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "simple",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "INFO",
+    },
+    "loggers": {
+        "battery_status": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "tags": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "celery": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+    },
+}
