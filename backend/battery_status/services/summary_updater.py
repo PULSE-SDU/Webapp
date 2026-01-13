@@ -1,7 +1,7 @@
 import logging
 from ..models import BatteryStatus, Summary, StatusTitle
 from django.db.models import Avg
-from datetime import date
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ class SummaryUpdater:
     """
 
     def update_summary(self):
-        today = date.today()
+        today = timezone.now()
         total_tags = BatteryStatus.objects.count()
         normal_count = BatteryStatus.objects.filter(title=StatusTitle.NORMAL).count()
         low_count = BatteryStatus.objects.filter(title=StatusTitle.LOW).count()

@@ -16,8 +16,8 @@ export class TagStateService {
 
   loadTags() {
     try {
-      this.tagService.getTags().subscribe(tags => {
-        const baseTags: Tag[] = tags.map(t => ({
+      this.tagService.getTags().subscribe((tags) => {
+        const baseTags: Tag[] = tags.map((t) => ({
           node_address: t.node_address,
           voltage: t.voltage,
           created_at: t.created_at,
@@ -26,12 +26,10 @@ export class TagStateService {
 
         this._tags.set(baseTags);
 
-        baseTags.forEach(tag => {
-          this.currentStatusService
-            .getTagBatteryStatus(tag.node_address)
-            .subscribe(status => {
-              this.updateTag(tag.node_address, status);
-            });
+        baseTags.forEach((tag) => {
+          this.currentStatusService.getTagBatteryStatus(tag.node_address).subscribe((status) => {
+            this.updateTag(tag.node_address, status);
+          });
         });
       });
     } catch (error) {
@@ -41,18 +39,20 @@ export class TagStateService {
   }
 
   private updateTag(nodeAddress: string, status: BatteryStatus) {
-    this._tags.update(tags =>
-    tags.map(tag =>
-    tag.node_address === nodeAddress
-    ? {
-      ...tag,
-      battery_status: {
-        title: status.title,
-        percentage: status.percentage,
-        prediction_days: status.prediction_days,
-        prediction_hours: status.prediction_hours,
-      } as BatteryStatus
-    }: tag
-    ))
+    this._tags.update((tags) =>
+      tags.map((tag) =>
+        tag.node_address === nodeAddress
+          ? {
+              ...tag,
+              battery_status: {
+                title: status.title,
+                percentage: status.percentage,
+                prediction_days: status.prediction_days,
+                prediction_hours: status.prediction_hours,
+              } as BatteryStatus,
+            }
+          : tag,
+      ),
+    );
   }
 }

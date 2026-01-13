@@ -2,9 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Filters } from '../../../../shared/components/filters/filters';
 import { TagsList } from '../tags-list/tags-list';
 import { Tag } from '../../../../shared/models/tag.model';
-import {
-  TagDetailsDialogComponent
-} from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
+import { TagDetailsDialogComponent } from '../../../../shared/components/tag-details-dialog/tag-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TagStateService } from '../../../../state/tag-state';
@@ -83,14 +81,14 @@ export class TagsBrowser implements OnInit {
   }
 
   updateFilter(values: Record<string, unknown>) {
-    this.filters = this.filters.map(f => ({
+    this.filters = this.filters.map((f) => ({
       ...f,
-      value: values[f.key] as FilterValue
+      value: values[f.key] as FilterValue,
     }));
 
-    const searchValue = this.filters.find(f => f.key === 'search')?.value;
-    const titleValue = this.filters.find(f => f.key === 'title')?.value;
-    let predictionValue = this.filters.find(f => f.key === 'prediction_day')?.value;
+    const searchValue = this.filters.find((f) => f.key === 'search')?.value;
+    const titleValue = this.filters.find((f) => f.key === 'title')?.value;
+    let predictionValue = this.filters.find((f) => f.key === 'prediction_day')?.value;
 
     if (predictionValue && (predictionValue as string).length !== 0) {
       predictionValue = this.mapPredictionFilter(predictionValue as string);
@@ -98,24 +96,28 @@ export class TagsBrowser implements OnInit {
       predictionValue = undefined;
     }
 
-    this.batteryStatusService.filterTags(titleValue, predictionValue).subscribe((node_addresses) => {
-      this.filteredTags = this.tags().filter((tag) =>
-        node_addresses.some((node_address) => node_address === tag.node_address)
-      );
+    this.batteryStatusService
+      .filterTags(titleValue, predictionValue)
+      .subscribe((node_addresses) => {
+        this.filteredTags = this.tags().filter((tag) =>
+          node_addresses.some((node_address) => node_address === tag.node_address),
+        );
 
-      if (searchValue && (searchValue as string).length !== 0) {
-        this.batteryStatusService.searchTags(searchValue as string).subscribe((node_addresses) => {
-          this.filteredTags = this.filteredTags.filter((tag) =>
-            node_addresses.some((node_address) => node_address === tag.node_address)
-          );
+        if (searchValue && (searchValue as string).length !== 0) {
+          this.batteryStatusService
+            .searchTags(searchValue as string)
+            .subscribe((node_addresses) => {
+              this.filteredTags = this.filteredTags.filter((tag) =>
+                node_addresses.some((node_address) => node_address === tag.node_address),
+              );
+              this.setPage(this.pageIndex, this.pageSize);
+              this.length = this.filteredTags.length;
+            });
+        } else {
           this.setPage(this.pageIndex, this.pageSize);
           this.length = this.filteredTags.length;
-        });
-      } else {
-        this.setPage(this.pageIndex, this.pageSize);
-        this.length = this.filteredTags.length;
-      }
-    });
+        }
+      });
   }
 
   private mapPredictionFilter(value: string): string[] | string | undefined {

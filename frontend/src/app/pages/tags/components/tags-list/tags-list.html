@@ -9,7 +9,10 @@
   <ng-container matColumnDef="batteryLevel">
     <th mat-header-cell *matHeaderCellDef>Battery Level</th>
     <td mat-cell *matCellDef="let element">
-      <app-battery-bar [batteryData]="element.battery_status" [barWidthPercentage]="30"></app-battery-bar></td
+      <app-battery-bar
+        [batteryData]="element.battery_status"
+        [barWidthPercentage]="30"
+      ></app-battery-bar></td
   ></ng-container>
 
   <!-- Status Column -->
@@ -26,14 +29,17 @@
     <td mat-cell *matCellDef="let element">
       @if (element.battery_status?.title === BatteryStatus.OFFLINE) {
         <span class="font-semibold" [style.color]="getStatusColor(element.battery_status?.title)">
-          {{ element.battery_status.prediction_days }}d, {{ element.battery_status.prediction_hours }}h
+          {{ element.battery_status.prediction_days }}d,
+          {{ element.battery_status.prediction_hours }}h
         </span>
       } @else if (element.battery_status?.title === BatteryStatus.LOW) {
         <span [style.color]="getStatusColor(element.battery_status?.title)">
-          {{ element.battery_status?.prediction_days }}d, {{ element.battery_status?.prediction_hours }}h
+          {{ element.battery_status?.prediction_days }}d,
+          {{ element.battery_status?.prediction_hours }}h
         </span>
       } @else {
-        {{ element.battery_status?.prediction_days }}d, {{ element.battery_status?.prediction_hours }}h
+        {{ element.battery_status?.prediction_days }}d,
+        {{ element.battery_status?.prediction_hours }}h
       }
     </td>
   </ng-container>

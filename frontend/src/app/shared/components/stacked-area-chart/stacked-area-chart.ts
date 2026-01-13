@@ -1,7 +1,17 @@
-import { Component, OnInit, OnDestroy, ElementRef, inject } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  ElementRef,
+  inject,
+  input,
+  effect,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import ApexCharts from 'apexcharts';
 import { StatusColor } from '../../models/battery-status-color';
 import { BatteryStatusTitle } from '../../../enums';
+import { Summary } from '../../models/summary.model';
 
 @Component({
   selector: 'app-stacked-area-chart',
@@ -9,62 +19,61 @@ import { BatteryStatusTitle } from '../../../enums';
   templateUrl: './stacked-area-chart.html',
   styleUrls: ['./stacked-area-chart.scss'],
 })
-export class StackedAreaChart implements OnInit, OnDestroy {
+export class StackedAreaChart implements OnDestroy, AfterViewInit {
+  @ViewChild('stackedAreaChart', { static: false }) chartElement?: ElementRef;
   private chart: ApexCharts | undefined;
+  private viewInitialized = false;
   el = inject(ElementRef);
 
-  ngOnInit(): void {
-    this.initializeChart();
+  historicData = input<Summary[]>();
+  private _historicDataEffect = effect(() => {
+    if (this.historicData() && this.viewInitialized && this.chartElement?.nativeElement) {
+      this.getChartData();
+      this.initializeChart();
+    }
+  });
+
+  ngAfterViewInit(): void {
+    this.viewInitialized = true;
+    if (this.historicData() && this.chartElement?.nativeElement) {
+      this.getChartData();
+      this.initializeChart();
+    }
   }
 
   ngOnDestroy(): void {
     this.chart?.destroy();
   }
 
-  /** Create chart data */
   private getChartData() {
-    const dates = [
-      '2025-10-14',
-      '2025-10-16',
-      '2025-10-18',
-      '2025-10-20',
-      '2025-10-22',
-      '2025-10-24',
-      '2025-10-26',
-      '2025-10-28',
-      '2025-10-30',
-      '2025-11-01',
-      '2025-11-03',
-      '2025-11-05',
-      '2025-11-07',
-      '2025-11-09',
-      '2025-11-11',
-    ];
-
-    const critical = [3, 2, 4, 3, 5, 4, 6, 7, 5, 4, 3, 5, 6, 3, 2];
-    const warning = [2, 3, 1, 2, 1, 2, 1, 2, 3, 4, 5, 3, 2, 4, 1];
-    const normal = [7, 7, 7, 7, 6, 6, 5, 3, 4, 4, 4, 4, 4, 5, 9];
-
-    return [
-      {
-        name: BatteryStatusTitle.NORMAL,
-        data: dates.map((d, i) => [new Date(d).getTime(), normal[i]]),
-      },
-      {
-        name: BatteryStatusTitle.LOW,
-        data: dates.map((d, i) => [new Date(d).getTime(), warning[i]]),
-      },
-      {
-        name: BatteryStatusTitle.OFFLINE,
-        data: dates.map((d, i) => [new Date(d).getTime(), critical[i]]),
-      },
-    ];
+    try {
+      const data = this.historicData() ?? [];
+      const sorted = [...data].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      );
+      return [
+        {
+          name: BatteryStatusTitle.NORMAL,
+          data: sorted.map((s) => [new Date(s.date).getTime(), s.normal_count]),
+        },
+        {
+          name: BatteryStatusTitle.LOW,
+          data: sorted.map((s) => [new Date(s.date).getTime(), s.low_count]),
+        },
+        {
+          name: BatteryStatusTitle.OFFLINE,
+          data: sorted.map((s) => [new Date(s.date).getTime(), s.offline_count]),
+        },
+      ];
+    } catch (error) {
+      console.error('Error generating chart data:', error);
+      return [];
+    }
   }
 
   /** Initialize ApexChart */
   private initializeChart(): void {
     const series = this.getChartData();
-
     const options: ApexCharts.ApexOptions = {
       series,
       chart: {
@@ -74,15 +83,12 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         toolbar: { show: false },
         fontFamily: 'Inter, sans-serif',
       },
-
       colors: [
         StatusColor[BatteryStatusTitle.NORMAL],
         StatusColor[BatteryStatusTitle.LOW],
         StatusColor[BatteryStatusTitle.OFFLINE],
       ],
-
       dataLabels: { enabled: false },
-
       stroke: {
         curve: 'smooth',
         width: 2,
@@ -92,7 +98,6 @@ export class StackedAreaChart implements OnInit, OnDestroy {
           StatusColor[BatteryStatusTitle.OFFLINE],
         ],
       },
-
       fill: {
         type: 'gradient',
         gradient: {
@@ -100,7 +105,6 @@ export class StackedAreaChart implements OnInit, OnDestroy {
           opacityTo: 0.9,
         },
       },
-
       legend: {
         position: 'bottom',
         horizontalAlign: 'center',
@@ -108,7 +112,6 @@ export class StackedAreaChart implements OnInit, OnDestroy {
         fontWeight: 500,
         labels: { colors: ['#4B5563'] },
       },
-
       xaxis: {
         type: 'datetime',
         tickAmount: 8,
@@ -121,40 +124,21 @@ export class StackedAreaChart implements OnInit, OnDestroy {
           },
         },
       },
-
       yaxis: {
         min: 0,
         max: 12,
         tickAmount: 4,
         labels: { style: { colors: ['#6B7280'] } },
       },
-
       tooltip: {
         x: { format: 'MMM dd, yyyy' },
       },
-
       grid: { show: false },
     };
-
-    const chartEl = this.el.nativeElement.querySelector('#stackedAreaChart');
-    this.chart = new ApexCharts(chartEl, options);
+    if (this.chart) {
+      this.chart.destroy();
+    }
+    this.chart = new ApexCharts(this.chartElement!.nativeElement, options);
     this.chart.render();
   }
 }
-
-//private fetchChartData(): void {
-//const apiUrl = '....';
-//this.http.get<any>(apiUrl).subscribe({
-// next: (response) => {
-//API data to match ApexCharts format
-//const chartData = this.transformApiData(response);
-//this.initializeChart(chartData);
-//},
-//error: (err) => {
-// console.error('Error fetching chart data:', err);
-//}
-// });
-//}
-//private transformApiData(data: any) {
-// { dates: [...], critical: [...], warning: [...], normal: [...] } have to figure out status endpoints
-//const { dates, critical, warning, normal } = data;

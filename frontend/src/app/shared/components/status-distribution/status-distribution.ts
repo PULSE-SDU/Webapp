@@ -4,6 +4,7 @@ import { BatteryBar } from '../battery-bar/battery-bar';
 import { StatusColor } from '../../models/battery-status-color';
 import { BatteryStatusCount } from '../../models/battery-status-count';
 import { BatteryStatus } from '../../models/battery-status.model';
+import { Summary } from '../../models/summary.model';
 
 @Component({
   selector: 'app-status-distribution',
@@ -13,18 +14,30 @@ import { BatteryStatus } from '../../models/battery-status.model';
   styleUrl: './status-distribution.scss',
 })
 export class StatusDistribution {
-  statusData = input<BatteryStatusCount[]>([
-    { status: BatteryStatusTitle.NORMAL, count: 6 },
-    { status: BatteryStatusTitle.LOW, count: 2 },
-    { status: BatteryStatusTitle.OFFLINE, count: 3 },
-  ]);
+  summaryData = input<Summary>({
+    id: 0,
+    date: '0',
+    normal_count: 0,
+    low_count: 0,
+    offline_count: 0,
+    average_percentage: 0,
+    total_tags: 0,
+  });
+
+  summaryToBatteryStatusCount(): BatteryStatusCount[] {
+    return [
+      { status: BatteryStatusTitle.NORMAL, count: this.summaryData().normal_count },
+      { status: BatteryStatusTitle.LOW, count: this.summaryData().low_count },
+      { status: BatteryStatusTitle.OFFLINE, count: this.summaryData().offline_count },
+    ];
+  }
 
   getColorValue(status: BatteryStatusTitle): string {
     return StatusColor[status] ?? '#9CA3AF';
   }
 
   getCountPercentage(count: number): number {
-    const countSum = this.statusData()
+    const countSum = this.summaryToBatteryStatusCount()
       .map((item) => item.count)
       .reduce((a, b) => a + b, 0);
 

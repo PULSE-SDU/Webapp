@@ -4,7 +4,7 @@
     <p class="text-sm text-gray-500 mb-6">Current equipment status breakdown</p>
 
     <div class="space-y-4">
-      @for (item of statusData(); track item.status) {
+      @for (item of summaryToBatteryStatusCount(); track item.status) {
         <div class="status-row">
           <div class="flex items-center justify-between">
             <!-- Label -->

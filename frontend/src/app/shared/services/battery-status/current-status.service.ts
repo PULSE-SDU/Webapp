@@ -6,12 +6,13 @@ import { environment } from '../../../../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { BatteryStatus } from '../../models/battery-status.model';
 import { FilterValue } from '../../components/filters/models/filter-descriptor';
+import { Summary } from '../../models/summary.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CurrentStatusService {
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
   private notificationService = inject(NotificationService);
 
   getTagBatteryStatus(nodeAddress: string): Observable<BatteryStatus> {
@@ -19,8 +20,8 @@ export class CurrentStatusService {
       catchError((error) => {
         this.notificationService.showError('Failed to fetch tag battery status.');
         return throwError(() => error);
-      }
-    ));
+      }),
+    );
   }
 
   filterTags(statusTitle?: FilterValue, predictionDays?: FilterValue): Observable<string[]> {
@@ -40,17 +41,28 @@ export class CurrentStatusService {
       catchError((error) => {
         this.notificationService.showError('Failed to filter battery status.');
         return throwError(() => error);
-      })
+      }),
     );
   }
 
   searchTags(searchValue: FilterValue): Observable<string[]> {
     const search = searchValue.toString();
-    return this.http.get<string[]>(`${environment.apiUrl}/battery-status/`, { params: { search } }).pipe(
+    return this.http
+      .get<string[]>(`${environment.apiUrl}/battery-status/`, { params: { search } })
+      .pipe(
+        catchError((error) => {
+          this.notificationService.showError('Could not find battery status for the search term.');
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getLatestSummary(): Observable<Summary> {
+    return this.http.get<Summary>(`${environment.apiUrl}/summary/latest/`).pipe(
       catchError((error) => {
-        this.notificationService.showError('Could not find battery status for the search term.');
+        this.notificationService.showError('Failed to fetch the latest summary.');
         return throwError(() => error);
-      })
+      }),
     );
   }
 }

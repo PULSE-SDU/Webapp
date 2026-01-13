@@ -16,7 +16,12 @@
           <div class="equipment-right">
             <div class="battery-percentage">{{ item.battery_status?.percentage }}%</div>
             @if (item.battery_status?.prediction_days || item.battery_status?.prediction_days) {
-              <div class="days-left"><p>{{ (item.battery_status?.prediction_days ?? 0) }}d {{ (item.battery_status?.prediction_hours ?? 0) }}h</p></div>
+              <div class="days-left">
+                <p>
+                  {{ item.battery_status?.prediction_days ?? 0 }}d
+                  {{ item.battery_status?.prediction_hours ?? 0 }}h
+                </p>
+              </div>
             }
           </div>
         </div>

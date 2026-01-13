@@ -1,7 +1,6 @@
 import { Component, input } from '@angular/core';
 import { InfoCard } from './models/info-card.model';
 
-
 @Component({
   selector: 'app-info-cards',
   imports: [],

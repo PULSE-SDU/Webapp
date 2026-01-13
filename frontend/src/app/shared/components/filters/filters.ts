@@ -21,8 +21,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatOptionModule,
     MatButtonModule,
     MatIconModule,
-    FormsModule
-],
+    FormsModule,
+  ],
   templateUrl: './filters.html',
   styleUrls: ['./filters.scss'],
 })
@@ -42,7 +42,7 @@ export class Filters implements OnInit {
     }
     this.filtersFormGroup = new FormGroup(formControls);
 
-    this.filtersFormGroup.valueChanges.subscribe(values => {
+    this.filtersFormGroup.valueChanges.subscribe((values) => {
       this.updateFilter.emit(values);
     });
   }

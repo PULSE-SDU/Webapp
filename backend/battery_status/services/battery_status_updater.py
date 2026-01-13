@@ -146,7 +146,7 @@ class BatteryStatusUpdater:
             calculated_level = max(0, min(100, round(pct)))
         return calculated_level
 
-    def update_battery_status(self, max_workers=10):
+    def update_battery_status(self, max_workers=20):
         """
         Updates BatteryStatus entries based on **current/latest** Tag data, using parallel processing.
         """

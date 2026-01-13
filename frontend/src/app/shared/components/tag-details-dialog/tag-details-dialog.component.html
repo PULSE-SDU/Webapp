@@ -26,13 +26,22 @@
     <div class="battery-status-container">
       <div class="battery-icon-wrapper">
         @if (tag.battery_status?.title === batteryStatus.NORMAL) {
-          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)">battery_full</mat-icon>
+          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)"
+            >battery_full</mat-icon
+          >
         } @else if (tag.battery_status?.title === batteryStatus.LOW) {
-          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)">battery_alert</mat-icon>
+          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)"
+            >battery_alert</mat-icon
+          >
         } @else {
-          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)">battery_std</mat-icon>
+          <mat-icon [style.color]="getBatteryColor(tag.battery_status?.title)"
+            >battery_std</mat-icon
+          >
         }
-        <span class="battery-percentage-large" [style.color]="getBatteryColor(tag.battery_status?.title)">
+        <span
+          class="battery-percentage-large"
+          [style.color]="getBatteryColor(tag.battery_status?.title)"
+        >
           {{ tag.battery_status?.percentage }}%
         </span>
       </div>
@@ -60,7 +69,10 @@
       </div>
       <div class="prediction-content">
         <div class="prediction-text" [style.color]="getBatteryColor(tag.battery_status?.title)">
-          <p>{{ (tag.battery_status?.prediction_days ?? 0) }}d {{ (tag.battery_status?.prediction_hours ?? 0) }}h</p>
+          <p>
+            {{ tag.battery_status?.prediction_days ?? 0 }}d
+            {{ tag.battery_status?.prediction_hours ?? 0 }}h
+          </p>
         </div>
         <div class="prediction-context">Based on current usage patterns and battery health</div>
       </div>
@@ -80,15 +92,18 @@
         <div class="property-card">
           <mat-icon class="property-icon">date_range</mat-icon>
           <div class="property-label">Created At</div>
-          <div class="text-[16px] font-bold text-gray-800">{{ tag.created_at | date: 'medium' }}</div>
+          <div class="text-[16px] font-bold text-gray-800">
+            {{ tag.created_at | date: 'medium' }}
+          </div>
         </div>
         <div class="property-card">
           <mat-icon class="property-icon">date_range</mat-icon>
           <div class="property-label">Updated At</div>
-          <div class="text-[16px] font-bold text-gray-800">{{ tag.updated_at | date: 'medium' }}</div>
+          <div class="text-[16px] font-bold text-gray-800">
+            {{ tag.updated_at | date: 'medium' }}
+          </div>
         </div>
       </div>
     </div>
   }
-
 </div>
