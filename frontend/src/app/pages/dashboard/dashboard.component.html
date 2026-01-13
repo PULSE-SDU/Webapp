@@ -11,7 +11,7 @@
   </div>
 
   <!-- Alert Banner -->
-  @if (deadStatus > 0) {
+  @if (summary().offline_count > 0) {
     <div class="alert-banner">
       <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
@@ -22,7 +22,7 @@
         ></path>
       </svg>
       <span class="alert-text">
-        {{ deadStatus }} equipment {{ deadStatus === 1 ? 'has' : 'have' }} a dead battery and
+        {{ summary().offline_count }} equipment {{ summary().offline_count === 1 ? 'has' : 'have' }} a dead battery and
         require immediate charging or replacement.
       </span>
     </div>
@@ -30,14 +30,16 @@
 
   <!-- Two Column Layout -->
   <div class="dashboard-content">
-    <!-- Left Column: Equipment Needing Attention -->
-    <div class="content-column">
-      <app-equipment-attention [equipment]="equipmentNeedingAttention"></app-equipment-attention>
-    </div>
+    @if (equipmentNeedingAttention) {
+      <!-- Left Column: Equipment Needing Attention -->
+      <div class="content-column">
+        <app-equipment-attention [equipment]="equipmentNeedingAttention"></app-equipment-attention>
+      </div>
+    }
 
     <!-- Right Column: Status Distribution -->
     <div class="content-column">
-      <app-status-distribution></app-status-distribution>
+      <app-status-distribution [summaryData]="summary()"></app-status-distribution>
     </div>
   </div>
 </div>

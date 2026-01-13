@@ -6,6 +6,7 @@ import { environment } from '../../../../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { BatteryStatus } from '../../models/battery-status.model';
 import { FilterValue } from '../../components/filters/models/filter-descriptor';
+import { Summary } from '../../models/summary.model';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,15 @@ export class CurrentStatusService {
     return this.http.get<string[]>(`${environment.apiUrl}/battery-status/`, { params: { search } }).pipe(
       catchError((error) => {
         this.notificationService.showError('Could not find battery status for the search term.');
+        return throwError(() => error);
+      })
+    );
+  }
+
+  getLatestSummary(): Observable<Summary> {
+    return this.http.get<Summary>(`${environment.apiUrl}/summary/latest/`).pipe(
+      catchError((error) => {
+        this.notificationService.showError('Failed to fetch the latest summary.');
         return throwError(() => error);
       })
     );

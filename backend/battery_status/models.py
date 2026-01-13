@@ -29,7 +29,7 @@ class BatteryStatus(models.Model):
 class Summary(models.Model):
     """Model representing a summary of battery statuses."""
 
-    date = models.DateField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True)
     total_tags = models.IntegerField()
     normal_count = models.IntegerField()
     low_count = models.IntegerField()
