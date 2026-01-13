@@ -26,12 +26,17 @@ class BatteryStatus(models.Model):
         )
 
 
-class StatusSummary(models.Model):
-    """Aggregate summary of statuses for a date."""
+class Summary(models.Model):
+    """Model representing a summary of battery statuses."""
 
-    date = models.DateField()
-    title = models.CharField(max_length=20, choices=StatusTitle.choices)
-    count = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
+    total_tags = models.IntegerField()
+    normal_count = models.IntegerField()
+    low_count = models.IntegerField()
+    offline_count = models.IntegerField()
+    average_percentage = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)], default=0
+    )
 
     def __str__(self):
-        return f"{self.date}: {self.title} ({self.count})"
+        return f"Summary for {self.date}"

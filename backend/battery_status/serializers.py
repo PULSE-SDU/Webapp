@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import BatteryStatus, StatusSummary
+from .models import BatteryStatus, Summary
 
 
 class BatteryStatusSerializer(serializers.ModelSerializer):
@@ -8,7 +8,7 @@ class BatteryStatusSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class StatusSummarySerializer(serializers.ModelSerializer):
+class SummarySerializer(serializers.ModelSerializer):
     class Meta:
-        model = StatusSummary
+        model = Summary
         fields = "__all__"

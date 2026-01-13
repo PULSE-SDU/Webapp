@@ -1,6 +1,7 @@
 from celery import shared_task
 from .services.battery_status_updater import BatteryStatusUpdater
 import logging
+from .services.summary_updater import SummaryUpdater
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +16,9 @@ def update_battery_status_task():
     try:
         updater = BatteryStatusUpdater()
         updater.update_battery_status()
-        logger.info("Battery status update task completed successfully")
+
+        summary_updater = SummaryUpdater()
+        summary_updater.update_summary()
     except Exception as e:
         logger.error(f"Battery status update task failed: {e}", exc_info=True)
         raise
