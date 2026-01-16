@@ -34,6 +34,7 @@ class SummaryViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ["date"]
 
     def list(self, request, *args, **kwargs):
+        from datetime import datetime, time
         queryset = self.filter_queryset(self.get_queryset())
         days = request.query_params.get("days")
         if days:
@@ -41,8 +42,8 @@ class SummaryViewSet(viewsets.ReadOnlyModelViewSet):
                 days = int(days)
             except ValueError:
                 days = 30
-            end_date = date.today()
-            start_date = end_date - timedelta(days=days)
+            end_date = datetime.combine(date.today(), time.max)
+            start_date = datetime.combine(date.today() - timedelta(days=days), time.min)
             queryset = queryset.filter(date__range=(start_date, end_date))
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)

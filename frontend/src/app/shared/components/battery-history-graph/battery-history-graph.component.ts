@@ -53,7 +53,7 @@ export class BatteryHistoryGraphComponent {
       series: [
         {
           name: 'Battery Level',
-          data: chartData.values,
+          data: chartData.values.map((v, i) => ({ x: chartData.dates[i], y: v })),
         },
       ],
       chart: {
@@ -82,12 +82,13 @@ export class BatteryHistoryGraphComponent {
         },
       },
       xaxis: {
-        categories: chartData.dates,
+        type: 'datetime',
         labels: {
           style: {
             colors: '#6b7280',
             fontSize: '12px',
           },
+          format: 'MMM dd', // e.g., Jan 16
         },
       },
       yaxis: {
@@ -109,6 +110,9 @@ export class BatteryHistoryGraphComponent {
         strokeDashArray: 4,
       },
       tooltip: {
+        x: {
+          format: 'MMM dd, yyyy',
+        },
         y: {
           formatter: (value: number) => {
             return value.toFixed(1) + '%';

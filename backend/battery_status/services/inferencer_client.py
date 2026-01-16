@@ -29,7 +29,7 @@ class InferencerClient:
         except (urllib.error.URLError, socket.timeout, ConnectionError, ValueError):
             return False
 
-    def predict(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+    def predict(self, payload: Dict[str, Any], max_retries: int = 3, backoff_factor: float = 1.0) -> Dict[str, Any]:
         url = f"{self.base_url}/predict"
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
@@ -38,8 +38,21 @@ class InferencerClient:
             headers={"Content-Type": "application/json"},
             method="POST",
         )
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            return json.loads(resp.read().decode("utf-8"))
+        last_exception = None
+        for attempt in range(1, max_retries + 1):
+            try:
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    return json.loads(resp.read().decode("utf-8"))
+            except (urllib.error.URLError, socket.timeout, ConnectionError) as e:
+                last_exception = e
+                if attempt < max_retries:
+                    import time
+                    sleep_time = backoff_factor * (2 ** (attempt - 1))
+                    time.sleep(sleep_time)
+                else:
+                    raise
+        # If all retries failed, raise the last exception
+        raise last_exception
 
     @staticmethod
     def _map_wnt_reading(r: Dict[str, Any]) -> Dict[str, Any]:

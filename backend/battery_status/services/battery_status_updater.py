@@ -22,9 +22,9 @@ class BatteryStatusUpdater:
     def __init__(self):
         self.skip_predictions = False
 
-    def get_prediction(self, tag: Tag, max_retries=3, retry_delay=2):
+    def get_prediction(self, tag: Tag):
         """
-        Retrieves predictions for all tags from the inference service, with retry on failure.
+        Retrieves predictions for all tags from the inference service.
         """
         if self.skip_predictions:
             return None
@@ -32,40 +32,60 @@ class BatteryStatusUpdater:
             wnt_tag_id = int(float(tag.node_address))
         except (ValueError, TypeError):
             wnt_tag_id = tag.node_address
-        for attempt in range(1, max_retries + 1):
-            try:
-                self.wnt_client.get_node_all(tag.node_address)
-                window = self.wnt_client.get_battery_window(wnt_tag_id)
-                if not window or "readings" not in window:
-                    logger.warning(f"No battery window data for tag {tag.node_address}")
-                    return None
-                logger.info(
-                    f"Fetching prediction from inference service for tag {tag.node_address}"
-                )
-                return self.infer_client.predict_from_wnt_window(
-                    tag_id=str(tag.node_address),
-                    wnt_readings=window["readings"],
-                    baseline_voltage=window.get("baselinevoltage", 3.1),
-                    cycle_start_epoch=window.get("cyclestartepoch"),
-                )
-            except (
-                requests.exceptions.RequestException,
-                ConnectionError,
-                TimeoutError,
-            ) as e:
-                if attempt < max_retries:
-                    time.sleep(retry_delay)
-                else:
-                    logger.error(
-                        f"All {max_retries} attempts failed for tag {tag.node_address}",
-                        exc_info=True,
-                    )
-                    return None
-            except Exception as e:
-                logger.error(
-                    f"Inference Error for {tag.node_address}: {e}", exc_info=True
+        # Fetch battery window from WNT API
+        try:
+            window = self.wnt_client.get_battery_window(wnt_tag_id)
+        except requests.exceptions.HTTPError as http_err:
+            status = getattr(getattr(http_err, "response", None), "status_code", None)
+            if status == 400:
+                # Expected when there aren't enough readings; avoid noisy error logs
+                logger.debug(
+                    f"WNT battery window unavailable (400) for tag {tag.node_address}: {http_err}"
                 )
                 return None
+            logger.error(
+                f"WNT battery window error for {tag.node_address}: {http_err}",
+                exc_info=True,
+            )
+            return None
+        except Exception as e:
+            logger.error(
+                f"WNT battery window unexpected error for {tag.node_address}: {e}",
+                exc_info=True,
+            )
+            return None
+
+        if not window or "readings" not in window:
+            logger.warning(f"No battery window data for tag {tag.node_address}")
+            return None
+
+        # Call inference service
+        try:
+            logger.info(
+                f"Fetching prediction from inference service for tag {tag.node_address}"
+            )
+            return self.infer_client.predict_from_wnt_window(
+                tag_id=str(tag.node_address),
+                wnt_readings=window["readings"],
+                baseline_voltage=window.get("baselinevoltage", 3.1),
+                cycle_start_epoch=window.get("cyclestartepoch"),
+            )
+        except requests.exceptions.HTTPError as http_err:
+            status = getattr(getattr(http_err, "response", None), "status_code", None)
+            if status in (400, 422):
+                logger.debug(
+                    f"Inference prediction unavailable ({status}) for tag {tag.node_address}: {http_err}"
+                )
+                return None
+            logger.error(
+                f"Inference Error for {tag.node_address}: {http_err}", exc_info=True
+            )
+            return None
+        except Exception as e:
+            logger.error(
+                f"Inference Error for {tag.node_address}: {e}", exc_info=True
+            )
+            return None
 
     def format_days_hours(self, value, input_type="hours"):
         """

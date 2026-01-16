@@ -45,7 +45,7 @@ export class StackedAreaChart implements OnDestroy, AfterViewInit {
     this.chart?.destroy();
   }
 
-  private getChartData() {
+  private getChartData(): ChartSeries[] {
     try {
       const data = this.historicData() ?? [];
       const sorted = [...data].sort(
@@ -54,15 +54,15 @@ export class StackedAreaChart implements OnDestroy, AfterViewInit {
       return [
         {
           name: BatteryStatusTitle.NORMAL,
-          data: sorted.map((s) => [new Date(s.date).getTime(), s.normal_count]),
+          data: sorted.map((s): [number, number] => [new Date(s.date).getTime(), s.normal_count]),
         },
         {
           name: BatteryStatusTitle.LOW,
-          data: sorted.map((s) => [new Date(s.date).getTime(), s.low_count]),
+          data: sorted.map((s): [number, number] => [new Date(s.date).getTime(), s.low_count]),
         },
         {
           name: BatteryStatusTitle.OFFLINE,
-          data: sorted.map((s) => [new Date(s.date).getTime(), s.offline_count]),
+          data: sorted.map((s): [number, number] => [new Date(s.date).getTime(), s.offline_count]),
         },
       ];
     } catch (error) {
@@ -71,9 +71,20 @@ export class StackedAreaChart implements OnDestroy, AfterViewInit {
     }
   }
 
+  private getMaxY(series: ChartSeries[]): number {
+    let max = 0;
+    for (const s of series) {
+      for (const point of s.data) {
+        if (point[1] > max) max = point[1];
+      }
+    }
+    return max;
+  }
+
   /** Initialize ApexChart */
   private initializeChart(): void {
     const series = this.getChartData();
+    const maxY = this.getMaxY(series);
     const options: ApexCharts.ApexOptions = {
       series,
       chart: {
@@ -126,7 +137,7 @@ export class StackedAreaChart implements OnDestroy, AfterViewInit {
       },
       yaxis: {
         min: 0,
-        max: 12,
+        max: maxY > 0 ? Math.ceil(maxY * 1.1) : undefined, // add 10% headroom
         tickAmount: 4,
         labels: { style: { colors: ['#6B7280'] } },
       },
@@ -141,4 +152,9 @@ export class StackedAreaChart implements OnDestroy, AfterViewInit {
     this.chart = new ApexCharts(this.chartElement!.nativeElement, options);
     this.chart.render();
   }
+}
+
+interface ChartSeries {
+  name: BatteryStatusTitle;
+  data: [number, number][];
 }

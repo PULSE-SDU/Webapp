@@ -16,4 +16,4 @@ COPY . /app/
 
 EXPOSE 8001
 
-CMD ["sh", "-c", "python manage.py import_wnt_tags && python manage.py update_battery_status && python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8001"]
+CMD ["sh", "-c", "python manage.py makemigrations && python manage.py migrate && python manage.py import_wnt_tags && python manage.py runserver 0.0.0.0:8001"]

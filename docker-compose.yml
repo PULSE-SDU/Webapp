@@ -2,8 +2,17 @@ services:
   backend:
     build: ./backend
     image: pulse-backend-image:latest
+    volumes:
+      - ./backend:/app
     ports:
       - "8001:8001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import sys, urllib.request;\nimport urllib.error, socket;\nurl='http://127.0.0.1:8001/api/';\ntry:\n    resp = urllib.request.urlopen(url, timeout=3)\n    sys.exit(0 if resp.getcode()==200 else 1)\nexcept Exception:\n    sys.exit(1)\n\" "]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 120s
   
   celery_worker:
     build: ./backend
@@ -12,7 +21,10 @@ services:
     volumes:
       - ./backend:/app
     depends_on:
-      - redis
+      backend:
+        condition: service_healthy
+      redis:
+        condition: service_started
     restart: unless-stopped
 
   celery_beat:
@@ -22,7 +34,10 @@ services:
     volumes:
       - ./backend:/app
     depends_on:
-      - redis
+      backend:
+        condition: service_healthy
+      redis:
+        condition: service_started
     restart: unless-stopped
 
   redis:
